@@ -3,7 +3,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import Authereum from "authereum";
 import React, { useCallback, useEffect, useState } from "react";
 import Web3 from "web3";
-import { Web3ModalConfig } from "../context/Web3ModalContext";
+import { Web3ModalConfig } from "./Web3ModalContext";
 
 const useWeb3ModalContext: () => Web3ModalConfig = () => {
   // top level state that will be passe to the app via context in _app.tsx

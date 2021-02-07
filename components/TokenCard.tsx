@@ -1,7 +1,8 @@
-import styles from "../../styles/Home.module.css";
+import styles from "../styles/Home.module.css";
 import * as React from "react";
 import { useContext } from "react";
 import { Web3ModalContext } from "../context/Web3ModalContext";
+import Link from "next/link";
 
 export interface TokenCardProps {
   name: string;
@@ -14,9 +15,11 @@ const TokenCard: React.FC<TokenCardProps> = (props: TokenCardProps) => {
 
   // todo: replace this example with real impl
   return (
-    <a href="#" className={styles.card}>
-      <p>{props.name}</p>
-    </a>
+    <Link href="customize">
+      <a className={styles.card}>
+        <p>{props.name}</p>
+      </a>
+    </Link>
   );
 };
 

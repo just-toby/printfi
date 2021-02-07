@@ -1,0 +1,62 @@
+import styles from "../styles/Home.module.css";
+import * as React from "react";
+import { Web3ModalContext } from "../context/Web3ModalContext";
+import { useContext } from "react";
+import Link from "next/link";
+
+export type SubPage = "print" | "cart";
+
+interface NavBarProps {
+  subPage: SubPage;
+}
+
+const NavBar: React.FC<NavBarProps> = (props: NavBarProps) => {
+  const { connected, address, connect } = useContext(Web3ModalContext);
+
+  const formatAddress: (string) => string = (address) => {
+    return address.slice(0, 6) + "..." + address.slice(address.length - 4);
+  };
+
+  return (
+    <div className={styles.header}>
+      <Link href="/">
+        <a className={styles.headerLink}>Print.Fi</a>
+      </Link>
+
+      <div>
+        <Link href="/">
+          <a
+            className={
+              props.subPage === "print"
+                ? styles.subPageLinkUnderline
+                : styles.subPageLink
+            }
+          >
+            Print
+          </a>
+        </Link>
+        <Link href="/checkout">
+          <a
+            className={
+              props.subPage === "cart"
+                ? styles.subPageLinkUnderline
+                : styles.subPageLink
+            }
+          >
+            Cart
+          </a>
+        </Link>
+      </div>
+
+      {connected ? (
+        <span>{formatAddress(address)}</span>
+      ) : (
+        <a href="#" className={styles.headerLink} onClick={connect}>
+          connect wallet
+        </a>
+      )}
+    </div>
+  );
+};
+
+export { NavBar };

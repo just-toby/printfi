@@ -1,4 +1,4 @@
-import styles from "../../styles/Home.module.css";
+import styles from "../styles/Home.module.css";
 import * as React from "react";
 import { TokenCard, TokenCardProps } from "./TokenCard";
 import { useContext } from "react";
