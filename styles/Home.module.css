@@ -53,14 +53,11 @@
   align-items: center;
 }
 
-.footer img {
-  margin-left: 0.5rem;
-}
-
 .footer a {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 1.2rem;
 }
 
 .title a {
@@ -105,22 +102,24 @@
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 3rem;
+  max-width: 70%;
 }
 
 .card {
   margin: 1rem;
-  padding: 1.5rem;
-  border: 1px solid #eaeaea;
-  border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
-  width: 30%;
-  aspect-ratio: 0.7;
 }
 
-.card:hover,
-.card:focus,
-.card:active {
-  border-color: #C7FFEB;
+.image {
+  border-radius: 10px;
+  border: 1px solid #ababab;
+}
+
+.image:hover,
+.image:focus,
+.image:active {
+  border-color: #444444;
+  border: 1.5px solid #444444;
 }
 
 .card p {

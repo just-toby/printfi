@@ -3,6 +3,7 @@ import * as React from "react";
 import { useContext } from "react";
 import { Web3ModalContext } from "../context/Web3ModalContext";
 import Link from "next/link";
+import Image from "next/image";
 
 export interface TokenCardProps {
   name: string;
@@ -13,11 +14,22 @@ export interface TokenCardProps {
 const TokenCard: React.FC<TokenCardProps> = (props: TokenCardProps) => {
   const { address } = useContext(Web3ModalContext);
 
+  const myLoader = ({ src, width, quality }) => {
+    return src;
+  };
+
   // todo: replace this example with real impl
   return (
     <Link href="customize">
       <a className={styles.card}>
-        <p>{props.name}</p>
+        <Image
+          className={styles.image}
+          src={props.uri}
+          alt={props.name}
+          loader={myLoader}
+          height={500}
+          width={350}
+        />
       </a>
     </Link>
   );
