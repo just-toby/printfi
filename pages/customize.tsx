@@ -10,19 +10,26 @@ import { TokenCard } from "../components/TokenCard";
 import { OptionRow, OptionRowProps } from "../components/OptionRow";
 import classNames from "classnames";
 import { ConfirmButton } from "../components/ConfirmButton";
+import { CartContext } from "../context/CartContext";
 
 interface CustomizePageProps {}
 
-type ItemConfiguration = {
+export type ItemConfiguration = {
   size: string;
   frame: string;
   glass: string;
   space: string;
 };
 
+export type CartItem = {
+  name: string;
+  config: ItemConfiguration;
+};
+
 export default function Customize(props: CustomizePageProps) {
   const router = useRouter();
   const { assets } = useContext(AssetsContext);
+  const { addToCart } = useContext(CartContext);
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
     indicator: <Rings width="50" />,
@@ -105,12 +112,13 @@ export default function Customize(props: CustomizePageProps) {
               })}
               <ConfirmButton
                 title="Add to Cart"
+                disabled={!hasValidConfiguration(itemConfiguration)}
                 onClick={() => {
-                  if (hasValidConfiguration(itemConfiguration)) {
-
-                  } else {
-                    // TODO: flash unselected options? pop up an alert?
-                  }
+                  addToCart({
+                    name: item.name,
+                    config: itemConfiguration,
+                  });
+                  router.push("/checkout");
                 }}
               />
             </div>

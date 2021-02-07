@@ -206,6 +206,22 @@
   background-color: #C7FFEB;
 }
 
+.confirmButtonDisabled {
+  display: flex;
+  flex-direction: row;
+  margin-left: 1.5rem;
+  border: 1px solid #000000;
+  border-radius: 2rem;
+  height: 4rem;
+  width: 250px;
+  align-items: center;
+  align-self: flex-end;
+  justify-content: center;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+  background-color: #444444;
+  opacity: 0.3;
+}
+
 .confirmButton:hover,
 .confirmButton:focus,
 .confirmButton:active {

@@ -3,6 +3,7 @@ import * as React from "react";
 import { Web3ModalContext } from "../context/Web3ModalContext";
 import { useContext } from "react";
 import Link from "next/link";
+import { CartContext } from "../context/CartContext";
 
 export type SubPage = "print" | "cart";
 
@@ -12,8 +13,9 @@ interface NavBarProps {
 
 const NavBar: React.FC<NavBarProps> = (props: NavBarProps) => {
   const { connected, address, connect } = useContext(Web3ModalContext);
+  const { cart } = useContext(CartContext);
 
-  const formatAddress: (string) => string = (address) => {
+  const formatAddress: (address: string) => string = (address) => {
     return address.slice(0, 6) + "..." + address.slice(address.length - 4);
   };
 
@@ -43,7 +45,7 @@ const NavBar: React.FC<NavBarProps> = (props: NavBarProps) => {
                 : styles.subPageLink
             }
           >
-            Cart
+            {cart.length > 0 ? "Cart (" + cart.length + ")" : "Cart"}
           </a>
         </Link>
       </div>
