@@ -41,7 +41,12 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
                 name={item.name}
                 uri={item.image_url}
                 type={item.asset_contract.name}
-                index={index}
+                link={{
+                  pathname: "/customize",
+                  query: { index: String(index) },
+                }}
+                height={500}
+                width={350}
               />
             </span>
           );

@@ -20,7 +20,7 @@ const NavBar: React.FC<NavBarProps> = (props: NavBarProps) => {
   return (
     <div className={styles.header}>
       <Link href="/">
-        <a className={styles.headerLink}>Print.Fi</a>
+        <a className={styles.mediumFont}>Print.Fi</a>
       </Link>
 
       <div>
@@ -51,7 +51,7 @@ const NavBar: React.FC<NavBarProps> = (props: NavBarProps) => {
       {connected ? (
         <span>{formatAddress(address)}</span>
       ) : (
-        <a href="#" className={styles.headerLink} onClick={connect}>
+        <a href="#" className={styles.mediumFont} onClick={connect}>
           connect wallet
         </a>
       )}
