@@ -3,15 +3,15 @@ import * as React from "react";
 import { TokenCard } from "./TokenCard";
 import { useContext, useRef, useEffect, useState } from "react";
 import { Web3ModalContext } from "../context/Web3ModalContext";
-import useAssets from "../hooks/useAssets";
 import { useLoading, Rings } from "@agney/react-loading";
+import { AssetsContext } from "../context/AssetsContext";
 
 interface TokenGridProps {}
 
 const TokenGrid: React.FC<TokenGridProps> = () => {
   const { address } = useContext(Web3ModalContext);
 
-  const { assets, loadMore, loading } = useAssets(address);
+  const { assets, loadMore, loading } = useContext(AssetsContext);
   const [shouldResetScroll, setShouldResetScroll] = useState(false);
   const [scrollIndex, setScrollIndex] = useState(0);
   const lastItemRef = useRef(null);
@@ -41,6 +41,7 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
                 name={item.name}
                 uri={item.image_url}
                 type={item.asset_contract.name}
+                index={index}
               />
             </span>
           );

@@ -57,9 +57,10 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
   const [assets, setAssets] = useState<Array<Asset>>([]);
   const [loading, setLoading] = useState<boolean>();
 
-  // TODO: TEST ADDRESS FOR DEVELOPMENT since i don't own any NFTS
+  // TODO: TEST ADDRESS FOR DEVELOPMENT since I don't own any NFTS
   address = "0xdb21617ddcceed28568af2f8fc6549887712a011";
 
+  // TODO: we can optimize this with server side rendering if it becomes too slow.
   const fetchAssets = (offset: number) => {
     setLoading(true);
     try {
@@ -87,9 +88,9 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
     fetchAssets(0);
   }, []);
 
-  const loadMore = () => {
+  const loadMore = useCallback(() => {
     fetchAssets(assets.length);
-  };
+  }, [assets]);
 
   return { assets, loadMore, loading };
 };

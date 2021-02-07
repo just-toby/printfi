@@ -9,6 +9,7 @@ export interface TokenCardProps {
   name: string;
   uri: string;
   type: string;
+  index: number;
 }
 
 const TokenCard: React.FC<TokenCardProps> = (props: TokenCardProps) => {
@@ -20,7 +21,12 @@ const TokenCard: React.FC<TokenCardProps> = (props: TokenCardProps) => {
 
   // todo: replace this example with real impl
   return (
-    <Link href="customize">
+    <Link
+      href={{
+        pathname: "/customize",
+        query: { index: props.index },
+      }}
+    >
       <a className={styles.card}>
         <Image
           className={styles.image}
