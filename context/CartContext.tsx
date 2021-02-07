@@ -1,6 +1,5 @@
 import React from "react";
-import { CartConfig } from "../hooks/useCart";
-import { CartItem } from "../pages/customize";
+import { CartConfig, CartItem } from "../hooks/useCart";
 
 const CartContext = React.createContext<CartConfig>({
     cart: [],

@@ -11,20 +11,9 @@ import { OptionRow, OptionRowProps } from "../components/OptionRow";
 import classNames from "classnames";
 import { ConfirmButton } from "../components/ConfirmButton";
 import { CartContext } from "../context/CartContext";
+import { ItemConfiguration } from "../hooks/useCart";
 
 interface CustomizePageProps {}
-
-export type ItemConfiguration = {
-  size: string;
-  frame: string;
-  glass: string;
-  space: string;
-};
-
-export type CartItem = {
-  name: string;
-  config: ItemConfiguration;
-};
 
 export default function Customize(props: CustomizePageProps) {
   const router = useRouter();
@@ -116,6 +105,7 @@ export default function Customize(props: CustomizePageProps) {
                 onClick={() => {
                   addToCart({
                     name: item.name,
+                    uri: item.image_thumbnail_url,
                     config: itemConfiguration,
                   });
                   router.push("/checkout");
@@ -126,7 +116,6 @@ export default function Customize(props: CustomizePageProps) {
               key={item.id}
               name={item.name}
               uri={item.image_url}
-              type={item.asset_contract.name}
               height={715}
               width={500}
             />

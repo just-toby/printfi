@@ -1,9 +1,21 @@
 import { useState } from "react";
-import { CartItem } from "../pages/customize";
 
 export type CartConfig = {
   cart: Array<CartItem>;
   addToCart: (item: CartItem) => void;
+};
+
+export type ItemConfiguration = {
+  size: string;
+  frame: string;
+  glass: string;
+  space: string;
+};
+
+export type CartItem = {
+  name: string;
+  uri: string;
+  config: ItemConfiguration;
 };
 
 const useCart: () => CartConfig = () => {

@@ -203,7 +203,7 @@
   align-self: flex-end;
   justify-content: center;
   transition: opacity 0.15s ease, background-color 0.15s ease;
-  background-color: #C7FFEB;
+  background-color: #c7ffeb;
 }
 
 .confirmButtonDisabled {
@@ -256,10 +256,46 @@
 }
 
 .disableTextSelection {
-  -ms-user-select:none;
-  -moz-user-select:none;
-  -webkit-user-select:none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
   -webkit-touch-callout: none;
   -khtml-user-select: none;
-   user-select:none;
+  user-select: none;
+}
+
+.cartTitleContainer {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+.cartTableHeader {
+  padding-right: 5rem;
+}
+
+.cartTableHeaderCentered {
+  padding-right: 5rem;
+  text-align: center;
+}
+
+.cartTable {
+  margin-top: 2rem;
+  width: 70%;
+}
+
+.cartRowItem {
+  padding-top: 2rem;
+}
+
+.cartRowItemCentered {
+  padding-top: 2rem;
+}
+
+.cartConfirmButton {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }

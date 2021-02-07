@@ -9,7 +9,6 @@ import { UrlObject } from "url";
 export interface TokenCardProps {
   name: string;
   uri: string;
-  type: string;
   // Omit if this card shouldn't link anywhere
   link?: UrlObject;
   height: number;
