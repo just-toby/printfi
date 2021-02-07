@@ -4,16 +4,21 @@ import { TokenCard } from "./TokenCard";
 import { useContext, useRef, useEffect, useState } from "react";
 import { Web3ModalContext } from "../context/Web3ModalContext";
 import useAssets from "../hooks/useAssets";
+import { useLoading, Rings } from "@agney/react-loading";
 
 interface TokenGridProps {}
 
 const TokenGrid: React.FC<TokenGridProps> = () => {
   const { address } = useContext(Web3ModalContext);
 
-  const { assets, loadMore } = useAssets(address);
+  const { assets, loadMore, loading } = useAssets(address);
   const [shouldResetScroll, setShouldResetScroll] = useState(false);
   const [scrollIndex, setScrollIndex] = useState(0);
   const lastItemRef = useRef(null);
+  const { containerProps, indicatorEl } = useLoading({
+    loading: loading,
+    indicator: <Rings width="50" />,
+  });
 
   // TODO: fix the scroll position jankiness that happens when loading more.
   useEffect(() => {
@@ -26,19 +31,22 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
   }, [assets]);
 
   return (
-    <div className={styles.grid}>
-      {assets.map((item, index) => {
-        return (
-          <span ref={index === scrollIndex ? lastItemRef : null}>
-            <TokenCard
-              key={item.id}
-              name={item.name}
-              uri={item.image_url}
-              type={item.asset_contract.name}
-            />
-          </span>
-        );
-      })}
+    <div className={styles.main}>
+      <div className={styles.grid}>
+        {assets.map((item, index) => {
+          return (
+            <span ref={index === scrollIndex ? lastItemRef : null} className={styles.cardSpan}>
+              <TokenCard
+                key={item.id}
+                name={item.name}
+                uri={item.image_url}
+                type={item.asset_contract.name}
+              />
+            </span>
+          );
+        })}
+      </div>
+      <section {...containerProps}>{indicatorEl}</section>
       <div className={styles.footer}>
         <a
           href="#"
