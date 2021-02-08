@@ -59,8 +59,9 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
   const [loading, setLoading] = useState<boolean>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
 
-  // TODO: TEST ADDRESS FOR DEVELOPMENT since I don't own any NFTS
-  address = "0xdb21617ddcceed28568af2f8fc6549887712a011";
+  if (process.env.DEV_MODE) {
+    address = "0xdb21617ddcceed28568af2f8fc6549887712a011";
+  }
 
   // TODO: we can optimize this with server side rendering if it becomes too slow.
   const fetchAssets = (
