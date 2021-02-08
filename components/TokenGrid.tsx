@@ -8,6 +8,13 @@ import InfiniteLoader from "react-window-infinite-loader";
 
 interface TokenGridProps {}
 
+const toInteger = (input: number) => {
+  if (input < 0) {
+    return 0;
+  }
+  return Math.floor(input);
+};
+
 const TokenGrid: React.FC<TokenGridProps> = () => {
   const { assets, loadMore, loading, hasNextPage } = useContext(AssetsContext);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -41,10 +48,10 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
           <Grid
             onItemsRendered={(props: GridOnItemsRenderedProps) => {
               onItemsRendered({
-                overscanStartIndex: props.visibleRowStartIndex - 1,
-                overscanStopIndex: props.visibleRowStopIndex + 1,
-                visibleStartIndex: props.visibleRowStartIndex,
-                visibleStopIndex: props.visibleRowStopIndex,
+                overscanStartIndex: toInteger(props.visibleRowStartIndex - 1),
+                overscanStopIndex: toInteger(props.visibleRowStopIndex + 1),
+                visibleStartIndex: toInteger(props.visibleRowStartIndex),
+                visibleStopIndex: toInteger(props.visibleRowStopIndex),
               });
             }}
             ref={ref}
@@ -59,7 +66,7 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
               const index = rowIndex * 3 + columnIndex;
               const item = assets[index];
               return (
-                <div style={{ ...style, marginTop: 100, paddingLeft: 100}}>
+                <div style={{ ...style, marginTop: 100, paddingLeft: 100 }}>
                   <TokenCard
                     name={item.name}
                     uri={item.image_url}
