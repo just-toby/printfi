@@ -5,15 +5,9 @@ import { useContext, useEffect, useState } from "react";
 import { AssetsContext } from "../context/AssetsContext";
 import { FixedSizeGrid as Grid, GridOnItemsRenderedProps } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
+import { toInteger } from "../utils/NumberUtils";
 
 interface TokenGridProps {}
-
-const toInteger = (input: number) => {
-  if (input < 0) {
-    return 0;
-  }
-  return Math.floor(input);
-};
 
 const TokenGrid: React.FC<TokenGridProps> = () => {
   const { assets, loadMore, loading, hasNextPage } = useContext(AssetsContext);
