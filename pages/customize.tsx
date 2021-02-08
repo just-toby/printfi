@@ -87,6 +87,7 @@ export default function Customize(props: CustomizePageProps) {
               {Object.keys(options).map((optionType) => {
                 return (
                   <OptionRow
+                    key={options[optionType].title}
                     title={options[optionType].title}
                     options={options[optionType].options}
                     selection={itemConfiguration[optionType]}

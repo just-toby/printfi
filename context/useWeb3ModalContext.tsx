@@ -6,7 +6,7 @@ import Web3 from "web3";
 import { Web3ModalConfig } from "./Web3ModalContext";
 
 const useWeb3ModalContext: () => Web3ModalConfig = () => {
-  // top level state that will be passe to the app via context in _app.tsx
+  // top level state that will be passed to the app via context in _app.tsx
 
   const [web3Modal, setWeb3Modal] = useState<Web3Modal>(null);
   const [web3, setWeb3] = useState(null);

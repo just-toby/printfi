@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { isNullOrEmpty } from "../utils/StringUtils";
 
 export type AssetsConfig = {
   assets: Array<Asset>;
@@ -53,7 +54,12 @@ export type Asset = {
 const useAssets: (address: string) => AssetsConfig = (address: string) => {
   const initialPageSize = 20;
 
-  const options = { method: "GET" };
+  const options = {
+    method: "GET",
+    headers: new Headers({
+      "X-API-KEY": process.env.OPENSEA_API_KEY,
+    }),
+  };
 
   const [assets, setAssets] = useState<Array<Asset>>([]);
   const [loading, setLoading] = useState<boolean>();
@@ -78,7 +84,10 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
           return response.json();
         })
         .then((json) => {
-          setAssets([...assets, ...json.assets]);
+          const validAssets = json.assets.filter(
+            (item: Asset) => !isNullOrEmpty(item.image_url)
+          );
+          setAssets([...assets, ...validAssets]);
           setLoading(false);
           setHasNextPage(json.assets.length > 0);
           resolve(null);

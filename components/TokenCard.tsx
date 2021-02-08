@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { UrlObject } from "url";
 import classNames from "classnames";
+import { isNullOrEmpty } from "../utils/StringUtils";
 
 export type FrameColor = "Black" | "White" | null;
 
@@ -34,6 +35,10 @@ const TokenCard: React.FC<TokenCardProps> = (props: TokenCardProps) => {
   };
 
   const hasBorder = props.innerBorder != true && props.outerBorderColor == null;
+
+  if (isNullOrEmpty(props.uri)) {
+    return null;
+  }
 
   const content = (
     <a className={styles.card}>

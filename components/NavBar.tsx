@@ -12,13 +12,15 @@ interface NavBarProps {
 }
 
 const NavBar: React.FC<NavBarProps> = (props: NavBarProps) => {
-  const { connected, address, connect, disconnect } = useContext(Web3ModalContext);
+  const { connected, address, connect, disconnect } = useContext(
+    Web3ModalContext
+  );
   const { cart } = useContext(CartContext);
 
   const formatAddress: (address: string) => string = (address) => {
     return address.slice(0, 6) + "..." + address.slice(address.length - 4);
   };
-
+  
   return (
     <div className={styles.header}>
       <Link href="/">
@@ -51,9 +53,11 @@ const NavBar: React.FC<NavBarProps> = (props: NavBarProps) => {
       </div>
 
       {connected ? (
-        <a href="#" className={styles.mediumFont} onClick={disconnect}>
-          {formatAddress(address)}
-        </a>
+        <Link href="/">
+          <a className={styles.mediumFont} onClick={disconnect}>
+            {formatAddress(address)}
+          </a>
+        </Link>
       ) : (
         <a href="#" className={styles.mediumFont} onClick={connect}>
           connect wallet
