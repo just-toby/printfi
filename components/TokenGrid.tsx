@@ -1,69 +1,81 @@
 import styles from "../styles/Home.module.css";
 import * as React from "react";
 import { TokenCard } from "./TokenCard";
-import { useContext, useRef, useEffect, useState } from "react";
-import { Web3ModalContext } from "../context/Web3ModalContext";
-import { useLoading, Rings } from "@agney/react-loading";
+import { useContext, useEffect, useState } from "react";
 import { AssetsContext } from "../context/AssetsContext";
+import { FixedSizeGrid as Grid, GridOnItemsRenderedProps } from "react-window";
+import InfiniteLoader from "react-window-infinite-loader";
 
 interface TokenGridProps {}
 
 const TokenGrid: React.FC<TokenGridProps> = () => {
-  const { address } = useContext(Web3ModalContext);
+  const { assets, loadMore, loading, hasNextPage } = useContext(AssetsContext);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
 
-  const { assets, loadMore, loading } = useContext(AssetsContext);
-  const [shouldResetScroll, setShouldResetScroll] = useState(false);
-  const [scrollIndex, setScrollIndex] = useState(0);
-  const lastItemRef = useRef(null);
-  const { containerProps, indicatorEl } = useLoading({
-    loading: loading,
-    indicator: <Rings width="50" />,
-  });
-
-  // TODO: fix the scroll position jankiness that happens when loading more.
   useEffect(() => {
-    const lastItem = lastItemRef.current;
-    if (lastItem != null && shouldResetScroll) {
-      console.log("trying to reset scroll");
-      lastItem.scrollIntoView();
-      setShouldResetScroll(false);
-    }
-  }, [assets]);
+    window.addEventListener("resize", (e) => {
+      setWindowHeight(window.innerHeight);
+      setWindowWidth(window.innerWidth);
+    });
+  }, []);
+
+  // If there are more items to be loaded then add an extra row to hold a loading indicator.
+  const itemCount = hasNextPage ? assets.length + 1 : assets.length;
+  // Only load 1 page of items at a time.
+  // Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
+  const loadMoreItems = loading
+    ? (_startIndex: number, _stopIndex: number) => null
+    : loadMore;
+  // Every row is loaded except for our loading indicator row.
+  const isItemLoaded = (index: number) => !hasNextPage || index < assets.length;
 
   return (
     <div className={styles.main}>
-      <div className={styles.grid}>
-        {assets.map((item, index) => {
-          return (
-            <span ref={index === scrollIndex ? lastItemRef : null} className={styles.cardSpan}>
-              <TokenCard
-                key={item.id}
-                name={item.name}
-                uri={item.image_url}
-                link={{
-                  pathname: "/customize",
-                  query: { index: String(index) },
-                }}
-                height={500}
-                width={350}
-              />
-            </span>
-          );
-        })}
-      </div>
-      <section {...containerProps}>{indicatorEl}</section>
-      <div className={styles.footer}>
-        <a
-          href="#"
-          onClick={() => {
-            setScrollIndex(assets.length - 1);
-            setShouldResetScroll(true);
-            loadMore();
-          }}
-        >
-          Load More
-        </a>
-      </div>
+      <InfiniteLoader
+        isItemLoaded={isItemLoaded}
+        itemCount={itemCount}
+        loadMoreItems={loadMoreItems}
+      >
+        {({ onItemsRendered, ref }) => (
+          <Grid
+            onItemsRendered={(props: GridOnItemsRenderedProps) => {
+              onItemsRendered({
+                overscanStartIndex: props.visibleRowStartIndex - 1,
+                overscanStopIndex: props.visibleRowStopIndex + 1,
+                visibleStartIndex: props.visibleRowStartIndex,
+                visibleStopIndex: props.visibleRowStopIndex,
+              });
+            }}
+            ref={ref}
+            columnCount={3}
+            columnWidth={windowWidth * 0.33}
+            rowCount={assets.length / 3}
+            rowHeight={(windowWidth * 0.2) / 0.65}
+            height={windowHeight - 75}
+            width={windowWidth}
+          >
+            {({ columnIndex, rowIndex, style }) => {
+              const index = rowIndex * 3 + columnIndex;
+              const item = assets[index];
+              return (
+                <div style={{ ...style, marginTop: 100, paddingLeft: 100}}>
+                  <TokenCard
+                    name={item.name}
+                    uri={item.image_url}
+                    link={{
+                      pathname: "/customize",
+                      query: { index: String(index) },
+                    }}
+                    height={(windowWidth * 0.2) / 0.7}
+                    width={windowWidth * 0.2}
+                  />
+                </div>
+              );
+            }}
+          </Grid>
+        )}
+      </InfiniteLoader>
     </div>
   );
 };

@@ -11,8 +11,8 @@ export interface TokenCardProps {
   uri: string;
   // Omit if this card shouldn't link anywhere
   link?: UrlObject;
-  height: number;
-  width: number;
+  height: number | string;
+  width: number | string;
 }
 
 const TokenCard: React.FC<TokenCardProps> = (props: TokenCardProps) => {

@@ -10,6 +10,7 @@ export interface Web3ModalConfig {
   networkId: number;
   connected: boolean;
   connect: () => void;
+  disconnect: () => void;
 }
 
 const Web3ModalContext = React.createContext<Web3ModalConfig>({
@@ -20,6 +21,7 @@ const Web3ModalContext = React.createContext<Web3ModalConfig>({
   networkId: 0,
   connected: false,
   connect: () => {},
+  disconnect: () => {},
 });
 
 export { Web3ModalContext };

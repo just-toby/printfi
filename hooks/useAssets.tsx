@@ -2,8 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 
 export type AssetsConfig = {
   assets: Array<Asset>;
-  loadMore: () => void;
+  loadMore: (startIndex: number, stopIndex: number) => Promise<void>;
   loading: boolean;
+  hasNextPage: boolean;
 };
 
 export type AssetContract = {
@@ -50,21 +51,27 @@ export type Asset = {
 };
 
 const useAssets: (address: string) => AssetsConfig = (address: string) => {
-  const pageSize = 50;
+  const initialPageSize = 20;
 
   const options = { method: "GET" };
 
   const [assets, setAssets] = useState<Array<Asset>>([]);
   const [loading, setLoading] = useState<boolean>();
+  const [hasNextPage, setHasNextPage] = useState<boolean>(true);
 
   // TODO: TEST ADDRESS FOR DEVELOPMENT since I don't own any NFTS
   address = "0xdb21617ddcceed28568af2f8fc6549887712a011";
 
   // TODO: we can optimize this with server side rendering if it becomes too slow.
-  const fetchAssets = (offset: number) => {
+  const fetchAssets = (
+    offset: number,
+    count: number,
+    resolve: (value: unknown) => void,
+    reject: (reason?: any) => void
+  ) => {
     setLoading(true);
     try {
-      const url = `https://api.opensea.io/api/v1/assets?exclude_currencies=true&owner=${address}&limit=${pageSize}&offset=${offset}`;
+      const url = `https://api.opensea.io/api/v1/assets?exclude_currencies=true&owner=${address}&limit=${count}&offset=${offset}`;
       fetch(url, options)
         .then((response) => {
           return response.json();
@@ -72,27 +79,41 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
         .then((json) => {
           setAssets([...assets, ...json.assets]);
           setLoading(false);
+          setHasNextPage(json.assets.length > 0);
+          resolve(null);
         })
         .catch((err) => {
           console.error(err);
           setLoading(false);
+          reject();
         });
     } catch (error) {
       setLoading(false);
+      reject();
       console.log("Error getting unique tokens", error);
       throw error;
     }
   };
 
   useEffect(() => {
-    fetchAssets(0);
+    fetchAssets(
+      0,
+      initialPageSize,
+      () => {},
+      () => {}
+    );
   }, []);
 
-  const loadMore = useCallback(() => {
-    fetchAssets(assets.length);
-  }, [assets]);
+  const loadMore = useCallback(
+    async (startIndex: number, endIndex: number) => {
+      return new Promise<void>((resolve, reject) => {
+        fetchAssets(startIndex, endIndex, resolve, reject);
+      });
+    },
+    [assets]
+  );
 
-  return { assets, loadMore, loading };
+  return { assets, loadMore, loading, hasNextPage };
 };
 
 export default useAssets;

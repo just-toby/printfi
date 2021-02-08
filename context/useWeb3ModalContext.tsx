@@ -7,8 +7,10 @@ import { Web3ModalConfig } from "./Web3ModalContext";
 
 const useWeb3ModalContext: () => Web3ModalConfig = () => {
   // top level state that will be passe to the app via context in _app.tsx
-  const [web3Modal, setWeb3Modal] = useState(null);
+
+  const [web3Modal, setWeb3Modal] = useState<Web3Modal>(null);
   const [web3, setWeb3] = useState(null);
+  const [provider, setProvider] = useState(null);
   const [address, setAddress] = useState("");
   const [chainId, setChainId] = useState(0);
   const [networkId, setNetworkId] = useState(0);
@@ -30,6 +32,8 @@ const useWeb3ModalContext: () => Web3ModalConfig = () => {
 
       setupSubscriptions(provider);
 
+      setProvider(provider);
+
       web3.eth.getAccounts().then((accounts) => {
         const address = accounts[0];
         setAddress(address);
@@ -43,6 +47,22 @@ const useWeb3ModalContext: () => Web3ModalConfig = () => {
     });
   }, [web3Modal]);
 
+  const disconnect = useCallback(async () => {
+    if (provider.close != null) {
+      await provider.close();
+    }
+    // If the cached provider is not cleared,
+    // WalletConnect will default to the existing session
+    // and does not allow to re-scan the QR code with a new wallet.
+    // Depending on your use case you may want or want not his behavir.
+    await web3Modal.clearCachedProvider();
+    setProvider(null);
+    setAddress("");
+    setChainId(null);
+    setNetworkId(null);
+    setConnected(false);
+  }, [provider, web3Modal]);
+
   useEffect(() => {
     setConnected(address != null && address !== "");
   }, [address]);
@@ -52,7 +72,6 @@ const useWeb3ModalContext: () => Web3ModalConfig = () => {
       walletconnect: {
         package: WalletConnectProvider,
         options: {
-          // TODO: REMOVE THIS, get this from .env
           infuraId: process.env.REACT_APP_INFURA_ID,
         },
       },
@@ -106,7 +125,16 @@ const useWeb3ModalContext: () => Web3ModalConfig = () => {
     });
   };
 
-  return { web3Modal, web3, address, networkId, chainId, connected, connect };
+  return {
+    web3Modal,
+    web3,
+    address,
+    networkId,
+    chainId,
+    connected,
+    connect,
+    disconnect,
+  };
 };
 
 export { useWeb3ModalContext };
