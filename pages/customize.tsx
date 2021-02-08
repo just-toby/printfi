@@ -118,6 +118,8 @@ export default function Customize(props: CustomizePageProps) {
               uri={item.image_url}
               height={715}
               width={500}
+              innerBorder={itemConfiguration.space === '3"'}
+              outerBorderColor={itemConfiguration.frame}
             />
           </div>
         )}

@@ -114,16 +114,32 @@
 }
 
 .image {
-  border-radius: 10px;
-  border: 1px solid #ababab;
   transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+
+.imageRadius {
+  border-radius: 10px !important;
+}
+
+.blackFrame {
+  border: 2rem solid black !important;
+}
+
+.whiteFrame {
+  border: 2rem solid #eaeaea !important;
+
+}
+
+.imageInnerSpacing {
+  padding-left: 3rem !important;
+  padding-right: 3rem !important;
+  padding-top: 4rem !important;
+  padding-bottom: 4rem !important;
 }
 
 .image:hover,
 .image:focus,
 .image:active {
-  border-color: #444444;
-  border: 1.5px solid #444444;
   opacity: 0.9;
 }
 

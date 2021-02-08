@@ -19,6 +19,7 @@ const OptionRow: React.FC<OptionRowProps> = (props: OptionRowProps) => {
         {props.options.map((option) => {
           return (
             <OptionButton
+              key={option}
               title={option}
               selected={props.selection === option}
               onClick={() => {

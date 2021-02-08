@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FrameColor } from "../components/TokenCard";
 
 export type CartConfig = {
   cart: Array<CartItem>;
@@ -7,7 +8,7 @@ export type CartConfig = {
 
 export type ItemConfiguration = {
   size: string;
-  frame: string;
+  frame: FrameColor;
   glass: string;
   space: string;
 };
