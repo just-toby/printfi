@@ -66,12 +66,11 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
   const [assets, setAssets] = useState<Array<Asset>>([]);
   const [loading, setLoading] = useState<boolean>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
+  const [didInitialFetch, setDidInitialFetch] = useState<boolean>(false);
 
   if (process.env.DEV_MODE) {
     address = "0xdb21617ddcceed28568af2f8fc6549887712a011";
   }
-
-  console.log("outer ", address);
 
   // TODO: we can optimize this with server side rendering if it becomes too slow.
   const fetchAssets = useCallback(
@@ -82,7 +81,6 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
       reject: (reason?: any) => void
     ) => {
       setLoading(true);
-      console.log("inner ", address);
       try {
         const url = `https://api.opensea.io/api/v1/assets?exclude_currencies=true&owner=${address}&limit=${count}&offset=${offset}`;
         fetch(url, options)
@@ -93,7 +91,6 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
             const validAssets = json.assets.filter(
               (item: Asset) => !isNullOrEmpty(item.image_url)
             );
-            console.log(validAssets);
             setAssets([...assets, ...validAssets]);
             setLoading(false);
             setHasNextPage(json.assets.length > 0);
@@ -116,14 +113,19 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
 
   useEffect(() => {
     if (isNullOrEmpty(address)) {
+      setAssets([]);
+      setDidInitialFetch(false);
       return;
     }
-    fetchAssets(
-      0,
-      initialPageSize,
-      () => {},
-      () => {}
-    );
+    if (!didInitialFetch) {
+      fetchAssets(
+        0,
+        initialPageSize,
+        () => {},
+        () => {}
+      );
+      setDidInitialFetch(true);
+    }
   }, [address]);
 
   const loadMore = useCallback(

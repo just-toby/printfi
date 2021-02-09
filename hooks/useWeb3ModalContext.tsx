@@ -38,10 +38,10 @@ const useWeb3ModalContext: () => Web3ModalConfig = () => {
         const address = accounts[0];
         setAddress(address);
       });
-      web3.eth.net.getId().then((networkId) => {
+      web3.eth.net.getId().then((networkId: number) => {
         setNetworkId(networkId);
       });
-      web3.eth.chainId().then((chainId) => {
+      web3.eth.chainId().then((chainId: number) => {
         setChainId(chainId);
       });
     });

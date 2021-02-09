@@ -32,46 +32,49 @@ export default function Checkout(props: CheckoutPageProps) {
 
         <div>
           <table className={styles.cartTable}>
-            <tr>
-              {["Size", "Frame", "Glass", "Space"].map((label) => {
+            <tbody>
+              <tr>
+                {["Size", "Frame", "Glass", "Space"].map((label) => {
+                  return (
+                    <td
+                      key={label}
+                      className={classNames(
+                        styles.largeFont,
+                        styles.cartTableHeader
+                      )}
+                    >
+                      {label}
+                    </td>
+                  );
+                })}
+                <td
+                  className={classNames(
+                    styles.largeFont,
+                    styles.cartTableHeaderCentered
+                  )}
+                >
+                  Image
+                </td>
+              </tr>
+              {cart.map((item) => {
                 return (
-                  <td
-                    className={classNames(
-                      styles.largeFont,
-                      styles.cartTableHeader
+                  <tr key={item.name}>
+                    {rowItem(item.config.size)}
+                    {rowItem(item.config.frame)}
+                    {rowItem(item.config.glass)}
+                    {rowItem(item.config.space)}
+                    {rowItem(
+                      <TokenCard
+                        name={item.name}
+                        uri={item.uri}
+                        height={100}
+                        width={70}
+                      />
                     )}
-                  >
-                    {label}
-                  </td>
+                  </tr>
                 );
               })}
-              <td
-                className={classNames(
-                  styles.largeFont,
-                  styles.cartTableHeaderCentered
-                )}
-              >
-                Image
-              </td>
-            </tr>
-            {cart.map((item) => {
-              return (
-                <tr>
-                  {rowItem(item.config.size)}
-                  {rowItem(item.config.frame)}
-                  {rowItem(item.config.glass)}
-                  {rowItem(item.config.space)}
-                  {rowItem(
-                    <TokenCard
-                      name={item.name}
-                      uri={item.uri}
-                      height={100}
-                      width={70}
-                    />
-                  )}
-                </tr>
-              );
-            })}
+            </tbody>
           </table>
           <div className={styles.cartConfirmButton}>
             <ConfirmButton
