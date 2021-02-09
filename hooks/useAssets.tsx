@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { isNull } from "util";
+import { Web3ModalContext } from "../context/Web3ModalContext";
 import { isNullOrEmpty } from "../utils/StringUtils";
 
 export type AssetsConfig = {
@@ -69,50 +71,60 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
     address = "0xdb21617ddcceed28568af2f8fc6549887712a011";
   }
 
+  console.log("outer ", address);
+
   // TODO: we can optimize this with server side rendering if it becomes too slow.
-  const fetchAssets = (
-    offset: number,
-    count: number,
-    resolve: (value: unknown) => void,
-    reject: (reason?: any) => void
-  ) => {
-    setLoading(true);
-    try {
-      const url = `https://api.opensea.io/api/v1/assets?exclude_currencies=true&owner=${address}&limit=${count}&offset=${offset}`;
-      fetch(url, options)
-        .then((response) => {
-          return response.json();
-        })
-        .then((json) => {
-          const validAssets = json.assets.filter(
-            (item: Asset) => !isNullOrEmpty(item.image_url)
-          );
-          setAssets([...assets, ...validAssets]);
-          setLoading(false);
-          setHasNextPage(json.assets.length > 0);
-          resolve(null);
-        })
-        .catch((err) => {
-          console.error(err);
-          setLoading(false);
-          reject();
-        });
-    } catch (error) {
-      setLoading(false);
-      reject();
-      console.log("Error getting unique tokens", error);
-      throw error;
-    }
-  };
+  const fetchAssets = useCallback(
+    (
+      offset: number,
+      count: number,
+      resolve: (value: unknown) => void,
+      reject: (reason?: any) => void
+    ) => {
+      setLoading(true);
+      console.log("inner ", address);
+      try {
+        const url = `https://api.opensea.io/api/v1/assets?exclude_currencies=true&owner=${address}&limit=${count}&offset=${offset}`;
+        fetch(url, options)
+          .then((response) => {
+            return response.json();
+          })
+          .then((json) => {
+            const validAssets = json.assets.filter(
+              (item: Asset) => !isNullOrEmpty(item.image_url)
+            );
+            console.log(validAssets);
+            setAssets([...assets, ...validAssets]);
+            setLoading(false);
+            setHasNextPage(json.assets.length > 0);
+            resolve(null);
+          })
+          .catch((err) => {
+            console.error(err);
+            setLoading(false);
+            reject();
+          });
+      } catch (error) {
+        setLoading(false);
+        reject();
+        console.log("Error getting unique tokens", error);
+        throw error;
+      }
+    },
+    [address]
+  );
 
   useEffect(() => {
+    if (isNullOrEmpty(address)) {
+      return;
+    }
     fetchAssets(
       0,
       initialPageSize,
       () => {},
       () => {}
     );
-  }, []);
+  }, [address]);
 
   const loadMore = useCallback(
     async (startIndex: number, endIndex: number) => {

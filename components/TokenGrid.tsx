@@ -62,8 +62,8 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
               return (
                 <div style={{ ...style, marginTop: 100, paddingLeft: 100 }}>
                   <TokenCard
-                    name={item.name}
-                    uri={item.image_url}
+                    name={item?.name ?? ''}
+                    uri={item?.image_url ?? ''}
                     link={{
                       pathname: "/customize",
                       query: { index: String(index) },
