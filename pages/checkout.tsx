@@ -68,7 +68,7 @@ export default function Review(props: ReviewPageProps) {
   };
 
   const hasValidAddress = () => {
-    const vals = [name, email, address, address2, city, state, zip];
+    const vals = [name, email, address, city, state, zip];
     return vals.filter((value) => isNullOrEmpty(value)).length === 0;
   };
 
