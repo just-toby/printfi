@@ -67,10 +67,13 @@ const CheckoutButton: React.FC<CheckoutButtonProps> = (
     onPaymentDetected: props.onPaymentDetected,
     customMetadata: props.metadata,
   };
-  console.log(coinbaseProps);
   return (
     <CoinbaseCommerceButton
-      className={classNames(styles.confirmButton, styles.smallFont)}
+      className={classNames(
+        styles.confirmButton,
+        styles.smallFont,
+        styles.payWithCryptoButton
+      )}
       chargeId={coinbaseProps.chargeId}
       styled={coinbaseProps.styled}
       onChargeSuccess={coinbaseProps.onChargeSuccess}

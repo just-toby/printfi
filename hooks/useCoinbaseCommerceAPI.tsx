@@ -19,7 +19,7 @@ const useCoinbaseCommerceAPI: () => CoinbaseCommerceAPI = () => {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json",
-        "X-CC-Api-Key": process.env.COINBASE_COMMERCE_API_KEY,
+        "X-CC-Api-Key": process.env.NEXT_PUBLIC_COINBASE_COMMERCE_API_KEY,
         "X-CC-Version": API_VERSION,
       }),
       body: JSON.stringify({
@@ -39,11 +39,9 @@ const useCoinbaseCommerceAPI: () => CoinbaseCommerceAPI = () => {
     return new Promise<string>((resolve, reject) => {
       fetch(BASE_URI, createChargeOptions)
         .then((response) => {
-          console.log(response);
           return response.json();
         })
         .then((json) => {
-          console.log(json);
           resolve(json.data.code);
         })
         .catch((error: any) => reject(error));

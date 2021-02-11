@@ -57,7 +57,7 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
   const options = {
     method: "GET",
     headers: new Headers({
-      "X-API-KEY": process.env.OPENSEA_API_KEY,
+      "X-API-KEY": process.env.NEXT_PUBLIC_OPENSEA_API_KEY,
     }),
   };
 
@@ -66,7 +66,7 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
   const [didInitialFetch, setDidInitialFetch] = useState<boolean>(false);
 
-  if (process.env.DEV_MODE) {
+  if (process.env.NEXT_PUBLIC_DEV_MODE) {
     address = "0xdb21617ddcceed28568af2f8fc6549887712a011";
   }
 

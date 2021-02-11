@@ -42,7 +42,7 @@
 }
 
 .navBarButton {
-  color: #000000
+  color: #000000;
 }
 
 .subPageLink {
@@ -212,6 +212,11 @@
   justify-content: center;
   transition: opacity 0.15s ease, background-color 0.15s ease;
   background-color: #c7ffeb;
+}
+
+.payWithCryptoButton {
+  background-color: #1652f0;
+  color: #ffffff;
 }
 
 .confirmButtonDisabled {

@@ -58,12 +58,10 @@ export default function Review(props: ReviewPageProps) {
         mailingAddress: addressJson,
       })
       .then((chargeId: string) => {
-        console.log({ chargeId });
         setLoading(false);
         setChargeId(chargeId);
       })
       .catch((error: any) => {
-        console.log("ERROR: ", error);
         setLoading(false);
       });
     return false;

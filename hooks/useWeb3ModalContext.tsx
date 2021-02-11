@@ -72,21 +72,21 @@ const useWeb3ModalContext: () => Web3ModalConfig = () => {
       walletconnect: {
         package: WalletConnectProvider,
         options: {
-          infuraId: process.env.REACT_APP_INFURA_ID,
+          infuraId: process.env.NEXT_PUBLIC_REACT_APP_INFURA_ID,
         },
       },
       //   TODO: add once signed up for fortmatic
       //   fortmatic: {
       //     package: Fortmatic,
       //     options: {
-      //       key: process.env.REACT_APP_FORTMATIC_KEY
+      //       key: process.env.NEXT_PUBLIC_REACT_APP_FORTMATIC_KEY
       //     }
       //   },
       //   TODO: add once signed up for portis
       //   portis: {
       //     package: Portis,
       //     options: {
-      //       id: process.env.REACT_APP_PORTIS_ID
+      //       id: process.env.NEXT_PUBLIC_REACT_APP_PORTIS_ID
       //     }
       //   },
       authereum: {

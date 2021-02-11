@@ -36,22 +36,24 @@ const NavBar: React.FC<NavBarProps> = (props: NavBarProps) => {
       <div>
         <Link href="/">
           <a
-            className={
+            className={classNames(
               props.subPage === "print"
                 ? styles.subPageLinkUnderline
-                : styles.subPageLink
-            }
+                : styles.subPageLink,
+              styles.navBarButton
+            )}
           >
             Print
           </a>
         </Link>
         <Link href="/review">
           <a
-            className={
+            className={classNames(
               props.subPage === "cart"
                 ? styles.subPageLinkUnderline
-                : styles.subPageLink
-            }
+                : styles.subPageLink,
+              styles.navBarButton
+            )}
           >
             {cart.length > 0 ? "Cart (" + cart.length + ")" : "Cart"}
           </a>
