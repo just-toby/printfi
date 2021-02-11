@@ -4,6 +4,7 @@ import { FrameColor } from "../components/TokenCard";
 export type CartConfig = {
   cart: Array<CartItem>;
   addToCart: (item: CartItem) => void;
+  clearCart: () => void;
 };
 
 export type ItemConfiguration = {
@@ -26,7 +27,12 @@ const useCart: () => CartConfig = () => {
     setCart([...cart, item]);
   };
 
+  const clearCart = () => {
+    setCart([]);
+  };
+
   return {
+    clearCart: clearCart,
     addToCart: addToCart,
     cart: cart,
   };

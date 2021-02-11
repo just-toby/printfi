@@ -41,6 +41,10 @@
   font-size: 2rem;
 }
 
+.navBarButton {
+  color: #000000
+}
+
 .subPageLink {
   font-size: 1.2rem;
   margin: 1.5rem;
@@ -67,17 +71,6 @@
   justify-content: center;
   align-items: center;
   font-size: 1.2rem;
-}
-
-.title a {
-  color: #0070f3;
-  text-decoration: none;
-}
-
-.title a:hover,
-.title a:focus,
-.title a:active {
-  text-decoration: underline;
 }
 
 .title {
@@ -127,7 +120,6 @@
 
 .whiteFrame {
   border: 2rem solid #eaeaea !important;
-
 }
 
 .imageInnerSpacing {
@@ -318,4 +310,11 @@
 
 #element::-webkit-scrollbar {
   display: none;
+}
+
+.coinbaseButton {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }

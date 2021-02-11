@@ -1,6 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react";
-import { isNull } from "util";
-import { Web3ModalContext } from "../context/Web3ModalContext";
+import { useCallback, useEffect, useState } from "react";
 import { isNullOrEmpty } from "../utils/StringUtils";
 
 export type AssetsConfig = {
@@ -104,11 +102,11 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
       } catch (error) {
         setLoading(false);
         reject();
-        console.log("Error getting unique tokens", error);
+
         throw error;
       }
     },
-    [address]
+    [address, assets]
   );
 
   useEffect(() => {

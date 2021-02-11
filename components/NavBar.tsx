@@ -4,6 +4,7 @@ import { Web3ModalContext } from "../context/Web3ModalContext";
 import { useContext } from "react";
 import Link from "next/link";
 import { CartContext } from "../context/CartContext";
+import classNames from "classnames";
 
 export type SubPage = "print" | "cart";
 
@@ -20,11 +21,16 @@ const NavBar: React.FC<NavBarProps> = (props: NavBarProps) => {
   const formatAddress: (address: string) => string = (address) => {
     return address.slice(0, 6) + "..." + address.slice(address.length - 4);
   };
-  
+
   return (
     <div className={styles.header}>
       <Link href="/">
-        <a className={styles.mediumFont}>Print.Fi</a>
+        <a
+          className={classNames(styles.mediumFont, styles.navBarButton)}
+          style={{ minWidth: 200 }}
+        >
+          Print.Fi
+        </a>
       </Link>
 
       <div>
@@ -39,7 +45,7 @@ const NavBar: React.FC<NavBarProps> = (props: NavBarProps) => {
             Print
           </a>
         </Link>
-        <Link href="/checkout">
+        <Link href="/review">
           <a
             className={
               props.subPage === "cart"
@@ -54,12 +60,21 @@ const NavBar: React.FC<NavBarProps> = (props: NavBarProps) => {
 
       {connected ? (
         <Link href="/">
-          <a className={styles.mediumFont} onClick={disconnect}>
+          <a
+            className={classNames(styles.mediumFont, styles.navBarButton)}
+            onClick={disconnect}
+            style={{ minWidth: 200, textAlign: "end" }}
+          >
             {formatAddress(address)}
           </a>
         </Link>
       ) : (
-        <a href="#" className={styles.mediumFont} onClick={connect}>
+        <a
+          href="#"
+          className={classNames(styles.mediumFont, styles.navBarButton)}
+          onClick={connect}
+          style={{ minWidth: 200, textAlign: "end" }}
+        >
           connect wallet
         </a>
       )}

@@ -21,7 +21,7 @@ export default function Customize(props: CustomizePageProps) {
   const { addToCart } = useContext(CartContext);
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
-    indicator: <Rings width="50" />,
+    indicator: <Rings width="100" />,
   });
 
   const { index } = router.query;
@@ -109,7 +109,7 @@ export default function Customize(props: CustomizePageProps) {
                     uri: item.image_thumbnail_url,
                     config: itemConfiguration,
                   });
-                  router.push("/checkout");
+                  router.push("/review");
                 }}
               />
             </div>
