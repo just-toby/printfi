@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React, { ReactNode, useContext, useState } from "react";
 import styles from "../styles/Home.module.css";
-import { NavBar } from "../components/NavBar";
+import HeaderActions from "../components/Header/HeaderActions";
 import classNames from "classnames";
 import { CartContext } from "../context/CartContext";
 import { TokenCard } from "../components/TokenCard";
@@ -30,7 +30,7 @@ export default function Review(props: ReviewPageProps) {
         <title>Print.Fi</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NavBar subPage="cart" />
+      <HeaderActions subPage="cart" />
       <main className={styles.main}>
         <div className={styles.cartTitleContainer}>
           <span className={classNames(styles.largeFont)}>

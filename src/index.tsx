@@ -1,11 +1,9 @@
-import Head from "next/head";
 import React, { useContext, useState } from "react";
 import styles from "../styles/Home.module.css";
-import { TokenGrid } from "../components/TokenGrid";
-import { Web3ModalContext } from "../context/Web3ModalContext";
-import Header from "../components/Header/Header"
-import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from '../theme'
-
+import { NavBar } from "./components/NavBar";
+import { TokenGrid } from "./components/TokenGrid";
+import { Web3ModalContext } from "./context/Web3ModalContext";
+import Header from "./components/Header"
 
 export default function Home() {
   const { connected } = useContext(Web3ModalContext);
@@ -13,6 +11,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Header />
+      <NavBar subPage="print" />
       <main className={styles.main}>
         {connected ? (
           <TokenGrid />
@@ -23,3 +22,4 @@ export default function Home() {
     </div>
   );
 }
+h
