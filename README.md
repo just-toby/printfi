@@ -18,6 +18,14 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
+## Contributing
+
+### Pull Request Process
+1. Contact us and ask for permission to create a branch
+2. Make your changes in a new feature branch in the format 'name/description-of-work'
+3. Ensure builds are successful and pass with tests prior to submitting a pr
+4. Create a pr
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
