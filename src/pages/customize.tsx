@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React, { useContext, useState } from "react";
 import styles from "../styles/Home.module.css";
-import { NavBar } from "../components/NavBar";
+import Header from "../components/Header/Header";
 import { useRouter } from "next/router";
 import { AssetsContext } from "../context/AssetsContext";
 import { Asset } from "../hooks/useAssets";
@@ -72,7 +72,7 @@ export default function Customize(props: CustomizePageProps) {
         <title>Print.Fi</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NavBar subPage="print" />
+      <Header subPage="print"/>
       <main className={styles.main}>
         {item == null ? (
           <section {...containerProps}>{indicatorEl}</section>

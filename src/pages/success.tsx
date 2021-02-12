@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React, { useContext, useRef, useState } from "react";
 import styles from "../styles/Home.module.css";
-import { NavBar } from "../components/NavBar";
+import Header from "../components/Header/Header";
 import classNames from "classnames";
 import { CartContext } from "../context/CartContext";
 import { CheckoutButton } from "../components/CheckoutButton";
@@ -28,7 +28,7 @@ export default function Review(props: ReviewPageProps) {
         <title>Print.Fi</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NavBar subPage="cart" />
+      <Header subPage="cart" />
       <main className={styles.main}>
         <div className={styles.cartTitleContainer}>
           <span className={classNames(styles.largeFont)}>Success!</span>

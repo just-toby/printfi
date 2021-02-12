@@ -1,15 +1,16 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import Head from "next/head";
 import HeaderActions from "./HeaderActions";
 
-function Header () {
+function Header (props) {
+    const {subPage} = props;
     return (
         <>
             <Head>
                 <title>Print.Fi</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <HeaderActions/>
+            <HeaderActions subPage={subPage}/>
         </>
     )
 }
