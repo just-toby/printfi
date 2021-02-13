@@ -6,7 +6,7 @@ import { AssetsContext } from "../context/AssetsContext";
 import { FixedSizeGrid as Grid, GridOnItemsRenderedProps } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
 import { toInteger } from "../utils/NumberUtils";
-import classNames from "classnames";
+import TokenGridNullState from "./TokenGridNullState";
 
 interface TokenGridProps {}
 
@@ -34,17 +34,7 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
 
   if (assets.length === 0) {
     return (
-      <div className={styles.main}>
-        {/* TODO: add null state illustration */}
-        <div className={styles.cartTitleContainer}>
-          <p className={classNames(styles.largeFont)}>
-            You don't own any NFTs we support.
-          </p>
-        </div>
-        <p className={classNames(styles.largeFont)}>
-          <a href={"https://opensea.io"}>Looking to buy some?</a>
-        </p>
-      </div>
+      <TokenGridNullState />
     );
   }
 
