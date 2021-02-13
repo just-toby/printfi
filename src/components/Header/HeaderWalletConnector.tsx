@@ -1,33 +1,31 @@
-import styles from "../../styles/Home.module.css";
 import * as React from "react";
-import { Web3ModalContext } from "../../context/Web3ModalContext";
-import { useContext } from "react";
-import Link from "next/link";
 import { Button } from '@material-ui/core';
+import { useWalletModalToggle } from '../../state/application/hooks';
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 
 function HeaderWalletConnector () {
-    const { connected, address, connect, disconnect } = useContext(
-        Web3ModalContext
-    );
-    
+    const { account, connector, error } = useWeb3React()
+    const toggleWalletModal = useWalletModalToggle();
+
     const formatAddress: (address: string) => string = (address) => {
         return address.slice(0, 6) + "..." + address.slice(address.length - 4);
     };
-    if(connected)
+    
+    if(account)
         return (
             <Button 
                 href="/"
-                onClick={disconnect}
+                onClick={() => toggleWalletModal}
                 color="primary"
                 variant="outlined">
-                {formatAddress(address)}
+                {formatAddress(account)}
             </Button>
         )
     else 
         return (
             <Button
                 href="#"
-                onClick={connect}
+                onClick={() => useWalletModalToggle()}
                 color="primary"
                 variant="outlined"
             >
