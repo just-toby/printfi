@@ -7,10 +7,9 @@ export const injectedConnector = new InjectedConnector({
   supportedChainIds: [1, 3, 4, 5, 42]
 })
 
-export default function Web3Status() {
+export default function Web3Status(props) {
   const { active, account, activate } = useWeb3React()
-
-  console.log("useWeb3React: ");
+  const { walletDropdown } = props;
 
   useEffect(() => {
     activate(injectedConnector);
@@ -24,7 +23,7 @@ export default function Web3Status() {
   {
     return (
       <div>
-        <WalletModal/>
+        <WalletModal walletDropdown={walletDropdown}/>
       </div>
 
     )

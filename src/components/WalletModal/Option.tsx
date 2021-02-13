@@ -73,19 +73,19 @@ const SubHeader = styled.div`
   font-size: 12px;
 `
 
-// const IconWrapper = styled.div<{ size?: number | null }>`
-//   ${({ theme }) => theme.flexColumnNoWrap};
-//   align-items: center;
-//   justify-content: center;
-//   & > img,
-//   span {
-//     height: ${({ size }) => (size ? size + 'px' : '24px')};
-//     width: ${({ size }) => (size ? size + 'px' : '24px')};
-//   }
-//   ${({ theme }) => theme.mediaWidth.upToMedium`
-//     align-items: flex-end;
-//   `};
-// `
+const IconWrapper = styled.div<{ size?: number | null }>`
+  ${({ theme }) => theme.flexColumnNoWrap};
+  align-items: center;
+  justify-content: center;
+  & > img,
+  span {
+    height: ${({ size }) => (size ? size + 'px' : '24px')};
+    width: ${({ size }) => (size ? size + 'px' : '24px')};
+  }
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    align-items: flex-end;
+  `};
+`
 
 export default function Option({
   link = null,
@@ -127,9 +127,9 @@ export default function Option({
         </HeaderText>
         {subheader && <SubHeader>{subheader}</SubHeader>}
       </OptionCardLeft>
-      {/* <IconWrapper size={size}> */}
+      <IconWrapper size={size}>
         <img src={icon} alt={'Icon'} />
-      {/* </IconWrapper> */}
+      </IconWrapper>
     </OptionCardClickable>
   )
   if (link) {

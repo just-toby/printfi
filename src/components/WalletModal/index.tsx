@@ -48,21 +48,11 @@ const WALLET_VIEWS = {
   ACCOUNT: 'account',
   PENDING: 'pending'
 }
-
-console.log("WalletModal");
-
 export default function WalletModal(props)
 {
   // important that these are destructed from the account-specific web3-react context
   const { active, account, connector, activate, error } = useWeb3React()
-  // const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
-  const [walletDropdown, setWalletDropdown] = useState(false);
-
-  const openWalletModal = () => { 
-    console.log("OpenWalletModal: ", openWalletModal);
-    setWalletDropdown(true);  
-  }
-
+  const {walletDropdown} = props;
   const formatAddress: (address: string) => string = (address) => {
     return address.slice(0, 6) + "..." + address.slice(address.length - 4);
   };
@@ -80,36 +70,30 @@ export default function WalletModal(props)
             link={option.href}
             header={option.name}
             subheader={null}
-            icon={'../../assets/images/metamask.png'}
+            icon={'./metamask.png'}
           />
       )
     })
   }
 
   function getModalContent() {
-    console.log("walletDropDown: ", walletDropdown);
     console.log("account: ", account);
     return (
       <div>
-        {account ? (
-            <Button 
-                // href="/"
-                onClick={openWalletModal}
-                color="primary"
-                variant="outlined">
-                {formatAddress(account)}
-            </Button>
-        ) : (
-            <HoverText>Connect to a wallet</HoverText>
-        )}
-        {walletDropdown && <div>{getOptions()}</div>}
-          
+        {getOptions()}
       </div>
     )
   }
+  console.log("walletDropdown: ", walletDropdown);
+  if(walletDropdown)
     return (
       // <Modal isOpen={null} onDismiss={null} minHeight={false} maxHeight={90}>
         getModalContent()
       // </Modal>
     )  
+  else 
+    return (
+      <>
+      </>
+    )
 }

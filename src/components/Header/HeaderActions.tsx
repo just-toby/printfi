@@ -15,7 +15,7 @@ import { useWeb3React } from '@web3-react/core'
 export type SubPage = "print" | "cart";
 
 function HeaderActions (props) {
-    const {subPage} = props;
+    const {subPage, toggleWalletDropdown} = props;
     const { cart } = useContext(CartContext);
     const { account } = useWeb3React()
 
@@ -49,7 +49,17 @@ function HeaderActions (props) {
         <div className="flexStretch"/>
 
         <div className="navPadding"> 
-            <Web3Status/>
+            {account ? (
+                <Button 
+                    // href="/"
+                    onClick={toggleWalletDropdown}
+                    color="primary"
+                    variant="outlined">
+                    {formatAddress(account)}
+                </Button>
+                ) : (
+                    <div>Connect to a wallet</div>
+                )}
         </div>
 
     </div>
