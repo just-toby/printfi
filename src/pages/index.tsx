@@ -1,19 +1,21 @@
 import React, { useContext, useState } from "react";
 import styles from "../styles/Home.module.css";
 import { TokenGrid } from "../components/TokenGrid";
-import { Web3ModalContext } from "../context/Web3ModalContext";
 import Header from "../components/Header/Header"
-import Web3Status from "../components/Web3Status"
+import { useWeb3React } from '@web3-react/core'
+import WalletModal from "../components/WalletModal";
+
 
 export default function Home() {
-  const { connected } = useContext(Web3ModalContext);
+  const { active } = useWeb3React()
 
   return (
     <div className={styles.container}>
-      <Header />
-      <Web3Status />
+      <Header/>
       <main className={styles.main}>
-        {connected ? (
+        {/* <WalletModal/> */}
+
+        {active ? (
           <TokenGrid />
         ) : (
           <p className={styles.title}>digital art you can feel</p>
