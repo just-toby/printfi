@@ -80,10 +80,12 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
           text:
             "Your order has been received and is being prepared!\n" +
             "See your order details below:\n" +
-            "cart: " +
+            "cart: \n" +
             cartItems.toString() +
-            "payment received at: " +
-            event.created_at.toString(),
+            "\npayment received at: \n" +
+            event.created_at.toString() +
+            "\nto be mailed to: \n" +
+            mailingAddress.toString(),
         });
       });
       return;
