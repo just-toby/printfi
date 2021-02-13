@@ -16,6 +16,7 @@
     "bootstrap": "^4.6.0",
     "classnames": "^2.2.6",
     "coinbase-commerce-node": "^1.0.4",
+    "concat-stream": "^2.0.0",
     "cors": "^2.8.5",
     "fortmatic": "^2.2.1",
     "next": "10.0.6",
@@ -36,6 +37,7 @@
   "devDependencies": {
     "@types/classnames": "^2.2.11",
     "@types/coinbase-commerce-node": "^1.0.5",
+    "@types/concat-stream": "^1.6.0",
     "@types/cors": "^2.8.9",
     "@types/node": "^14.14.25",
     "@types/nodemailer": "^6.4.0",

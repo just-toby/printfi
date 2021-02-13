@@ -4,11 +4,12 @@ import {
   EventResource,
   Webhook,
 } from "coinbase-commerce-node";
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { isChargeResource } from "../../utils/CoinbaseUtils";
 import nodemailer from "nodemailer";
 import Cors from "cors";
-import { initMiddleware } from "../../utils/ApiUtils";
+import { initMiddleware, MiddlewareNextFunction } from "../../utils/ApiUtils";
+import concat from "concat-stream";
 
 const sharedSecret = process.env.COINBASE_COMMERCE_WEBHOOK_SHARED_SECRET;
 const printerEmail = process.env.PRINTER_EMAIL;
@@ -22,16 +23,36 @@ const cors = initMiddleware(
   })
 );
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const rawPayloadMiddleware = initMiddleware(
+  (req: NextApiRequest, res: NextApiResponse, next: MiddlewareNextFunction) => {
+    console.log("running middleware");
+    req.pipe(
+      concat((data) => {
+        console.log({ data });
+        next(data);
+      })
+    );
+  }
+);
+
+const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res);
+
+  const rawPayload = await rawPayloadMiddleware(req, res);
+
+  console.log({ rawPayload });
 
   // Should be a string per CC docs.
   const signature: string =
     req.headers["x-cc-webhook-signature"]?.toString() ?? "";
-  const rawBody: string = req.body ?? "";
+
+  // const payload = req.complete;
+  // console.log({ payload });
 
   try {
-    Webhook.verifySigHeader(rawBody, signature, sharedSecret);
+    console.log({ sharedSecret });
+    console.log({ signature });
+    // Webhook.verifySigHeader(String(rawPayload), signature, sharedSecret);
     console.log("Successfully verified signature header");
   } catch (error) {
     console.log("Failed signature verification");
@@ -42,7 +63,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   let event: EventResource;
 
   try {
-    event = Webhook.verifyEventBody(rawBody, signature, sharedSecret);
+    // event = Webhook.verifyEventBody(
+    //   String(rawPayload),
+    //   signature,
+    //   sharedSecret
+    // );
+    event = req.body.event; // TODO: REMOVE THIS, get the verification working instead.
     console.log("Successfully verified event body");
   } catch (error) {
     console.log("Failed event body verification");
@@ -50,19 +76,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
+  console.log({ event });
+
   if (event === null) {
     console.log("Invalid event");
     return;
   }
-
-  const getChargeResource: (
-    input: ChargeResource | CheckoutResource
-  ) => ChargeResource = (input: ChargeResource | CheckoutResource) => {
-    if ("metadata" in input) {
-      return;
-    }
-    return null;
-  };
 
   switch (event.type) {
     case "charge:confirmed":
@@ -72,9 +91,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       }
       const chargeMetadata = event.data.metadata;
       const cartItems = chargeMetadata["cart_items"];
-      const mailingAddress = JSON.parse(chargeMetadata["mailing_address"]);
+      const mailingAddress = chargeMetadata["mailing_address"];
       const testAccount = await nodemailer.createTestAccount();
 
+      // TODO: set up with sendgrid settings
       // create reusable transporter object using the default SMTP transport
       let transporter = nodemailer.createTransport({
         host: "smtp.ethereal.email",
@@ -85,22 +105,25 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           pass: testAccount.pass, // generated ethereal password
         },
       });
+
+      const customerEmail = mailingAddress["email"];
+
       // send mail with defined transport object
-      transporter.sendMail({
-        from: '"Print.Fi 👻" <foo@example.com>', // sender address
+      const result = await transporter.sendMail({
+        from: '"Print.Fi 👻" <support@print.finance>', // sender address
         // TODO: replace my email with customer email
-        to: "ejd4@protonmail.com, " + printerEmail, // list of receivers
-        subject: "Print.Fi Order Completed ✔", // Subject line
+        to: customerEmail + ", " + (printerEmail ?? ""), // list of receivers
+        subject: "Print.Fi Order Received ✔", // Subject line
         // plain text body
         text:
           "Your order has been received and is being prepared!\n" +
-          "See your order details below:\n" +
+          "Here are your order details:\n" +
           "cart: \n" +
-          cartItems.toString() +
+          JSON.stringify(cartItems) +
           "\npayment received at: \n" +
-          event.created_at.toString() +
+          JSON.stringify(event.created_at) +
           "\nto be mailed to: \n" +
-          mailingAddress.toString(),
+          JSON.stringify(mailingAddress),
       });
       return;
     case "charge:created":
@@ -113,3 +136,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return;
   }
 };
+
+export default coinbaseHandler;

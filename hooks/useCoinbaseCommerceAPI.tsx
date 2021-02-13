@@ -4,9 +4,19 @@ import { CartItem } from "./useCart";
 const API_VERSION = "2018-03-22";
 const BASE_URI = "https://api.commerce.coinbase.com/charges";
 
+export type Address = {
+  name: string;
+  email: string;
+  address: string;
+  address2: string;
+  city: string;
+  state: string;
+  zip: string;
+};
+
 export type CreateChargeInput = {
   items: Array<CartItem>;
-  mailingAddress: string;
+  mailingAddress: Address;
 };
 
 export type CoinbaseCommerceAPI = {
