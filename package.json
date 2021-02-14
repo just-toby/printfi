@@ -27,13 +27,10 @@
     "babel-preset-es2015": "^6.24.1",
     "bootstrap": "^4.6.0",
     "classnames": "^2.2.6",
-<<<<<<< HEAD
     "ethers": "^5.0.30",
-=======
     "coinbase-commerce-node": "^1.0.4",
     "concat-stream": "^2.0.0",
     "cors": "^2.8.5",
->>>>>>> f38000f8faefe7c02dd87b4894d0892f94d05e9d
     "fortmatic": "^2.2.1",
     "jazzicon": "^1.5.0",
     "next": "10.0.6",
