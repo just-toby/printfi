@@ -116,7 +116,6 @@ export default function WalletModal(props)
   // important that these are destructed from the account-specific web3-react context
   const { account, connector, activate, active } = useWeb3React()
   const {walletDropdown, toggleWalletDropdown} = props;
-  const [walletConnected, setWalletConnected ] = useState(null);
   const previousAccount = usePrevious(account)
 
   // close on connection, when logged out before
