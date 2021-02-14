@@ -32,7 +32,7 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
   // Every row is loaded except for our loading indicator row.
   const isItemLoaded = (index: number) => !hasNextPage || index < assets.length;
 
-  if (assets.length === 0) {
+  if (assets.length === 0 && !loading) {
     return (
       <TokenGridNullState />
     );
