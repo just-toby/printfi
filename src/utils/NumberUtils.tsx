@@ -1,4 +1,4 @@
-export function toInteger(input: number): number {
+export function toPositiveInteger(input: number): number {
   if (input < 0) {
     return 0;
   }

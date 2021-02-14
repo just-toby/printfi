@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { AssetsContext } from "../context/AssetsContext";
 import { FixedSizeGrid as Grid, GridOnItemsRenderedProps } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
-import { toInteger } from "../utils/NumberUtils";
+import { toPositiveInteger } from "../utils/NumberUtils";
 import TokenGridNullState from "./TokenGridNullState";
 
 interface TokenGridProps {}
@@ -48,11 +48,22 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
         {({ onItemsRendered, ref }) => (
           <Grid
             onItemsRendered={(props: GridOnItemsRenderedProps) => {
+              // InfiniteLoader's onItemsRendered expects list props,
+              // so we need to give the indices of the first/last items
+              // in the corresponding rows.
               onItemsRendered({
-                overscanStartIndex: toInteger(props.visibleRowStartIndex - 1),
-                overscanStopIndex: toInteger(props.visibleRowStopIndex + 1),
-                visibleStartIndex: toInteger(props.visibleRowStartIndex),
-                visibleStopIndex: toInteger(props.visibleRowStopIndex),
+                overscanStartIndex: toPositiveInteger(
+                  props.overscanRowStartIndex * 3
+                ),
+                overscanStopIndex: toPositiveInteger(
+                  props.overscanRowStopIndex * 3 + 2
+                ),
+                visibleStartIndex: toPositiveInteger(
+                  props.visibleRowStartIndex * 3
+                ),
+                visibleStopIndex: toPositiveInteger(
+                  props.visibleRowStopIndex * 3 + 2
+                ),
               });
             }}
             ref={ref}
