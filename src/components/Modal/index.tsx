@@ -4,8 +4,6 @@ import { animated, useTransition, useSpring } from 'react-spring'
 import { DialogOverlay, DialogContent } from '@reach/dialog'
 import { isMobile } from 'react-device-detect'
 import '@reach/dialog/styles.css'
-import { transparentize } from 'polished'
-import { useGesture } from 'react-use-gesture'
 
 const AnimatedDialogOverlay = animated(DialogOverlay)
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -39,8 +37,6 @@ interface ModalProps {
 export default function Modal({
   isOpen,
   onDismiss,
-  minHeight = false,
-  maxHeight = 90,
   initialFocusRef,
   children
 }: ModalProps) {
