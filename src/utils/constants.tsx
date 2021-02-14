@@ -51,21 +51,21 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
       color: '#4196FC',
       mobile: true
     },
-    WALLET_LINK: {
-      connector: walletlink,
-      name: 'Coinbase Wallet',
-      iconName: 'coinbaseWalletIcon.svg',
-      description: 'Use Coinbase Wallet app on mobile device',
-      href: null,
-      color: '#315CF5'
-    },
-    Portis: {
-      connector: portis,
-      name: 'Portis',
-      iconName: 'portisIcon.png',
-      description: 'Login using Portis hosted wallet',
-      href: null,
-      color: '#4A6C9B',
-      mobile: true
-    }
+    // WALLET_LINK: {
+    //   connector: walletlink,
+    //   name: 'Coinbase Wallet',
+    //   iconName: 'coinbaseWalletIcon.svg',
+    //   description: 'Use Coinbase Wallet app on mobile device',
+    //   href: null,
+    //   color: '#315CF5'
+    // },
+    // Portis: {
+    //   connector: portis,
+    //   name: 'Portis',
+    //   iconName: 'portisIcon.png',
+    //   description: 'Login using Portis hosted wallet',
+    //   href: null,
+    //   color: '#4A6C9B',
+    //   mobile: true
+    // }
   }

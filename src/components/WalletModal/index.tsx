@@ -12,8 +12,6 @@ import { fortmatic, injected, portis } from '../../connectors'
 import { isMobile } from 'react-device-detect'
 import usePrevious from '../../hooks/usePrevious'
 
-
-
 const CloseIcon = styled.div`
   position: absolute;
   right: 1rem;
@@ -23,7 +21,6 @@ const CloseIcon = styled.div`
     opacity: 0.6;
   }
 `
-
 const OptionGrid = styled.div`
   display: grid;
   grid-gap: 10px;
@@ -39,7 +36,6 @@ const Wrapper = styled.div`
   padding: 0;
   width: 100%;
 `
-
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
   padding: 1rem 1rem;
@@ -49,7 +45,6 @@ const HeaderRow = styled.div`
     padding: 1rem;
   `};
 `
-
 const ContentWrapper = styled.div`
   background-color: ${({ theme }) => theme.bg2};
   padding: 2rem;
@@ -156,15 +151,11 @@ export default function WalletModal(props)
   }
 
   // get wallets user can switch too, depending on device/browser
-  function getOptions() {
-    console.log("connector in getOptions: ", connector);
-    console.log("walletconnected: ", walletConnected);
-    
+  function getOptions() {    
     const isMetamask = window.ethereum && window.ethereum.isMetaMask
     return Object.keys(SUPPORTED_WALLETS).map(key => {
       const option = SUPPORTED_WALLETS[key]
 
-      console.log("option.name: ", option.name);
       // check for mobile options
       if (isMobile) {
         //disable portis on mobile for now
