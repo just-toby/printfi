@@ -67,7 +67,7 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
   const [didInitialFetch, setDidInitialFetch] = useState<boolean>(false);
 
   if (process.env.NEXT_PUBLIC_DEV_MODE) {
-    address = "0x694e64d4ad77e0c234b7b1c55ac40302ad86ce3f";
+    address = "0xc352b534e8b987e036a93539fd6897f53488e56a";
   }
 
   // TODO: we can optimize this with server side rendering if it becomes too slow.
