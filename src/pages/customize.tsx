@@ -21,7 +21,7 @@ export default function Customize(props: CustomizePageProps) {
   const { addToCart } = useContext(CartContext);
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
-    indicator: <Rings width="100" />,
+    indicator: <Rings width="100" color="white" />,
   });
 
   const { index } = router.query;

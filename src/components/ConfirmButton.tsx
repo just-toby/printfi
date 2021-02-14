@@ -16,7 +16,7 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = (
 ) => {
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
-    indicator: <Rings width="40" />,
+    indicator: <Rings width="40" color="white" />,
   });
 
   return (
