@@ -42,7 +42,7 @@ export default function Review(props: ReviewPageProps) {
   const onSubmit = (event: any) => {
     event.preventDefault();
     event.stopPropagation();
-    const addressJson = JSON.stringify({
+    const addressJson = {
       name: name,
       email: email,
       address: address,
@@ -50,7 +50,7 @@ export default function Review(props: ReviewPageProps) {
       city: city,
       state: state,
       zip: zip,
-    });
+    };
     setLoading(true);
     coinbase
       .createCharge({
