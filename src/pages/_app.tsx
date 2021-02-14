@@ -7,6 +7,8 @@ import React from "react";
 import { AssetsContextProvider } from "../context/AssetsContextProvider";
 import "../styles/App.css"
 import getLibrary from '../utils/getLibrary'
+import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from '../components/theme'
+
 
 // Imports into the entire project. Therefore to find and use a style all you need to do is all it directly. No need to always import
 
@@ -14,13 +16,17 @@ function MyApp({ Component, pageProps }: AppProps) {
   const cartConfig: CartConfig = useCart();
 
   return (
-    <Web3ReactProvider getLibrary={getLibrary}>
-      <AssetsContextProvider>
-          <CartContext.Provider value={cartConfig}>
-            <Component {...pageProps} />
-          </CartContext.Provider>
-      </AssetsContextProvider>
-    </Web3ReactProvider>
+      <Web3ReactProvider getLibrary={getLibrary}>
+        <FixedGlobalStyle/> 
+        <AssetsContextProvider>
+          <ThemeProvider>
+            <ThemedGlobalStyle />
+            <CartContext.Provider value={cartConfig}>
+              <Component {...pageProps} />
+            </CartContext.Provider>
+          </ThemeProvider>
+        </AssetsContextProvider>
+      </Web3ReactProvider>
   );
 }
 

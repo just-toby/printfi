@@ -22,7 +22,7 @@
 
 .headerDiv {
     display: flex;
-    height: 60px;
+    height: 65px;
     width: -webkit-fill-available;
     background: #EEEEEE;
     border-bottom: 1px solid #DEDEDE;

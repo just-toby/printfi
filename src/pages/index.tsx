@@ -20,7 +20,7 @@ export default function Home() {
     <div className={styles.container}>
       <Header toggleWalletDropdown={toggleWalletDropdown}/>
       <main className={styles.main}>
-        <Web3Status walletDropdown={walletDropdown}/>
+        <Web3Status walletDropdown={walletDropdown} toggleWalletDropdown={toggleWalletDropdown}/>
 
         {active ? (
           <TokenGrid />

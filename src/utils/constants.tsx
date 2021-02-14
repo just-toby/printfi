@@ -1,6 +1,6 @@
-// import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors'
 import {injected, portis, walletconnect, walletlink } from '../connectors'
 import { AbstractConnector } from '@web3-react/abstract-connector'
+import { getAddress } from '@ethersproject/address'
 
 export const NetworkContextName = 'NETWORK'
 
@@ -16,16 +16,24 @@ export interface WalletInfo {
     mobileOnly?: true
   }
 
+// returns the checksummed address if the address is valid, otherwise returns false
+export function isAddress(value: any): string | false {
+  try {
+    return getAddress(value)
+  } catch {
+    return false
+  }
+}
+// shorten the checksummed version of the input address to have 0x + 4 characters at start and end
+export function shortenAddress(address: string, chars = 4): string {
+  const parsed = isAddress(address)
+  if (!parsed) {
+    throw Error(`Invalid 'address' parameter '${address}'.`)
+  }
+  return `${parsed.substring(0, chars + 2)}...${parsed.substring(42 - chars)}`
+}
+
 export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
-    INJECTED: {
-      connector: injected,
-      name: 'Injected',
-      iconName: 'arrow-right.svg',
-      description: 'Injected web3 provider.',
-      href: null,
-      color: '#010101',
-      primary: true
-    },
     METAMASK: {
       connector: injected,
       name: 'MetaMask',
@@ -50,15 +58,6 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
       description: 'Use Coinbase Wallet app on mobile device',
       href: null,
       color: '#315CF5'
-    },
-    COINBASE_LINK: {
-      name: 'Open in Coinbase Wallet',
-      iconName: 'coinbaseWalletIcon.svg',
-      description: 'Open in Coinbase Wallet app.',
-      href: 'https://go.cb-w.com/mtUDhEZPy1',
-      color: '#315CF5',
-      mobile: true,
-      mobileOnly: true
     },
     Portis: {
       connector: portis,

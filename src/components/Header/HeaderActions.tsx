@@ -20,11 +20,8 @@ function HeaderActions (props) {
     const { account } = useWeb3React()
 
     const formatAddress: (address: string) => string = (address) => {
-        console.log("account: ")
         return address.slice(0, 6) + "..." + address.slice(address.length - 4);
       };
-
-    console.log("Header Action rendering");
 
   return (
     <div className="headerDiv">
@@ -58,7 +55,13 @@ function HeaderActions (props) {
                     {formatAddress(account)}
                 </Button>
                 ) : (
-                    <div>Connect to a wallet</div>
+                    <Button 
+                        // href="/"
+                        onClick={toggleWalletDropdown}
+                        color="primary"
+                        variant="outlined">
+                        {"Connect to a wallet"}
+                    </Button>
                 )}
         </div>
 
