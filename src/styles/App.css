@@ -1,0 +1,35 @@
+
+.navigationLinks {
+    align-items: left;
+    border-radius: 3rem;
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
+    color:rgb(86, 90, 105);
+    font-size: 1rem;
+    width: fit-content;
+    margin: 0 12px;
+    font-weight: 500;
+}
+.siteTitleLink{
+    color: black;
+    font-size: 1.8rem;
+}
+
+.navPadding{
+    padding-top: 15px;
+}
+
+.headerDiv {
+    display: flex;
+    height: 60px;
+    width: -webkit-fill-available;
+    background: #EEEEEE;
+    border-bottom: 1px solid #DEDEDE;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.flexStretch {
+    flex-grow: 1;
+}
