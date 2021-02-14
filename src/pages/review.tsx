@@ -78,7 +78,7 @@ export default function Review(props: ReviewPageProps) {
                       {rowItem(
                         <TokenCard
                           name={item.name}
-                          uri={item.uri}
+                          uri={item.preview_uri}
                           height={100}
                           width={70}
                         />

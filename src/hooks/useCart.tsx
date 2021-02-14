@@ -16,7 +16,9 @@ export type ItemConfiguration = {
 
 export type CartItem = {
   name: string;
-  uri: string;
+  basic_uri: string;
+  original_uri: string;
+  preview_uri: string;
   config: ItemConfiguration;
 };
 
