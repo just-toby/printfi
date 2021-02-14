@@ -2,14 +2,20 @@ import * as React from "react";
 import { useContext } from "react";
 import Link from "next/link";
 import { CartContext } from "../../context/CartContext";
-import HeaderWalletConnector from "./HeaderWalletConnector"
+import { Button } from '@material-ui/core';
+import { useWeb3React } from '@web3-react/core'
 
 export type SubPage = "print" | "cart";
 
 function HeaderActions (props) {
-  const { cart } = useContext(CartContext);
+    const {subPage, toggleWalletDropdown} = props;
+    const { cart } = useContext(CartContext);
+    const { account } = useWeb3React()
 
-  
+    const formatAddress: (address: string) => string = (address) => {
+        return address.slice(0, 6) + "..." + address.slice(address.length - 4);
+      };
+
   return (
     <div className="headerDiv">
         <div className="navPadding">
@@ -33,7 +39,23 @@ function HeaderActions (props) {
         <div className="flexStretch"/>
 
         <div className="navPadding"> 
-            <HeaderWalletConnector/>
+            {account ? (
+                <Button 
+                    // href="/"
+                    onClick={toggleWalletDropdown}
+                    color="primary"
+                    variant="outlined">
+                    {formatAddress(account)}
+                </Button>
+                ) : (
+                    <Button 
+                        // href="/"
+                        onClick={toggleWalletDropdown}
+                        color="primary"
+                        variant="outlined">
+                        {"Connect to a wallet"}
+                    </Button>
+                )}
         </div>
 
     </div>
