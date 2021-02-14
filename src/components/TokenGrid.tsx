@@ -6,6 +6,7 @@ import { AssetsContext } from "../context/AssetsContext";
 import { FixedSizeGrid as Grid, GridOnItemsRenderedProps } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
 import { toPositiveInteger } from "../utils/NumberUtils";
+import TokenGridNullState from "./TokenGridNullState";
 
 interface TokenGridProps {}
 
@@ -30,6 +31,12 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
     : loadMore;
   // Every row is loaded except for our loading indicator row.
   const isItemLoaded = (index: number) => !hasNextPage || index < assets.length;
+
+  if (assets.length === 0) {
+    return (
+      <TokenGridNullState />
+    );
+  }
 
   return (
     <div className={styles.main}>

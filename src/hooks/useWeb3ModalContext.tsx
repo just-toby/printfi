@@ -106,10 +106,14 @@ const useWeb3ModalContext: () => Web3ModalConfig = () => {
 
   const setupSubscriptions = (provider) => {
     provider.on("disconnect", () => {
+      setConnected(false);
       window.location.href = "/";
     });
     provider.on("accountsChanged", async (accounts: string[]) => {
       setAddress(accounts[0]);
+      if (accounts[0] == null) {
+        setConnected(false);
+      }
     });
     provider.on("chainChanged", async (chainId: number) => {
       const networkId = await web3.eth.net.getId();
