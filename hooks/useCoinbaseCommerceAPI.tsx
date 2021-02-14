@@ -36,8 +36,7 @@ const useCoinbaseCommerceAPI: () => CoinbaseCommerceAPI = () => {
         name: "Print.Fi Cart Checkout",
         description: "",
         local_price: {
-          // amount: formatPrice(calculateTotalPrice(data.items)),
-          amount: "1.00",
+          amount: formatPrice(calculateTotalPrice(data.items)),
           currency: "USD",
         },
         pricing_type: "fixed_price",
