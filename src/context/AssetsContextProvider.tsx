@@ -1,16 +1,16 @@
-import { PropsWithChildren, useContext } from "react";
+import { useWeb3React } from "@web3-react/core";
+import { PropsWithChildren } from "react";
 import useAssets, { AssetsConfig } from "../hooks/useAssets";
 import { AssetsContext } from "./AssetsContext";
-import { Web3ModalContext } from "./Web3ModalContext";
 
 export interface AssetsContextProviderProps {}
 
 const AssetsContextProvider: React.FC<
   PropsWithChildren<AssetsContextProviderProps>
 > = (props: PropsWithChildren<AssetsContextProviderProps>) => {
-  const { address } = useContext(Web3ModalContext);
+  const { account } = useWeb3React();
 
-  const assetsConfig: AssetsConfig = useAssets(address);
+  const assetsConfig: AssetsConfig = useAssets(account);
 
   return (
     <AssetsContext.Provider value={assetsConfig}>
