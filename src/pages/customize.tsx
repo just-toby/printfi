@@ -72,7 +72,7 @@ export default function Customize(props: CustomizePageProps) {
         <title>Print.Fi</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header subPage="print"/>
+      <Header subPage="print" />
       <main className={styles.main}>
         {item == null ? (
           <section {...containerProps}>{indicatorEl}</section>
@@ -106,7 +106,9 @@ export default function Customize(props: CustomizePageProps) {
                 onClick={() => {
                   addToCart({
                     name: item.name,
-                    uri: item.image_thumbnail_url,
+                    basic_uri: item.image_url,
+                    preview_uri: item.image_thumbnail_url,
+                    original_uri: item.image_original_url,
                     config: itemConfiguration,
                   });
                   router.push("/review");
