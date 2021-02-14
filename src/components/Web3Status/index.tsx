@@ -158,84 +158,22 @@ function StatusIcon({ connector }: { connector: AbstractConnector }) {
   return null
 }
 
-function Web3StatusInner(props) {
-  const { t } = useTranslation()
-  const { toggleWalletDropdown } = props;
-  const { account, connector, error } = useWeb3React()
-
-  // const { ENSName } = useENSName(account ?? undefined)
-
-  // const allTransactions = useAllTransactions()
-
-  // const sortedRecentTransactions = useMemo(() => {
-  //   const txs = Object.values(allTransactions)
-  //   return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
-  // }, [allTransactions])
-
-  // const pending = sortedRecentTransactions.filter(tx => !tx.receipt).map(tx => tx.hash)
-
-  // const hasPendingTransactions = !!pending.length
-  const hasPendingTransactions = false;
-  const hasSocks = useHasSocks()
-
-  if (account) {
-    return (
-      <Web3StatusConnected id="web3-status-connected" onClick={toggleWalletDropdown} pending={hasPendingTransactions}>
-        {hasPendingTransactions ? (
-          <RowBetween>
-            {/* <Text>{pending?.length} Pending</Text> <Loader stroke="white" /> */}
-          </RowBetween>
-        ) : (
-          <>
-            {hasSocks ? SOCK : null}
-            <Text>{shortenAddress(account)}</Text>
-          </>
-        )}
-        {!hasPendingTransactions && connector && <StatusIcon connector={connector} />}
-      </Web3StatusConnected>
-    )
-  } else if (error) {
-    return (
-      <Web3StatusError onClick={toggleWalletDropdown}>
-        <NetworkIcon />
-        <Text>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error'}</Text>
-      </Web3StatusError>
-    )
-  } else {
-    return (
-      <Web3StatusConnect id="connect-wallet" onClick={toggleWalletDropdown} faded={!account}>
-        <Text>{t('Connect to a wallet')}</Text>
-      </Web3StatusConnect>
-    )
-  }
-}
-
-export const injectedConnector = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42]
-})
-
 export default function Web3Status(props) {
-  const { active, account, activate } = useWeb3React()
+  // const { active, account, activate } = useWeb3React()
   const { walletDropdown , toggleWalletDropdown} = props;
 
-  useEffect(() => {
-    activate(injectedConnector);
-  }, [])
-
-  if(walletDropdown)
-  {
+  
     return (
       <>
-        <Web3StatusInner toggleWalletDropdown={toggleWalletDropdown}/>
         <WalletModal walletDropdown={walletDropdown} toggleWalletDropdown={toggleWalletDropdown}/>
       </>
     )
-  }
-  else {
-    return (
-      <>
-      </>
-    )
+  // }
+  // else {
+  //   return (
+  //     <>
+  //     </>
+  //   )
 
-  }
+  // }
 }

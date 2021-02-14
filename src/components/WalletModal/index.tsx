@@ -1,5 +1,5 @@
 import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core'
-import React, {} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import { SUPPORTED_WALLETS } from '../../utils/constants'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
@@ -7,6 +7,12 @@ import Option from './Option'
 import { ExternalLink } from '../theme'
 import Modal from "../Modal"
 import { AbstractConnector } from '@web3-react/abstract-connector'
+import { InjectedConnector } from '@web3-react/injected-connector'
+import { fortmatic, injected, portis } from '../../connectors'
+import { isMobile } from 'react-device-detect'
+import usePrevious from '../../hooks/usePrevious'
+
+
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -106,17 +112,27 @@ const HeaderText = styled.div`
   font-weight: 500;
 `
 
+export const injectedConnector = new InjectedConnector({
+  supportedChainIds: [1, 3, 4, 5, 42]
+})
+
 export default function WalletModal(props)
 {
   // important that these are destructed from the account-specific web3-react context
-  const { account, connector, activate } = useWeb3React()
+  const { account, connector, activate, active } = useWeb3React()
   const {walletDropdown, toggleWalletDropdown} = props;
+  const [walletConnected, setWalletConnected ] = useState(null);
+  const previousAccount = usePrevious(account)
 
+  // close on connection, when logged out before
+  useEffect(() => {
+    if (account && !previousAccount && walletDropdown) {
+      toggleWalletDropdown()
+    }
+  }, [account, previousAccount, toggleWalletDropdown, walletDropdown])
 
   const tryActivation = async (connector: AbstractConnector | undefined) => {
     let name = ''
-    console.log("------------ tryActivation: ");
-    console.log(connector);
 
     Object.keys(SUPPORTED_WALLETS).map(key => {
       if (connector === SUPPORTED_WALLETS[key].connector) {
@@ -124,9 +140,6 @@ export default function WalletModal(props)
       }
       return true
     })
-    // log selected wallet
-    // setPendingWallet(connector) // set wallet for pending view
-    // setWalletView(WALLET_VIEWS.PENDING)
 
     // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
     if (connector instanceof WalletConnectConnector && connector.walletConnectProvider?.wc?.uri) {
@@ -138,29 +151,95 @@ export default function WalletModal(props)
         if (error instanceof UnsupportedChainIdError) {
           activate(connector) // a little janky...can't use setError because the connector isn't set
         } else {
-          // setPendingError(true)
         }
       })
   }
 
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
+    console.log("connector in getOptions: ", connector);
+    console.log("walletconnected: ", walletConnected);
+    
+    const isMetamask = window.ethereum && window.ethereum.isMetaMask
     return Object.keys(SUPPORTED_WALLETS).map(key => {
-      const option = SUPPORTED_WALLETS[key];
+      const option = SUPPORTED_WALLETS[key]
+
+      console.log("option.name: ", option.name);
+      // check for mobile options
+      if (isMobile) {
+        //disable portis on mobile for now
+        if (option.connector === portis) {
+          return null
+        }
+
+        if (!window.web3 && !window.ethereum && option.mobile) {
+          return (
+            <Option
+              onClick={() => {
+                option.connector !== connector && !option.href && tryActivation(option.connector)
+              }}
+              id={`connect-${key}`}
+              key={key}
+              active={option.connector === connector}
+              color={option.color}
+              link={option.href}
+              header={option.name}
+              subheader={null}
+              icon={option.iconName}
+            />
+          )
+        }
+        return null
+      }
+
+      // overwrite injected when needed
+      if (option.connector === injected) {
+        // don't show injected if there's no injected provider
+        if (!(window.web3 || window.ethereum)) {
+          if (option.name === 'MetaMask') {
+            return (
+              <Option
+                id={`connect-${key}`}
+                key={key}
+                color={'#E8831D'}
+                header={'Install Metamask'}
+                subheader={null}
+                link={'https://metamask.io/'}
+                icon={option.iconName}
+                />
+            )
+          } else {
+            return null //dont want to return install twice
+          }
+        }
+        // don't return metamask if injected provider isn't metamask
+        else if (option.name === 'MetaMask' && !isMetamask) {
+          return null
+        }
+        // likewise for generic
+        else if (option.name === 'Injected' && isMetamask) {
+          return null
+        }
+      }
+
+      // return rest of options
       return (
+        !isMobile &&
+        !option.mobileOnly && (
           <Option
-            onClick={() => {
-              option.connector !== connector && !option.href && tryActivation(option.connector)
-            }}
             id={`connect-${key}`}
+            onClick={() => {
+              !option.href && tryActivation(option.connector)
+            }}
             key={key}
-            active={option.connector && option.connector === connector}
+            active={option.connector === connector}
             color={option.color}
             link={option.href}
             header={option.name}
-            subheader={null}
+            subheader={null} //use option.descriptio to bring back multi-line
             icon={option.iconName}
           />
+        )
       )
     })
   }
@@ -172,9 +251,7 @@ export default function WalletModal(props)
             <img src={"./x.svg"}/>
           </CloseIcon>
           <HeaderRow>
-            <HeaderText color={"white"}>
-              Connect to a wallet
-            </HeaderText>
+            <HoverText>Connect to a wallet</HoverText>
           </HeaderRow>
           <ContentWrapper>
             <OptionGrid>{getOptions()}</OptionGrid>
@@ -186,9 +263,17 @@ export default function WalletModal(props)
       </UpperSection>
     )
   }
-  return (
-    <Modal isOpen={walletDropdown} onDismiss={toggleWalletDropdown} minHeight={false} maxHeight={90}>
-      <Wrapper>{getModalContent()}</Wrapper>
-    </Modal>
-  )  
+  if(walletDropdown)
+  {
+    return (
+      <Modal isOpen={walletDropdown} onDismiss={toggleWalletDropdown} minHeight={false} maxHeight={90}>
+        <Wrapper>{getModalContent()}</Wrapper>
+      </Modal>
+    )  
+  }
+  else 
+    return (
+      <>
+      </>
+    )
 }
