@@ -7,6 +7,7 @@ import { FixedSizeGrid as Grid, GridOnItemsRenderedProps } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
 import { toPositiveInteger } from "../utils/NumberUtils";
 import TokenGridNullState from "./TokenGridNullState";
+import { Rings, useLoading } from "@agney/react-loading";
 
 interface TokenGridProps {}
 
@@ -14,6 +15,10 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
   const { assets, loadMore, loading, hasNextPage } = useContext(AssetsContext);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+  const { containerProps, indicatorEl } = useLoading({
+    loading: true,
+    indicator: <Rings width="100" color="white" />,
+  });
 
   useEffect(() => {
     window.addEventListener("resize", (e) => {
@@ -33,9 +38,7 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
   const isItemLoaded = (index: number) => !hasNextPage || index < assets.length;
 
   if (assets.length === 0 && !loading) {
-    return (
-      <TokenGridNullState />
-    );
+    return <TokenGridNullState />;
   }
 
   return (
@@ -95,6 +98,7 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
           </Grid>
         )}
       </InfiniteLoader>
+      {loading ? <section {...containerProps}>{indicatorEl}</section> : null}
     </div>
   );
 };

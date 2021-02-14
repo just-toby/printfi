@@ -36,7 +36,7 @@ export default function Review(props: ReviewPageProps) {
 
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
-    indicator: <Rings width="100" />,
+    indicator: <Rings width="100" color="white" />,
   });
 
   const onSubmit = (event: any) => {
@@ -78,7 +78,7 @@ export default function Review(props: ReviewPageProps) {
         <title>Print.Fi</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header subPage="cart"/>
+      <Header subPage="cart" />
       <main className={styles.main}>
         <div className={styles.cartTitleContainer}>
           <span className={classNames(styles.largeFont)}>

@@ -17,7 +17,7 @@ export default function Review(props: ReviewPageProps) {
 
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
-    indicator: <Rings width="100" />,
+    indicator: <Rings width="100" color="white" />,
   });
 
   const rowItem = (content: ReactNode) => {
