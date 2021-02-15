@@ -1,5 +1,4 @@
-import Head from "next/head";
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "../styles/Home.module.css";
 import Header from "../components/Header/Header";
 import classNames from "classnames";
@@ -19,7 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 interface ReviewPageProps {}
 
-export default function Review(props: ReviewPageProps) {
+export default function Review() {
   const { cart, clearCart } = useContext(CartContext);
   const [chargeId, setChargeId] = useState("");
   const coinbase: CoinbaseCommerceAPI = useCoinbaseCommerceAPI();
@@ -36,7 +35,7 @@ export default function Review(props: ReviewPageProps) {
 
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
-    indicator: <Rings width="100" color="white" />,
+    indicator: <Rings width="100" />,
   });
 
   const onSubmit = (event: any) => {
@@ -61,7 +60,7 @@ export default function Review(props: ReviewPageProps) {
         setLoading(false);
         setChargeId(chargeId);
       })
-      .catch((error: any) => {
+      .catch(() => {
         setLoading(false);
       });
     return false;
@@ -74,10 +73,6 @@ export default function Review(props: ReviewPageProps) {
 
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Print.Fi</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <Header subPage="cart" />
       <main className={styles.main}>
         <div className={styles.cartTitleContainer}>

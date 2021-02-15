@@ -50,8 +50,6 @@
 }
 
 .subPageLinkUnderline {
-  font-size: 1.2rem;
-  margin: 1.5rem;
   text-decoration: underline;
 }
 
@@ -76,6 +74,7 @@
   margin: 0;
   line-height: 1.15;
   font-size: 2rem;
+  user-select: none;
 }
 
 .title,

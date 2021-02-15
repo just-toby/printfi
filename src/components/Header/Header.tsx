@@ -1,17 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import Head from "next/head";
-import HeaderActions from "./HeaderActions";
-import Web3Status from "../../components/Web3Status"
-function Header (props) {
-    const {subPage, toggleWalletDropdown} = props;
-    return (
-        <>
-            <Head>
-                <title>Print.Fi</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-            <HeaderActions toggleWalletDropdown={toggleWalletDropdown} subPage={subPage}/>
-        </>
-    )
+import HeaderActions, { SubPage } from "./HeaderActions";
+import Web3Status from "../Web3Status";
+
+interface HeaderProps {
+  subPage: SubPage;
 }
-export default Header
+
+function Header(props: HeaderProps) {
+  const [walletDropdown, setWalletDropdown] = useState(false);
+
+  const toggleWalletDropdown = () => {
+    setWalletDropdown(!walletDropdown);
+  };
+
+  return (
+    <>
+      <Head>
+        <title>Print.Fi</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <HeaderActions
+        toggleWalletDropdown={toggleWalletDropdown}
+        subPage={props.subPage}
+      />
+      <Web3Status
+        walletDropdown={walletDropdown}
+        toggleWalletDropdown={toggleWalletDropdown}
+      />
+    </>
+  );
+}
+export default Header;
