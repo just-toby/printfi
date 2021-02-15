@@ -13,16 +13,16 @@ export default function Success(props: SuccessPageProps) {
     <div className={styles.container}>
       <Header subPage="cart" />
       <main className={styles.main}>
-        <Image src="/succes_image.jpg" width={500} height={400} />
         <div className={styles.cartTitleContainer}>
           <span className={classNames(styles.largeFont)}>Success!</span>
         </div>
         <div>
           <span className={styles.mediumFont}>
-            We've received your payment and will be sending you an email with
-            order details shortly.
+            We've received your payment. Look out for an email confirming the details!
           </span>
         </div>
+        <Image src="/succes_image.jpg" width={500} height={400} />
+
         <ToastContainer />
       </main>
     </div>
