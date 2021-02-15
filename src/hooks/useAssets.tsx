@@ -89,7 +89,7 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
             const validAssets = json.assets.filter(
               (item: Asset) => !isNullOrEmpty(item.image_url)
             );
-            // setAssets([...assets, ...validAssets]);
+            setAssets([...assets, ...validAssets]);
             setLoading(false);
             setHasNextPage(json.assets.length > 0);
             resolve(null);
