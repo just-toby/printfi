@@ -1,4 +1,3 @@
-import Head from "next/head";
 import React, { useContext, useState } from "react";
 import styles from "../styles/Home.module.css";
 import Header from "../components/Header/Header";
