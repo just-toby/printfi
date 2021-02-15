@@ -1,4 +1,3 @@
-import Head from "next/head";
 import React, { useContext, useState } from "react";
 import styles from "../styles/Home.module.css";
 import Header from "../components/Header/Header";
@@ -7,7 +6,7 @@ import { AssetsContext } from "../context/AssetsContext";
 import { Asset } from "../hooks/useAssets";
 import { Rings, useLoading } from "@agney/react-loading";
 import { TokenCard } from "../components/TokenCard";
-import { OptionRow, OptionRowProps } from "../components/OptionRow";
+import { OptionRow } from "../components/OptionRow";
 import classNames from "classnames";
 import { ConfirmButton } from "../components/ConfirmButton";
 import { CartContext } from "../context/CartContext";
@@ -21,7 +20,7 @@ export default function Customize(props: CustomizePageProps) {
   const { addToCart } = useContext(CartContext);
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
-    indicator: <Rings width="100" color="white" />,
+    indicator: <Rings width="100" />,
   });
 
   const { index } = router.query;
@@ -68,10 +67,6 @@ export default function Customize(props: CustomizePageProps) {
 
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Print.Fi</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <Header subPage="print" />
       <main className={styles.main}>
         {item == null ? (

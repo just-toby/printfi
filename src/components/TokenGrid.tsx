@@ -17,7 +17,7 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
-    indicator: <Rings width="100" color="white" />,
+    indicator: <Rings width="100" />,
   });
 
   useEffect(() => {

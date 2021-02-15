@@ -1,33 +1,16 @@
-import Head from "next/head";
-import React, { useContext, useRef, useState } from "react";
+import React from "react";
 import styles from "../styles/Home.module.css";
 import Header from "../components/Header/Header";
 import classNames from "classnames";
-import { CartContext } from "../context/CartContext";
-import { CheckoutButton } from "../components/CheckoutButton";
-import { Rings, useLoading } from "@agney/react-loading";
-import { ConfirmButton } from "../components/ConfirmButton";
-import useCoinbaseCommerceAPI, {
-  CoinbaseCommerceAPI,
-} from "../hooks/useCoinbaseCommerceAPI";
-import { AddressFormFields } from "../components/AddressFormFields";
-import { Form } from "react-bootstrap";
-import { isNullOrEmpty } from "../utils/StringUtils";
-import { useRouter } from "next/router";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Image from "next/image";
 
-interface ReviewPageProps {}
+interface SuccessPageProps {}
 
-export default function Review(props: ReviewPageProps) {
-  const { cart, clearCart } = useContext(CartContext);
-
+export default function Success(props: SuccessPageProps) {
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Print.Fi</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <Header subPage="cart" />
       <main className={styles.main}>
         <div className={styles.cartTitleContainer}>
@@ -35,10 +18,11 @@ export default function Review(props: ReviewPageProps) {
         </div>
         <div>
           <span className={styles.mediumFont}>
-            We've received your payment and will be sending you an email with
-            order details shortly.
+            We've received your payment. Look out for an email confirming the details!
           </span>
         </div>
+        <Image src="/succes_image.jpg" width={500} height={400} />
+
         <ToastContainer />
       </main>
     </div>

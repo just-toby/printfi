@@ -1,23 +1,22 @@
-import Head from "next/head";
-import React, { ReactNode, useContext, useState } from "react";
+import React, { ReactNode, useContext } from "react";
 import styles from "../styles/Home.module.css";
-import HeaderActions from "../components/Header/HeaderActions";
 import classNames from "classnames";
 import { CartContext } from "../context/CartContext";
 import { TokenCard } from "../components/TokenCard";
 import { Rings, useLoading } from "@agney/react-loading";
 import { ConfirmButton } from "../components/ConfirmButton";
-import { NextRouter, Router, useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
+import Header from "../components/Header/Header";
 
 interface ReviewPageProps {}
 
-export default function Review(props: ReviewPageProps) {
+export default function Review() {
   const { cart } = useContext(CartContext);
   const router: NextRouter = useRouter();
 
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
-    indicator: <Rings width="100" color="white" />,
+    indicator: <Rings width="100" />,
   });
 
   const rowItem = (content: ReactNode) => {
@@ -26,11 +25,7 @@ export default function Review(props: ReviewPageProps) {
 
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Print.Fi</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <HeaderActions subPage="cart" />
+      <Header subPage="cart" />
       <main className={styles.main}>
         <div className={styles.cartTitleContainer}>
           <span className={classNames(styles.largeFont)}>
