@@ -53,7 +53,7 @@ export default function Modal({
         ({ item, key, props }) =>
           item && (
             <StyledDialogOverlay key={key} style={props} onDismiss={onDismiss} initialFocusRef={initialFocusRef}>
-              <div style={{backgroundColor: "#212429"}}>
+              <div style={{backgroundColor: "#FFFFFF"}}>
                 {/* prevents the automatic focusing of inputs on mobile by the reach dialog */}
                 {!initialFocusRef && isMobile ? <div tabIndex={1} /> : null}
                 {children}
