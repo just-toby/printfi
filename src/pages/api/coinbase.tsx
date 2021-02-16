@@ -97,9 +97,9 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       // TODO: make the email look good - maybe use an HTML template or just hit the mailchimp API directly.
       // send mail with defined transport object
       const result = await transporter.sendMail({
-        from: '"Print.Fi 👻" <support@print.finance>', // sender address
+        from: '"nftprints.io 👻" <support@nftprints.io>', // sender address
         to: customerEmail + ", " + (printerEmail ?? ""), // list of receivers
-        subject: "Print.Fi Order Received ✔", // Subject line
+        subject: "nftprints.io Order Received ✔", // Subject line
         // plain text body
         text:
           "Your order has been received and is being prepared!\n" +

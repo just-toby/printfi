@@ -26,7 +26,7 @@ function HeaderActions(props: HeaderActionsProps) {
     <div className="headerDiv">
       <div className="navPadding">
         <Link href="/">
-          <a className="navigationLinks siteTitleLink">Print.Fi</a>
+          <a className="navigationLinks siteTitleLink">nftprints.io</a>
         </Link>
         <Link href="/">
           <a
@@ -35,7 +35,7 @@ function HeaderActions(props: HeaderActionsProps) {
               subPage === "print" ? styles.subPageLinkUnderline : null
             )}
           >
-            Print
+            print
           </a>
         </Link>
         <Link href="/review">
@@ -45,7 +45,7 @@ function HeaderActions(props: HeaderActionsProps) {
               subPage === "cart" ? styles.subPageLinkUnderline : null
             )}
           >
-            {cart.length > 0 ? "Cart (" + cart.length + ")" : "Cart"}
+            {cart.length > 0 ? "cart (" + cart.length + ")" : "cart"}
           </a>
         </Link>
       </div>

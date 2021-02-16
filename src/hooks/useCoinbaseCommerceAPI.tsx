@@ -33,7 +33,7 @@ const useCoinbaseCommerceAPI: () => CoinbaseCommerceAPI = () => {
         "X-CC-Version": API_VERSION,
       }),
       body: JSON.stringify({
-        name: "Print.Fi Cart Checkout",
+        name: "nftprints.io Cart Checkout",
         description: "",
         local_price: {
           amount: formatPrice(calculateTotalPrice(data.items)),
