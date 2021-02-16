@@ -17,7 +17,7 @@ function Header(props: HeaderProps) {
   return (
     <>
       <Head>
-        <title>nftprints.io</title>
+        <title>niftyprints.io</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <HeaderActions
