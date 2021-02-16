@@ -1,10 +1,14 @@
 import { EventResource, Webhook } from "coinbase-commerce-node";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { isChargeResource } from "../../utils/CoinbaseUtils";
-import nodemailer from "nodemailer";
 import Cors from "cors";
+import { renderToString } from "react-dom/server";
 import { initMiddleware, MiddlewareNextFunction } from "../../utils/ApiUtils";
+import { ConfirmationEmail } from "../../components/ConfirmationEmail";
 
+const mailchimpTx = require("@mailchimp/mailchimp_transactional")(
+  process.env.MAILCHIMP_API_KEY
+);
 const sharedSecret = process.env.COINBASE_COMMERCE_WEBHOOK_SHARED_SECRET;
 const printerEmail = process.env.PRINTER_EMAIL;
 
@@ -78,40 +82,37 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       const chargeMetadata = event.data.metadata;
       const cartItems = chargeMetadata["cart_items"];
       const mailingAddress = chargeMetadata["mailing_address"];
-      const testAccount = await nodemailer.createTestAccount();
-
-      // TODO: set up with mailchimp settings
-      // create reusable transporter object using the default SMTP transport
-      let transporter = nodemailer.createTransport({
-        host: "smtp.ethereal.email",
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-          user: testAccount.user, // generated ethereal user
-          pass: testAccount.pass, // generated ethereal password
-        },
-      });
-
       const customerEmail = mailingAddress["email"];
 
-      // TODO: make the email look good - maybe use an HTML template or just hit the mailchimp API directly.
-      // send mail with defined transport object
-      const result = await transporter.sendMail({
-        from: '"Print.Fi 👻" <support@print.finance>', // sender address
-        to: customerEmail + ", " + (printerEmail ?? ""), // list of receivers
-        subject: "Print.Fi Order Received ✔", // Subject line
-        // plain text body
-        text:
-          "Your order has been received and is being prepared!\n" +
-          "Here are your order details:\n" +
-          "cart: \n" +
-          JSON.stringify(cartItems) +
-          "\npayment received at: \n" +
-          JSON.stringify(event.created_at) +
-          "\nto be mailed to: \n" +
-          JSON.stringify(mailingAddress),
-      });
-      return result;
+      const emailHtmlBody = renderToString(
+        <ConfirmationEmail
+          mailingAddress={mailingAddress}
+          cartItems={cartItems}
+        />
+      );
+
+      const message = {
+        from_email: "team@nftprints.io",
+        subject: "Hello world",
+        html: emailHtmlBody,
+        to: [
+          {
+            email: "ejd4@protonmail.com",
+            type: "to",
+          },
+          {
+            email: printerEmail,
+            type: "bcc",
+          },
+          {
+            email: customerEmail,
+            type: "to",
+          },
+        ],
+      };
+
+      const response = mailchimpTx.messages.send({ message });
+      return response;
     case "charge:created":
     case "charge:delayed":
     case "charge:failed":
