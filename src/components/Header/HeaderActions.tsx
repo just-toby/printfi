@@ -26,7 +26,7 @@ function HeaderActions(props: HeaderActionsProps) {
     <div className="headerDiv">
       <div className="navPadding">
         <Link href="/">
-          <a className="navigationLinks siteTitleLink">niftyprints.io</a>
+          <a className="navigationLinks siteTitleLink">NiftyPrints</a>
         </Link>
         <Link href="/">
           <a
