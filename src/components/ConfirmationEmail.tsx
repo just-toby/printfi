@@ -1,21 +1,24 @@
 import classNames from "classnames";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { CartItem } from "../hooks/useCart";
+import { Address } from "../hooks/useCoinbaseCommerceAPI";
 import styles from "../styles/Home.module.css";
 import CartDetailsTable from "./CartDetailsTable";
 
 export interface ConfirmationEmailProps {
   orderId: string;
-  mailingAddress: Object;
-  cartItems: Array<any>;
+  mailingAddress: Address;
+  cartItems: Array<CartItem>;
 }
 
 const ConfirmationEmail: React.FC<ConfirmationEmailProps> = (
   props: ConfirmationEmailProps
 ) => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(0);
 
   useEffect(() => {
+    setWindowWidth(window.innerWidth);
     window.addEventListener("resize", (e) => {
       setWindowWidth(window.innerWidth);
     });

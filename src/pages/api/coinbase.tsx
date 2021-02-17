@@ -85,6 +85,7 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       const customerEmail = mailingAddress["email"];
       const orderId = event.data["id"];
 
+      // TODO: add a "fallback" confirmation message that doesn't rely on the CC data format.
       const emailHtmlBody = renderToString(
         <ConfirmationEmail
           orderId={orderId}
