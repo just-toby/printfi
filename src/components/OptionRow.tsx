@@ -1,10 +1,15 @@
 import styles from "../styles/Home.module.css";
-import { OptionButton } from "./OptionButton";
 import classNames from "classnames";
-import styled from 'styled-components'
 import { Button } from "@material-ui/core";
 
-const OptionRow = (props) => {
+export interface OptionRowProps {
+  title: string;
+  selection: string;
+  options: Array<string>;
+  onSelect: (selection: string) => void;
+}
+
+const OptionRow = (props: OptionRowProps) => {
   return (
     <div className={styles.optionRow}>
       <span className={classNames(styles.largeFont, styles.marginRightLarge)}>
@@ -14,6 +19,7 @@ const OptionRow = (props) => {
         {props.options.map((option) => {
           return (
             <Button
+              style={{ marginRight: "1rem", minWidth: "8rem" }}
               color="primary"
               disabled={props.selection === option}
               onClick={() => {
@@ -21,9 +27,8 @@ const OptionRow = (props) => {
               }}
               variant="outlined"
             >
-            {option}
+              {option}
             </Button>
-
           );
         })}
       </div>
