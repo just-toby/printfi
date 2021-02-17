@@ -99,8 +99,8 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         html: emailHtmlBody,
         to: [
           {
-            email: "ejd4@protonmail.com",
-            type: "to",
+            email: "printfi@protonmail.com",
+            type: "bcc",
           },
           {
             email: printerEmail,

@@ -61,13 +61,22 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
     }),
   };
 
+  // List of NFT contract addresses we support
+  const whitelist = [
+    `0xc2c747e0f7004f9e8817db2ca4997657a7746928`.toLowerCase(), // hash masks
+    `0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB`.toLowerCase(), // crypto punks
+    `0xF3E778F839934fC819cFA1040AabaCeCBA01e049`.toLowerCase(), // avastars
+    `0xF5b0A3eFB8e8E4c201e2A935F110eAaF3FFEcb8d`.toLowerCase(), // axies
+    `0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270`.toLowerCase(), // art blocks
+  ];
+
   const [assets, setAssets] = useState<Array<Asset>>([]);
   const [loading, setLoading] = useState<boolean>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
   const [didInitialFetch, setDidInitialFetch] = useState<boolean>(false);
 
   if (process.env.NEXT_PUBLIC_DEV_MODE) {
-    address = "0xc352b534e8b987e036a93539fd6897f53488e56a";
+    address = "0x6301add4fb128de9778b8651a2a9278b86761423";
   }
 
   // TODO: we can optimize this with server side rendering if it becomes too slow.
@@ -80,7 +89,17 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
     ) => {
       setLoading(true);
       try {
-        const url = `https://api.opensea.io/api/v1/assets?exclude_currencies=true&owner=${address}&limit=${count}&offset=${offset}`;
+        let url =
+          `https://api.opensea.io/api/v1/assets?` +
+          `exclude_currencies=true` +
+          `&owner=${address}` +
+          `&limit=${count}` +
+          `&offset=${offset}`;
+
+        whitelist.forEach((address) => {
+          url += `&asset_contract_addresses=${address}`;
+        });
+
         fetch(url, options)
           .then((response) => {
             return response.json();
