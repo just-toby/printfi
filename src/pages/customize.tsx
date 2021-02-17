@@ -8,9 +8,11 @@ import { Rings, useLoading } from "@agney/react-loading";
 import { TokenCard } from "../components/TokenCard";
 import { OptionRow } from "../components/OptionRow";
 import classNames from "classnames";
-import { ConfirmButton } from "../components/ConfirmButton";
 import { CartContext } from "../context/CartContext";
 import { ItemConfiguration } from "../hooks/useCart";
+import { ButtonSecondary } from '../components/Button'
+import styled from 'styled-components'
+import { Button } from "@material-ui/core";
 
 interface CustomizePageProps {}
 
@@ -69,6 +71,7 @@ export default function Customize(props: CustomizePageProps) {
     <div className={styles.container}>
       <Header subPage="print" />
       <main className={styles.main}>
+
         {item == null ? (
           <section {...containerProps}>{indicatorEl}</section>
         ) : (
@@ -77,7 +80,7 @@ export default function Customize(props: CustomizePageProps) {
               <span
                 className={classNames(styles.largeFont, styles.customizeTitle)}
               >
-                {item.name}
+              <a className="siteTitleLink">{item.name}</a>
               </span>
               {Object.keys(options).map((optionType) => {
                 return (
@@ -95,20 +98,25 @@ export default function Customize(props: CustomizePageProps) {
                   />
                 );
               })}
-              <ConfirmButton
-                title="Add to Cart"
-                disabled={!hasValidConfiguration(itemConfiguration)}
-                onClick={() => {
-                  addToCart({
-                    name: item.name,
-                    basic_uri: item.image_url,
-                    preview_uri: item.image_thumbnail_url,
-                    original_uri: item.image_original_url,
-                    config: itemConfiguration,
-                  });
-                  router.push("/review");
-                }}
-              />
+              <div className="cartDiv">
+                <Button disabled={!hasValidConfiguration(itemConfiguration)}
+                  color="primary"
+                  variant="outlined"
+                  onClick={() => {
+                    addToCart({
+                      name: item.name,
+                      basic_uri: item.image_url,
+                      preview_uri: item.image_thumbnail_url,
+                      original_uri: item.image_original_url,
+                      config: itemConfiguration,
+                    });
+                    router.push("/review");
+                  }} 
+                  href="/create/ETH">
+                  Add to Cart
+                  </Button>
+                </div>
+
             </div>
             <TokenCard
               key={item.id}

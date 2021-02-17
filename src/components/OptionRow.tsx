@@ -1,31 +1,29 @@
 import styles from "../styles/Home.module.css";
 import { OptionButton } from "./OptionButton";
 import classNames from "classnames";
+import styled from 'styled-components'
+import { Button } from "@material-ui/core";
 
-export interface OptionRowProps {
-  title: string;
-  options: Array<string>;
-  selection: string | null;
-  onSelect: (selection: string) => void;
-}
-
-const OptionRow: React.FC<OptionRowProps> = (props: OptionRowProps) => {
+const OptionRow = (props) => {
   return (
     <div className={styles.optionRow}>
       <span className={classNames(styles.largeFont, styles.marginRightLarge)}>
-        {props.title}
+        <a className="navigationLinks siteTitleLink">{props.title}</a>
       </span>
       <div className={styles.row}>
         {props.options.map((option) => {
           return (
-            <OptionButton
-              key={option}
-              title={option}
-              selected={props.selection === option}
+            <Button
+              color="primary"
+              disabled={props.selection === option}
               onClick={() => {
                 props.onSelect(option);
               }}
-            />
+              variant="outlined"
+            >
+            {option}
+            </Button>
+
           );
         })}
       </div>
