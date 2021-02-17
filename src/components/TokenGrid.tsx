@@ -13,14 +13,16 @@ interface TokenGridProps {}
 
 const TokenGrid: React.FC<TokenGridProps> = () => {
   const { assets, loadMore, loading, hasNextPage } = useContext(AssetsContext);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+  const [windowWidth, setWindowWidth] = useState(0);
+  const [windowHeight, setWindowHeight] = useState(0);
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
     indicator: <Rings width="100" />,
   });
 
   useEffect(() => {
+    setWindowWidth(window.innerWidth);
+    setWindowHeight(window.innerHeight);
     window.addEventListener("resize", (e) => {
       setWindowHeight(window.innerHeight);
       setWindowWidth(window.innerWidth);
