@@ -83,9 +83,11 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       const cartItems = chargeMetadata["cart_items"];
       const mailingAddress = chargeMetadata["mailing_address"];
       const customerEmail = mailingAddress["email"];
+      const orderId = event.data["id"];
 
       const emailHtmlBody = renderToString(
         <ConfirmationEmail
+          orderId={orderId}
           mailingAddress={mailingAddress}
           cartItems={cartItems}
         />
@@ -93,7 +95,7 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       const message = {
         from_email: "team@nftprints.io",
-        subject: "Hello world",
+        subject: "NiftyPrints Order Confirmation",
         html: emailHtmlBody,
         to: [
           {
