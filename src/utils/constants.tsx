@@ -1,4 +1,4 @@
-import { injected, portis, walletconnect, walletlink } from "../connectors";
+import { injected, portis, walletconnect, walletlink , fortmatic} from "../connectors";
 import { AbstractConnector } from "@web3-react/abstract-connector";
 import { getAddress } from "@ethersproject/address";
 
@@ -59,6 +59,15 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     href: null,
     color: "#4A6C9B",
     mobile: true,
+  },
+  FORTMATIC: {
+    connector: fortmatic,
+    name: 'Fortmatic',
+    iconName: 'fortmaticIcon.png',
+    description: 'Login using Fortmatic hosted wallet',
+    href: null,
+    color: '#6748FF',
+    mobile: true
   },
   WALLET_LINK: {
     connector: walletlink,
