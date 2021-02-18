@@ -144,8 +144,13 @@
   display: flex;
   background-color: "#FFFFFe";
   border-radius: 20px;
-  box-shadow: 0 3.2px 8px 0 rgba(0, 0, 0, 0.132), 
-    0 0.6px 8px 0 rgba(0, 0, 0, 0.108)
+  box-shadow: 0 3.2px 8px 0 rgba(0, 0, 0, 0.132),
+    0 0.6px 8px 0 rgba(0, 0, 0, 0.108);
+}
+
+.customizeImageContainer {
+  padding-right: 2rem;
+  padding-top: 2rem;
 }
 
 .customizeTitle {

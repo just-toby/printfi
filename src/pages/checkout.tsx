@@ -77,7 +77,7 @@ export default function Review() {
       <main className={styles.main}>
         <div className={styles.cartTitleContainer}>
           <span className={classNames(styles.largeFont)}>
-            Checkout - Payment Details
+            Checkout - Payment
           </span>
         </div>
         {cart.length === 0 ? (

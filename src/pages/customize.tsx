@@ -102,6 +102,7 @@ export default function Customize(props: CustomizePageProps) {
                   disabled={!hasValidConfiguration(itemConfiguration)}
                   color="primary"
                   variant="outlined"
+                  size="large"
                   onClick={() => {
                     addToCart({
                       name: item.name,
@@ -117,14 +118,16 @@ export default function Customize(props: CustomizePageProps) {
                 </Button>
               </div>
             </div>
-            <TokenCard
-              key={item.id}
-              name={item.name}
-              uri={item.image_url}
-              width={500}
-              innerBorder={itemConfiguration.space === '3"'}
-              outerBorderColor={itemConfiguration.frame}
-            />
+            <div className={styles.customizeImageContainer}>
+              <TokenCard
+                key={item.id}
+                name={item.name}
+                uri={item.image_url}
+                width={500}
+                innerBorder={itemConfiguration.space === '3"'}
+                outerBorderColor={itemConfiguration.frame}
+              />
+            </div>
           </div>
         )}
       </main>
