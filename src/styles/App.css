@@ -56,6 +56,13 @@
 
 .orderCompletedDiv {
   padding: 10px;
+  display: flex;
+
+}
+
+.orderConfiguration {
+  font-size: 1.2em;
+  padding-bottom: 5px;
 }
 
 .ordersCompleted {
