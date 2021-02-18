@@ -19,6 +19,7 @@ const OptionRow = (props: OptionRowProps) => {
         {props.options.map((option) => {
           return (
             <Button
+              key={option}
               style={{ marginRight: "1rem", minWidth: "8rem" }}
               color="primary"
               disabled={props.selection === option}
