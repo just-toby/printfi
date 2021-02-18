@@ -23,6 +23,23 @@
   padding-top: 15px;
 }
 
+.emailHeader {
+  align-items: left;
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
+  font-size: 3rem;
+  width: fit-content;
+  border-bottom: 1px solid #dedede;
+  width: -webkit-fill-available;
+  padding: 20px
+}
+.emailDiv {
+  display: flex;
+  flex-direction: column;  
+}
+
 .headerDiv {
   display: flex;
   height: 65px;
@@ -30,6 +47,27 @@
   border-bottom: 1px solid #dedede;
   padding-left: 10px;
   padding-right: 10px;
+}
+
+.orderCompletedDiv {
+  padding: 10px;
+}
+
+.ordersCompleted {
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
+}
+
+.greetingMessage {
+  padding: 20px;
+  color: black;
+  font-size: 2rem;
+}
+
+.orderDetails {
+  color: black;
+  font-size: 1.5rem;
+  padding: 20px;
 }
 
 .flexStretch {

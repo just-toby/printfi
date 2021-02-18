@@ -5,6 +5,7 @@ import { CartItem } from "../hooks/useCart";
 import { Address } from "../hooks/useCoinbaseCommerceAPI";
 import styles from "../styles/Home.module.css";
 import CartDetailsTable from "./CartDetailsTable";
+import Link from "next/link";
 
 export interface ConfirmationEmailProps {
   orderId: string;
@@ -24,58 +25,30 @@ const ConfirmationEmail: React.FC<ConfirmationEmailProps> = (
     });
   }, []);
 
+  const textFriendlyAddress = 
+                              props.mailingAddress["address"] + 
+                              props.mailingAddress["addres2"] + 
+                              props.mailingAddress["city"] + ","
+                              props.mailingAddress["state"] + 
+                              props.mailingAddress["zip"];
+
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        width: windowWidth,
-        alignItems: "center",
-        justifyContent: "center",
-        paddingTop: "2rem",
-        paddingLeft: "2rem",
-      }}
-    >
-      <span className={classNames(styles.largeFont)}>
-        Thanks for your order!
-      </span>
-      <br />
-      <br />
-      <br />
-      <span
-        className={classNames(styles.mediumFont, styles.subPageLinkUnderline)}
-      >
-        Order Number:
-      </span>
-      <p>{props.orderId}</p>
-
-      {/* mailing address: */}
-      <span
-        className={classNames(styles.mediumFont, styles.subPageLinkUnderline)}
-      >
-        Mailing Address:
-      </span>
-      <p>
-        {props.mailingAddress["name"]}
-        <br />
-        {props.mailingAddress["address"]}
-        <br />
-        {props.mailingAddress["address2"]}
-        <br />
-        {props.mailingAddress["city"]}
-        {", "}
-        {props.mailingAddress["state"]} {props.mailingAddress["zip"]}
-      </p>
-      <br />
-      <br />
-
-      {/* order details: */}
+    <div className="emailDiv">
+      <div className="emailHeader">
+        <Link href="/">
+          <a style={{color: "black"}}>NiftyPrints</a>
+        </Link>
+      </div>
+      <div className="greetingMessage">
+        Thanks for shopping with us!
+      </div>
+      <div className="orderDetails">
+        <p>Order Number: {props.orderId} </p>
+        <p>Shipping to: {props.mailingAddress["name"]}</p>
+        <p>Order Number: {textFriendlyAddress} </p>
+      </div>
+      
       <CartDetailsTable cart={props.cartItems} />
-      <Image
-        src="/Untitled-Artwork-off-white.jpg"
-        width={windowWidth * 0.8}
-        height={windowWidth * 0.8 * 0.7}
-      />
     </div>
   );
 };

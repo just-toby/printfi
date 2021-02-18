@@ -14,47 +14,25 @@ export default function CartDetailsTable(props: CartDetailsTableProps) {
   };
 
   return (
-    <table className={styles.cartTable}>
-      <tbody>
-        <tr>
-          {["Size", "Frame", "Glass", "Space"].map((label) => {
-            return (
-              <td
-                key={label}
-                className={classNames(styles.largeFont, styles.cartTableHeader)}
-              >
-                {label}
-              </td>
-            );
-          })}
-          <td
-            className={classNames(
-              styles.largeFont,
-              styles.cartTableHeaderCentered
-            )}
-          >
-            Image
-          </td>
-        </tr>
-        {props.cart.map((item) => {
-          return (
-            <tr key={item.name}>
+    <div className="ordersCompleted">
+      {props.cart.map((item) => {
+        return (
+          <div className="orderCompletedDiv">
+            <TokenCard
+                name={item.name}
+                uri={item.preview_uri}
+                height={400}
+                width={300}
+            />
+            {/* <tr key={item.name}>
               {rowItem(item.config.size)}
               {rowItem(item.config.frame)}
               {rowItem(item.config.glass)}
               {rowItem(item.config.space)}
-              {rowItem(
-                <TokenCard
-                  name={item.name}
-                  uri={item.preview_uri}
-                  height={100}
-                  width={70}
-                />
-              )}
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+            </tr> */}
+          </div>
+        );
+      })}
+    </div>
   );
 }
