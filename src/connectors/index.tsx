@@ -1,61 +1,44 @@
-import { Web3Provider } from '@ethersproject/providers'
-import { InjectedConnector } from '@web3-react/injected-connector'
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
-import { WalletLinkConnector } from '@web3-react/walletlink-connector'
-import { PortisConnector } from '@web3-react/portis-connector'
+import { InjectedConnector } from "@web3-react/injected-connector";
+import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
+import { WalletLinkConnector } from "@web3-react/walletlink-connector";
+import { PortisConnector } from "@web3-react/portis-connector";
 
-import { FortmaticConnector } from './Formatic'
-import { NetworkConnector } from './NetworkConnector'
+const RPC_URL_PREFIX = "https://mainnet.infura.io/v3/";
+const INFURA_ID = process.env.NEXT_PUBLIC_REACT_APP_INFURA_ID;
+const PORTIS_ID = process.env.NEXT_PUBLIC_REACT_APP_PORTIS_ID;
+// TODO: enable fortmatic support
+const FORMATIC_KEY = process.env.NEXT_PUBLIC_REACT_APP_FORTMATIC_KEY;
 
-// const NETWORK_URL = process.env.REACT_APP_NETWORK_URL
-// const FORMATIC_KEY = process.env.REACT_APP_FORTMATIC_KEY
-// const PORTIS_ID = process.env.REACT_APP_PORTIS_ID
+export const NETWORK_CHAIN_ID: number = parseInt(
+  process.env.REACT_APP_CHAIN_ID ?? "1"
+);
 
-const NETWORK_URL = "beep boop"
-const FORMATIC_KEY = "beep boop"
-const PORTIS_ID = "beep boop"
-
-export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID ?? '1')
-
-// if (typeof NETWORK_URL === 'undefined') {
-//   throw new Error(`REACT_APP_NETWORK_URL must be a defined environment variable`)
-// }
-
-// export const network = new NetworkConnector({
-//   urls: { [NETWORK_CHAIN_ID]: NETWORK_URL }
-// })
-
-// let networkLibrary: Web3Provider | undefined
-// export function getNetworkLibrary(): Web3Provider {
-//   return (networkLibrary = networkLibrary ?? new Web3Provider(network.provider as any))
-// }
+if (INFURA_ID == null) {
+  throw new Error(
+    `NEXT_PUBLIC_REACT_APP_INFURA_ID must be a defined environment variable`
+  );
+}
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42]
-})
+  supportedChainIds: [1], // we only support mainnet
+});
 
 // mainnet only
 export const walletconnect = new WalletConnectConnector({
-  rpc: { 1: NETWORK_URL },
-  bridge: 'https://bridge.walletconnect.org',
+  rpc: { 1: RPC_URL_PREFIX + INFURA_ID },
+  bridge: "https://bridge.walletconnect.org",
   qrcode: true,
-  pollingInterval: 15000
-})
-
-// mainnet only
-export const fortmatic = new FortmaticConnector({
-  apiKey: FORMATIC_KEY ?? '',
-  chainId: 1
-})
+  pollingInterval: 15000,
+});
 
 // mainnet only
 export const portis = new PortisConnector({
-  dAppId: PORTIS_ID ?? '',
-  networks: [1]
-})
+  dAppId: PORTIS_ID ?? "",
+  networks: [1],
+});
 
 // mainnet only
 export const walletlink = new WalletLinkConnector({
-  url: NETWORK_URL,
-  appName: 'PrintFi',
-})
+  url: RPC_URL_PREFIX + INFURA_ID,
+  appName: "NiftyPrints.io",
+});
