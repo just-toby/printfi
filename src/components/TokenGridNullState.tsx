@@ -13,7 +13,7 @@ const TokenGridNullState = (props: TokenGridNullStateProps) => {
           You don't own any NFTs we support.
         </p>
       </div>
-      <p className={classNames(styles.mediumFont, "externalLink")}>
+      <p className={classNames(styles.mediumFont, styles.externalLink)}>
         <a href={"https://opensea.io"}>Looking to buy some?</a>
       </p>
     </div>

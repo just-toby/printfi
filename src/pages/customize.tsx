@@ -79,7 +79,7 @@ export default function Customize(props: CustomizePageProps) {
               <span
                 className={classNames(styles.largeFont, styles.customizeTitle)}
               >
-                <a className="siteTitleLink">{item.name}</a>
+                <a className={styles.siteTitleLink}>{item.name}</a>
               </span>
               {Object.keys(options).map((optionType) => {
                 return (
@@ -97,7 +97,7 @@ export default function Customize(props: CustomizePageProps) {
                   />
                 );
               })}
-              <div className="cartDiv">
+              <div className={styles.cartDiv}>
                 <Button
                   disabled={!hasValidConfiguration(itemConfiguration)}
                   color="primary"

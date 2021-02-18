@@ -14,17 +14,17 @@ export default function CartDetailsTable(props: CartDetailsTableProps) {
   };
 
   return (
-    <div className="ordersCompleted">
+    <div className={styles.ordersCompleted}>
       {props.cart.map((item) => {
         return (
-          <div className="orderCompletedDiv" key={item.name}>
+          <div className={styles.orderCompletedDiv} key={item.name}>
             <TokenCard
                 name={item.name}
                 uri={item.preview_uri}
                 width={300}
             />
 
-            <div className="orderConfiguration">
+            <div className={styles.orderConfiguration}>
               <p>Size: {item.config.size} </p>
               <p>Frame: {item.config.frame} </p>
               <p>Glass Type: {item.config.glass} </p>

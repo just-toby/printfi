@@ -5,8 +5,6 @@ import classNames from "classnames";
 import "react-toastify/dist/ReactToastify.css";
 import Image from "next/image";
 
-interface SuccessPageProps {}
-
 export default function Success() {
   return (
     <div className={styles.container}>

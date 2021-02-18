@@ -23,15 +23,15 @@ function HeaderActions(props: HeaderActionsProps) {
     return address.slice(0, 6) + "..." + address.slice(address.length - 4);
   };
   return (
-    <div className="headerDiv">
-      <div className="navPadding">
+    <div className={styles.headerDiv}>
+      <div className={styles.navPadding}>
         <Link href="/">
-          <a className="navigationLinks siteTitleLink">NiftyPrints</a>
+          <a className={styles.siteTitleLink}>NiftyPrints</a>
         </Link>
         <Link href="/">
           <a
             className={classNames(
-              "navigationLinks",
+              styles.navigationLinks,
               subPage === "print" ? styles.subPageLinkUnderline : null
             )}
           >
@@ -41,7 +41,7 @@ function HeaderActions(props: HeaderActionsProps) {
         <Link href="/review">
           <a
             className={classNames(
-              "navigationLinks",
+              styles.navigationLinks,
               subPage === "cart" ? styles.subPageLinkUnderline : null
             )}
           >
@@ -50,9 +50,9 @@ function HeaderActions(props: HeaderActionsProps) {
         </Link>
       </div>
 
-      <div className="flexStretch" />
+      <div className={styles.flexStretch} />
 
-      <div className="navPadding">
+      <div className={styles.navPadding}>
         {account ? (
           <Button
             onClick={toggleWalletDropdown}

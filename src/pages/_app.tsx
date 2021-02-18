@@ -5,7 +5,6 @@ import { CartContext } from "../context/CartContext";
 import {Web3ReactProvider } from '@web3-react/core'
 import React from "react";
 import { AssetsContextProvider } from "../context/AssetsContextProvider";
-import "../styles/App.css"
 import getLibrary from '../utils/getLibrary'
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from '../components/theme'
 

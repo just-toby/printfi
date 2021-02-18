@@ -13,7 +13,7 @@ const OptionRow = (props: OptionRowProps) => {
   return (
     <div className={styles.optionRow}>
       <span className={classNames(styles.largeFont, styles.marginRightLarge)}>
-        <a className="navigationLinks siteTitleLink">{props.title}</a>
+        <a className={styles.siteTitleLink}>{props.title}</a>
       </span>
       <div className={styles.row}>
         {props.options.map((option) => {

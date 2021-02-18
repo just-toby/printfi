@@ -33,16 +33,16 @@ const ConfirmationEmail: React.FC<ConfirmationEmailProps> = (
                               props.mailingAddress["zip"];
 
   return (
-    <div className="emailDiv">
-      <div className="emailHeader">
+    <div className={styles.emailDiv}>
+      <div className={styles.emailHeader}>
         <Link href="/">
           <a style={{color: "black"}}>NiftyPrints</a>
         </Link>
       </div>
-      <div className="greetingMessage">
+      <div className={styles.greetingMessage}>
         Thanks for shopping with us!
       </div>
-      <div className="orderDetails">
+      <div className={styles.orderDetails}>
         <p>Order Number: {props.orderId} </p>
         <p>Shipping to: {props.mailingAddress["name"]}</p>
         <p>Order Number: {textFriendlyAddress} </p>
