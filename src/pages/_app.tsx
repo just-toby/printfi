@@ -12,6 +12,10 @@ import ThemeProvider, {
   FixedGlobalStyle,
   ThemedGlobalStyle,
 } from "../components/theme";
+// This is intended to be a modified version of Bootstrap which includes Form stylings only.
+// If you're noticing your styles not working, check if this file is overriding them.
+// TODO(just-toby): replace our address form and remove bootstrap from the project entirely.
+import "../styles/Forms.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const cartConfig: CartConfig = useCart();
