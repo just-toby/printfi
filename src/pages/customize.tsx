@@ -10,8 +10,6 @@ import { OptionRow } from "../components/OptionRow";
 import classNames from "classnames";
 import { CartContext } from "../context/CartContext";
 import { ItemConfiguration } from "../hooks/useCart";
-import { ButtonSecondary } from "../components/Button";
-import styled from "styled-components";
 import { Button } from "@material-ui/core";
 
 interface CustomizePageProps {}

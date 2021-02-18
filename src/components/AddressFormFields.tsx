@@ -1,6 +1,5 @@
-import React, { FC, RefObject } from "react";
+import React, { FC } from "react";
 import { Form, Col } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 interface AddressFormFieldsProps {
   setName: (name: string) => void;
@@ -17,9 +16,18 @@ const AddressFormFields: FC<AddressFormFieldsProps> = (
   props: AddressFormFieldsProps
 ) => {
   return (
-    <div>
-      <Form.Row>
-        <Form.Group as={Col} controlId="formGridName">
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <Form.Row
+        style={{
+          display: "flex",
+          flexDirection: "row",
+        }}
+      >
+        <Form.Group
+          as={Col}
+          controlId="formGridName"
+          style={{ marginRight: "2rem" }}
+        >
           <Form.Label>Name</Form.Label>
           <Form.Control
             type="Name"

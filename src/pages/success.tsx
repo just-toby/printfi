@@ -2,7 +2,6 @@ import React from "react";
 import styles from "../styles/Home.module.css";
 import Header from "../components/Header/Header";
 import classNames from "classnames";
-import "react-toastify/dist/ReactToastify.css";
 import Image from "next/image";
 
 interface SuccessPageProps {}
