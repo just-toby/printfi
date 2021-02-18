@@ -23,10 +23,14 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
   useEffect(() => {
     setWindowWidth(window.innerWidth);
     setWindowHeight(window.innerHeight);
-    window.addEventListener("resize", (e) => {
+    const resizeListener = (_e: any) => {
       setWindowHeight(window.innerHeight);
       setWindowWidth(window.innerWidth);
-    });
+    };
+    window.addEventListener("resize", resizeListener);
+    return () => {
+      window.removeEventListener("resize", resizeListener);
+    };
   }, []);
 
   // If there are more items to be loaded then add an extra row to hold a loading indicator.
@@ -91,7 +95,6 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
                       pathname: "/customize",
                       query: { index: String(index) },
                     }}
-                    height={(windowWidth * 0.2) / 0.7}
                     width={windowWidth * 0.2}
                   />
                 </div>
