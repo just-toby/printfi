@@ -3,7 +3,7 @@ import styles from "../styles/Home.module.css";
 import { TokenGrid } from "../components/TokenGrid";
 import Header from "../components/Header/Header";
 import { useWeb3React } from "@web3-react/core";
-import { ConfirmationEmail } from "../components/ConfirmationEmail";
+import { ConfirmationEmail } from "../components/Email/";
 
 export default function Home() {
   type Address = {

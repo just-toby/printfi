@@ -4,7 +4,7 @@ import { isChargeResource } from "../../utils/CoinbaseUtils";
 import Cors from "cors";
 import { renderToString } from "react-dom/server";
 import { initMiddleware, MiddlewareNextFunction } from "../../utils/ApiUtils";
-import { ConfirmationEmail } from "../../components/ConfirmationEmail";
+import { ConfirmationEmail } from "../../components/Email/";
 
 const mailchimpTx = require("@mailchimp/mailchimp_transactional")(
   process.env.MAILCHIMP_API_KEY
