@@ -17,18 +17,19 @@ export default function CartDetailsTable(props: CartDetailsTableProps) {
     <div className="ordersCompleted">
       {props.cart.map((item) => {
         return (
-          <div className="orderCompletedDiv">
+          <div className="orderCompletedDiv" key={item.name}>
             <TokenCard
                 name={item.name}
                 uri={item.preview_uri}
                 width={300}
             />
-            {/* <tr key={item.name}>
-              {rowItem(item.config.size)}
-              {rowItem(item.config.frame)}
-              {rowItem(item.config.glass)}
-              {rowItem(item.config.space)}
-            </tr> */}
+
+            <div className="orderConfiguration">
+              <p>Size: {item.config.size} </p>
+              <p>Frame: {item.config.frame} </p>
+              <p>Glass Type: {item.config.glass} </p>
+              <p>Space Type: {item.config.space} </p>
+            </div>
           </div>
         );
       })}
