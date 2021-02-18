@@ -21,7 +21,6 @@ export default function CartDetailsTable(props: CartDetailsTableProps) {
             <TokenCard
                 name={item.name}
                 uri={item.preview_uri}
-                height={400}
                 width={300}
             />
             {/* <tr key={item.name}>

@@ -1,7 +1,6 @@
 import styles from "../styles/Home.module.css";
 import * as React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { UrlObject } from "url";
 import classNames from "classnames";
 import { isNullOrEmpty } from "../utils/StringUtils";
@@ -13,17 +12,12 @@ export interface TokenCardProps {
   uri: string;
   // Omit if this card shouldn't link anywhere
   link?: UrlObject;
-  height: number | string;
   width: number | string;
   outerBorderColor?: FrameColor;
   innerBorder?: boolean;
 }
 
 const TokenCard: React.FC<TokenCardProps> = (props: TokenCardProps) => {
-  const myLoader = ({ src, width, quality }) => {
-    return src;
-  };
-
   const getFrameBorder = (color: FrameColor) => {
     if (color === "Black") {
       return styles.blackFrame;
@@ -42,7 +36,7 @@ const TokenCard: React.FC<TokenCardProps> = (props: TokenCardProps) => {
 
   const content = (
     <a className={styles.card}>
-      <Image
+      <img
         className={classNames(
           styles.image,
           hasBorder ? styles.imageRadius : null,
@@ -51,8 +45,6 @@ const TokenCard: React.FC<TokenCardProps> = (props: TokenCardProps) => {
         )}
         src={props.uri}
         alt={props.name}
-        loader={myLoader}
-        height={props.height}
         width={props.width}
       />
     </a>

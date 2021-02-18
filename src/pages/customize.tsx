@@ -10,8 +10,8 @@ import { OptionRow } from "../components/OptionRow";
 import classNames from "classnames";
 import { CartContext } from "../context/CartContext";
 import { ItemConfiguration } from "../hooks/useCart";
-import { ButtonSecondary } from '../components/Button'
-import styled from 'styled-components'
+import { ButtonSecondary } from "../components/Button";
+import styled from "styled-components";
 import { Button } from "@material-ui/core";
 
 interface CustomizePageProps {}
@@ -71,7 +71,6 @@ export default function Customize(props: CustomizePageProps) {
     <div className={styles.container}>
       <Header subPage="print" />
       <main className={styles.main}>
-
         {item == null ? (
           <section {...containerProps}>{indicatorEl}</section>
         ) : (
@@ -80,7 +79,7 @@ export default function Customize(props: CustomizePageProps) {
               <span
                 className={classNames(styles.largeFont, styles.customizeTitle)}
               >
-              <a className="siteTitleLink">{item.name}</a>
+                <a className="siteTitleLink">{item.name}</a>
               </span>
               {Object.keys(options).map((optionType) => {
                 return (
@@ -99,9 +98,11 @@ export default function Customize(props: CustomizePageProps) {
                 );
               })}
               <div className="cartDiv">
-                <Button disabled={!hasValidConfiguration(itemConfiguration)}
+                <Button
+                  disabled={!hasValidConfiguration(itemConfiguration)}
                   color="primary"
                   variant="outlined"
+                  size="large"
                   onClick={() => {
                     addToCart({
                       name: item.name,
@@ -111,22 +112,22 @@ export default function Customize(props: CustomizePageProps) {
                       config: itemConfiguration,
                     });
                     router.push("/review");
-                  }} 
-                  href="/create/ETH">
+                  }}
+                >
                   Add to Cart
-                  </Button>
-                </div>
-
+                </Button>
+              </div>
             </div>
-            <TokenCard
-              key={item.id}
-              name={item.name}
-              uri={item.image_url}
-              height={715}
-              width={500}
-              innerBorder={itemConfiguration.space === '3"'}
-              outerBorderColor={itemConfiguration.frame}
-            />
+            <div className={styles.customizeImageContainer}>
+              <TokenCard
+                key={item.id}
+                name={item.name}
+                uri={item.image_url}
+                width={500}
+                innerBorder={itemConfiguration.space === '3"'}
+                outerBorderColor={itemConfiguration.frame}
+              />
+            </div>
           </div>
         )}
       </main>
