@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext } from "react";
+import React, { useContext } from "react";
 import styles from "../styles/Home.module.css";
 import classNames from "classnames";
 import { CartContext } from "../context/CartContext";
@@ -10,7 +10,7 @@ import CartDetailsTable from "../components/CartDetailsTable";
 
 interface ReviewPageProps {}
 
-export default function Review() {
+export default function Review(props: ReviewPageProps) {
   const { cart } = useContext(CartContext);
   const router: NextRouter = useRouter();
 

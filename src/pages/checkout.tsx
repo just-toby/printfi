@@ -14,24 +14,18 @@ import { Form } from "react-bootstrap";
 import { isNullOrEmpty } from "../utils/StringUtils";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import useAddressState, { AddressStateConfig } from "../hooks/useAddressState";
 
-interface ReviewPageProps {}
+interface CheckoutPageProps {}
 
-export default function Review() {
+export default function Checkout(props: CheckoutPageProps) {
   const { cart, clearCart } = useContext(CartContext);
   const [chargeId, setChargeId] = useState("");
   const coinbase: CoinbaseCommerceAPI = useCoinbaseCommerceAPI();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [address, setAddress] = useState<string>("");
-  const [address2, setAddress2] = useState<string>("");
-  const [city, setCity] = useState<string>("");
-  const [state, setState] = useState<string>("");
-  const [zip, setZip] = useState<string>("");
+  const address: AddressStateConfig = useAddressState();
 
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
@@ -42,13 +36,13 @@ export default function Review() {
     event.preventDefault();
     event.stopPropagation();
     const addressJson = {
-      name: name,
-      email: email,
-      address: address,
-      address2: address2,
-      city: city,
-      state: state,
-      zip: zip,
+      name: address.name,
+      email: address.email,
+      address: address.address,
+      address2: address.address2,
+      city: address.city,
+      state: address.state,
+      zip: address.zip,
     };
     setLoading(true);
     coinbase
@@ -67,7 +61,14 @@ export default function Review() {
   };
 
   const hasValidAddress = () => {
-    const vals = [name, email, address, city, state, zip];
+    const vals = [
+      address.name,
+      address.email,
+      address.address,
+      address.city,
+      address.state,
+      address.zip,
+    ];
     return vals.filter((value) => isNullOrEmpty(value)).length === 0;
   };
 
@@ -88,13 +89,13 @@ export default function Review() {
           <div>
             <Form onSubmit={onSubmit}>
               <AddressFormFields
-                setName={setName}
-                setEmail={setEmail}
-                setAddress={setAddress}
-                setAddress2={setAddress2}
-                setCity={setCity}
-                setState={setState}
-                setZip={setZip}
+                setName={address.setName}
+                setEmail={address.setEmail}
+                setAddress={address.setAddress}
+                setAddress2={address.setAddress2}
+                setCity={address.setCity}
+                setState={address.setState}
+                setZip={address.setZip}
                 loading={loading}
               />
               <div className={styles.cartConfirmButton}>

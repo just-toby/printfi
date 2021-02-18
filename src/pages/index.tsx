@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "../styles/Home.module.css";
 import { TokenGrid } from "../components/TokenGrid";
 import Header from "../components/Header/Header";
