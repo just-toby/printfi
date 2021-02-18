@@ -1,6 +1,3 @@
-import classNames from "classnames";
-import { ReactNode } from "react";
-import styles from "../styles/Home.module.css";
 import { TokenCard } from "../TokenCard";
 import { CartItem } from "../../hooks/useCart";
 
