@@ -1,11 +1,12 @@
 import classNames from "classnames";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { CartItem } from "../hooks/useCart";
-import { Address } from "../hooks/useCoinbaseCommerceAPI";
+import { CartItem } from "../../hooks/useCart";
+import { Address } from "../../hooks/useCoinbaseCommerceAPI";
 import styles from "../styles/Home.module.css";
-import CartDetailsTable from "./CartDetailsTable";
+import CartDetailsTable from "../CartDetailsTable";
 import Link from "next/link";
+import Order from "./order";
 
 export interface ConfirmationEmailProps {
   orderId: string;
@@ -48,7 +49,7 @@ const ConfirmationEmail: React.FC<ConfirmationEmailProps> = (
         <p>Order Number: {textFriendlyAddress} </p>
       </div>
       
-      <CartDetailsTable cart={props.cartItems} />
+      <Order cart={props.cartItems} />
     </div>
   );
 };
