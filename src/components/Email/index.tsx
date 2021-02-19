@@ -79,7 +79,6 @@ const styles = {
 const MockConfirmationEmail = (
   <ConfirmationEmail
     title="You're viewing a test version of the order confirmation email!"
-    highQualityImages={{ "123": "/test.svg" }}
     orderId={"1234"}
     mailingAddress={{
       name: "Just Toby",
