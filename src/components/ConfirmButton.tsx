@@ -2,6 +2,7 @@ import { Rings, useLoading } from "@agney/react-loading";
 import classNames from "classnames";
 import React from "react";
 import styles from "../styles/Home.module.css";
+import { Button } from "@material-ui/core";
 
 export interface ConfirmButtonProps {
   title: string;
@@ -20,7 +21,7 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = (
   });
 
   return (
-    <button
+    <Button
       onClick={props.disabled === true ? null : props.onClick}
       type={props.type}
       className={classNames(
@@ -41,7 +42,7 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = (
           {props.title}
         </span>
       )}
-    </button>
+    </Button>
   );
 };
 
