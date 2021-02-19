@@ -52,6 +52,7 @@ const ConfirmationEmail: React.FC<ConfirmationEmailProps> = (
         <p>Shipping to: {props.mailingAddress["name"]}</p>
         <p>Address: {textFriendlyAddress} </p>
       </div>
+
       <Order
         cart={props.cartItems}
         highQualityImages={props.highQualityImages}
