@@ -8,9 +8,10 @@ import { ConfirmationEmail } from "../../components/Email/";
 import { CartItem } from "../../hooks/useCart";
 import temp from "temp";
 import fs from "fs";
-import { getHighQualityImage } from "../../utils/ImageUtils";
+import { getRawImageData } from "../../utils/ImageUtils";
 import { getDefaultProvider } from "@ethersproject/providers";
 import ImageDataUri from "image-data-uri";
+import Upscaler from "upscaler";
 
 const mailchimpTx = require("@mailchimp/mailchimp_transactional")(
   process.env.MAILCHIMP_API_KEY
@@ -41,20 +42,30 @@ const rawPayloadMiddleware = initMiddleware(
   }
 );
 
-const writeToFile = (data: string, name: string) => {
+// Returns the local absolute filepath
+const writeToFile: (data64: string, name: string) => Promise<string> = (
+  data64: string,
+  name: string
+) => {
   return new Promise((resolve, reject) => {
     const fileName = name;
+    let tempFilePath: string;
     temp.open(fileName, function (err, info) {
       if (!err) {
-        fs.write(info.fd, data, (err) => {
-          console.log(err);
+        tempFilePath = info.path;
+        fs.write(info.fd, data64, 0, "base64", (err, written, str) => {
+          if (err) {
+            console.log(err);
+          }
         });
         fs.close(info.fd, function (err) {
-          reject(err);
+          if (err) {
+            reject(err);
+          }
         });
+        resolve(tempFilePath);
       }
     });
-    resolve(fileName);
   });
 };
 
@@ -126,36 +137,46 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         />
       );
 
+      const web3Provider = getDefaultProvider("mainnet", {
+        infura: process.env.NEXT_PUBLIC_REACT_APP_INFURA_ID,
+        etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY,
+      });
+
       const attachments: Array<MandrillAttachment> = [];
       await Promise.all(
         cartItems.map(async (item: CartItem) => {
           const fileName = item.name.replace(/[^a-z0-9]/gi, "");
           if (item.collection_slug === "avastar") {
-            const svgData = await getHighQualityImage(
-              item,
-              getDefaultProvider("mainnet", {
-                infura: process.env.NEXT_PUBLIC_REACT_APP_INFURA_ID,
-                etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY,
-              })
-            );
+            const svgData = await getRawImageData(item, web3Provider);
             // for Avastar, we use the raw svg data from the blockchain.
             attachments.push({
-              content: Buffer.from(svgData).toString("base64"),
+              content: svgData.dataBase64,
               name: fileName + ".svg",
-              type: "image/svg+xml",
+              type: svgData.type,
             });
           } else {
-            // TODO: upscale images for collections that need it
-            ImageDataUri.encodeFromURL(item.original_uri).then(
-              (res: string) => {
-                const decodedData = ImageDataUri.decode(res);
-                attachments.push({
-                  name: fileName,
-                  content: decodedData.dataBase64,
-                  type: decodedData.imageType,
-                });
-              }
+            // For all other collections, we expect a URL that points to a PNG file
+            const upscaler = new Upscaler();
+            const rawImageData = await getRawImageData(item, web3Provider);
+            const localFilePath = await writeToFile(
+              rawImageData.dataBase64,
+              fileName
             );
+
+            upscaler
+              .upscale(localFilePath)
+              .then((upscaledImageUrl: Uint8Array) => {
+                ImageDataUri.encodeFromURL(upscaledImageUrl).then(
+                  (res: string) => {
+                    const decodedData = ImageDataUri.decode(res);
+                    attachments.push({
+                      name: fileName + ".png",
+                      content: decodedData.dataBase64,
+                      type: decodedData.imageType,
+                    });
+                  }
+                );
+              });
           }
         })
       );
@@ -208,7 +229,7 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       const printerResult = await mailchimpTx.messages.send({
         message: printerMessage,
       });
-      return res.status(200).send("Successfully handled Charge webhook");
+      return res.status(200).send("Signed Webhook Received: " + event.id);
     case "charge:created":
     case "charge:delayed":
     case "charge:failed":
