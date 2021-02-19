@@ -3,7 +3,6 @@ import { useContext } from "react";
 import Link from "next/link";
 import { CartContext } from "../../context/CartContext";
 import { Button } from "@material-ui/core";
-import styles from "../../styles/Home.module.css";
 import { useWeb3React } from "@web3-react/core";
 import classNames from "classnames";
 
@@ -32,7 +31,7 @@ function HeaderActions(props: HeaderActionsProps) {
           <a
             className={classNames(
               "navigationLinks",
-              subPage === "print" ? styles.subPageLinkUnderline : null
+              subPage === "print" ? "subPageLinkUnderline" : null
             )}
           >
             print
@@ -42,7 +41,7 @@ function HeaderActions(props: HeaderActionsProps) {
           <a
             className={classNames(
               "navigationLinks",
-              subPage === "cart" ? styles.subPageLinkUnderline : null
+              subPage === "cart" ? "subPageLinkUnderline" : null
             )}
           >
             {cart.length > 0 ? "cart (" + cart.length + ")" : "cart"}

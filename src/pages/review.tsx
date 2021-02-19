@@ -1,6 +1,4 @@
 import React, { useContext } from "react";
-import styles from "../styles/Home.module.css";
-import classNames from "classnames";
 import { CartContext } from "../context/CartContext";
 import { Rings, useLoading } from "@agney/react-loading";
 import { ConfirmButton } from "../components/ConfirmButton";
@@ -20,23 +18,23 @@ export default function Review(props: ReviewPageProps) {
   });
 
   return (
-    <div className={styles.container}>
+    <div className={"container"}>
       <Header subPage="cart" />
-      <main className={styles.main}>
-        <div className={styles.cartTitleContainer}>
-          <span className={classNames(styles.largeFont)}>
+      <main className={"main"}>
+        <div className={"cartTitleContainer"}>
+          <span className={"largeFont"}>
             Checkout - Review
           </span>
         </div>
         {cart.length === 0 ? (
-          <div className={styles.container}>
+          <div className={"container"}>
             <section {...containerProps}>{indicatorEl}</section>
           </div>
         ) : (
           <div>
             <CartDetailsTable cart={cart} />
             {cart.length === 0 ? null : (
-              <div className={styles.cartConfirmButton}>
+              <div className={"cartConfirmButton"}>
                 <ConfirmButton
                   title="Next"
                   disabled={false}

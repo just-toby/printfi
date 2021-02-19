@@ -1,22 +1,19 @@
 import React from "react";
-import styles from "../styles/Home.module.css";
 import Header from "../components/Header/Header";
 import classNames from "classnames";
 import Image from "next/image";
 
-interface SuccessPageProps {}
-
 export default function Success() {
   return (
-    <div className={styles.container}>
+    <div className={"container"}>
       <Header subPage="cart" />
-      <main className={styles.main}>
+      <main className={"main"}>
         <Image src="/succes_image.jpg" width={500} height={400} />
-        <div className={styles.cartTitleContainer}>
-          <span className={classNames(styles.largeFont)}>Success!</span>
+        <div className={"cartTitleContainer"}>
+          <span className={classNames("largeFont")}>Success!</span>
         </div>
         <div>
-          <span className={styles.mediumFont}>
+          <span className={"mediumFont"}>
             We've received your payment. Look out for an email confirming the
             details!
           </span>
