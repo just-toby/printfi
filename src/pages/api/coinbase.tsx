@@ -1,3 +1,6 @@
+require("@tensorflow/tfjs-node");
+var Canvas = require("canvas");
+global.Image = Canvas.Image;
 import { EventResource, Webhook } from "coinbase-commerce-node";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { isChargeResource } from "../../utils/CoinbaseUtils";
