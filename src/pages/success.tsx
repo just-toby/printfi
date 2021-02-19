@@ -11,6 +11,7 @@ export default function Success() {
     <div className={styles.container}>
       <Header subPage="cart" />
       <main className={styles.main}>
+        <Image src="/succes_image.jpg" width={500} height={400} />
         <div className={styles.cartTitleContainer}>
           <span className={classNames(styles.largeFont)}>Success!</span>
         </div>
@@ -20,7 +21,6 @@ export default function Success() {
             details!
           </span>
         </div>
-        <Image src="/succes_image.jpg" width={500} height={400} />
       </main>
     </div>
   );
