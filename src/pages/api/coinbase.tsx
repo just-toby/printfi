@@ -9,6 +9,8 @@ import { CartItem } from "../../hooks/useCart";
 import temp from "temp";
 import fs from "fs";
 import { v4 as uuid } from "uuid";
+import { getHighQualityImageUri } from "../../utils/ImageUtils";
+import { getDefaultProvider } from "@ethersproject/providers";
 
 const mailchimpTx = require("@mailchimp/mailchimp_transactional")(
   process.env.MAILCHIMP_API_KEY
@@ -116,14 +118,16 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
 
       const highQualityImages = {};
-      cartItems.array.forEach((item: CartItem) => {
+      cartItems.array.forEach(async (item: CartItem) => {
         if (item.collection_slug === "avastar") {
+          const svgData = await getHighQualityImageUri(
+            item,
+            getDefaultProvider("1")
+          );
           // for Avastar, we receive the raw SVG data in metadata.
           // let's write it to a temporary file so we can render it
           // in our email component.
-          highQualityImages[item.token_id] = writeToFile(
-            item.high_quality_image
-          );
+          highQualityImages[item.token_id] = writeToFile(svgData);
         } else {
           highQualityImages[item.token_id] = item.original_uri;
         }

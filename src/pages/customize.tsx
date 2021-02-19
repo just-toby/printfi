@@ -12,7 +12,6 @@ import { CartContext } from "../context/CartContext";
 import { ItemConfiguration } from "../hooks/useCart";
 import { Button } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
-import { getHighQualityImageUri } from "../utils/ImageUtils";
 
 interface CustomizePageProps {}
 
@@ -107,15 +106,10 @@ export default function Customize(props: CustomizePageProps) {
                   size="large"
                   onClick={async () => {
                     setLoading(true);
-                    const highQualityImage = await getHighQualityImageUri(
-                      item,
-                      library
-                    );
                     addToCart({
                       name: item.name,
                       token_id: item.token_id,
                       collection_slug: item.collection.slug,
-                      high_quality_image: highQualityImage,
                       preview_uri: item.image_thumbnail_url,
                       original_uri: item.image_original_url,
                       config: itemConfiguration,

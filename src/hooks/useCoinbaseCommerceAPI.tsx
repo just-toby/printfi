@@ -52,9 +52,13 @@ const useCoinbaseCommerceAPI: () => CoinbaseCommerceAPI = () => {
           return response.json();
         })
         .then((json) => {
+          console.log(json)
           resolve(json.data.code);
         })
-        .catch((error: any) => reject(error));
+        .catch((error: any) => {
+          console.log(error);
+          reject(error);
+        });
     });
   };
 

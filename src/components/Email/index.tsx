@@ -80,7 +80,6 @@ const MockConfirmationEmail = (
         name: "first NFT",
         token_id: "123",
         collection_slug: "avastar",
-        high_quality_image: "/test.svg",
         original_uri:
           "https://lh3.googleusercontent.com/OPktDZrm80U-Mcza8Kwiqrq8t7cEX7BFdKgOUN0SlMTZhQt1yBNkJyuF6n5l7oPAKH5wEjeyALWWnZi7MbHP4955mtiOO3BEvoAp",
         preview_uri:
@@ -96,8 +95,6 @@ const MockConfirmationEmail = (
         name: "second NFT",
         token_id: "123",
         collection_slug: "avastar",
-        high_quality_image:
-          "https://lh3.googleusercontent.com/9JRYIfFOyY66aeL2QpVySKVjwgaoz33FCwhvko_IIXN35EDY4AD97pGgBNNbbLiffW2rl8QgW9vBJ-hfhNOuWE7FssUgYwL0bDlKWQ",
         original_uri:
           "https://lh3.googleusercontent.com/9JRYIfFOyY66aeL2QpVySKVjwgaoz33FCwhvko_IIXN35EDY4AD97pGgBNNbbLiffW2rl8QgW9vBJ-hfhNOuWE7FssUgYwL0bDlKWQ",
         preview_uri:

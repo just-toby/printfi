@@ -1,17 +1,17 @@
-import { Web3Provider } from "@ethersproject/providers";
+import { BaseProvider } from "@ethersproject/providers";
 import { Contract } from "@ethersproject/contracts";
-import { Asset } from "../hooks/useAssets";
 import { avastarContractAbi, getContractBySlug } from "./constants";
+import { CartItem } from "../hooks/useCart";
 
 export async function getHighQualityImageUri(
-  item: Asset,
-  library: Web3Provider
+  item: CartItem,
+  library: BaseProvider
 ): Promise<string> {
-  const itemCollectionSlug = item.collection.slug;
+  const itemCollectionSlug = item.collection_slug;
 
   const collectionContractAddress = getContractBySlug(itemCollectionSlug);
   if (collectionContractAddress == null) {
-    return item.image_original_url;
+    return item.original_uri;
   }
 
   switch (itemCollectionSlug) {
@@ -23,14 +23,14 @@ export async function getHighQualityImageUri(
       );
       return await avastarContract.renderAvastar(item.token_id);
     case "cryptopunks":
-      return item.image_original_url;
+      return item.original_uri;
     case "art-blocks":
-      return item.image_original_url;
+      return item.original_uri;
     case "hashmasks":
-      return item.image_original_url;
+      return item.original_uri;
     case "axies":
-      return item.image_original_url;
+      return item.original_uri;
     default:
-      return item.image_original_url;
+      return item.original_uri;
   }
 }
