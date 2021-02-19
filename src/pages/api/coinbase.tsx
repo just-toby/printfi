@@ -91,7 +91,6 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           orderId={orderId}
           mailingAddress={mailingAddress}
           cartItems={cartItems}
-          showImageUris={false}
         />
       );
 
@@ -100,7 +99,6 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           orderId={orderId}
           mailingAddress={mailingAddress}
           cartItems={cartItems}
-          showImageUris={true}
         />
       );
 

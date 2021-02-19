@@ -3,7 +3,6 @@ import { CartItem } from "../../hooks/useCart";
 
 export interface CartDetailsTableProps {
   cart: Array<CartItem>;
-  showImageUris: boolean;
 }
 
 export default function Order(props: CartDetailsTableProps) {
@@ -27,7 +26,6 @@ export default function Order(props: CartDetailsTableProps) {
               <p>Frame: {item.config.frame} </p>
               <p>Glass Type: {item.config.glass} </p>
               <p>Space Type: {item.config.space} </p>
-              {props.showImageUris ? "This is the high quality image." : null}
             </div>
           </div>
         );
