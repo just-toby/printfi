@@ -1,7 +1,5 @@
 import React, { useContext, useState } from "react";
-import styles from "../styles/Home.module.css";
 import Header from "../components/Header/Header";
-import classNames from "classnames";
 import { CartContext } from "../context/CartContext";
 import { CheckoutButton } from "../components/CheckoutButton";
 import { Rings, useLoading } from "@agney/react-loading";
@@ -73,16 +71,16 @@ export default function Checkout(props: CheckoutPageProps) {
   };
 
   return (
-    <div className={styles.container}>
+    <div className="container">
       <Header subPage="cart" />
-      <main className={styles.main}>
-        <div className={styles.cartTitleContainer}>
-          <span className={classNames(styles.largeFont)}>
+      <main className="main">
+        <div className="cartTitleContainer">
+          <span className="largeFont">
             Checkout - Payment
           </span>
         </div>
         {cart.length === 0 ? (
-          <div className={styles.container}>
+          <div className="container">
             <section {...containerProps}>{indicatorEl}</section>
           </div>
         ) : (
@@ -98,7 +96,7 @@ export default function Checkout(props: CheckoutPageProps) {
                 setZip={address.setZip}
                 loading={loading}
               />
-              <div className={styles.cartConfirmButton}>
+              <div className={"cartConfirmButton"}>
                 {isNullOrEmpty(chargeId) ? (
                   <ConfirmButton
                     title="Submit"

@@ -1,4 +1,3 @@
-import styles from "../styles/Home.module.css";
 import * as React from "react";
 import Link from "next/link";
 import { UrlObject } from "url";
@@ -20,10 +19,10 @@ export interface TokenCardProps {
 const TokenCard: React.FC<TokenCardProps> = (props: TokenCardProps) => {
   const getFrameBorder = (color: FrameColor) => {
     if (color === "Black") {
-      return styles.blackFrame;
+      return "blackFrame"
     }
     if (color === "White") {
-      return styles.whiteFrame;
+      return "whiteFrame"
     }
     return null;
   };
@@ -35,12 +34,12 @@ const TokenCard: React.FC<TokenCardProps> = (props: TokenCardProps) => {
   }
 
   const content = (
-    <a className={styles.card}>
+    <a className={"card"}>
       <img
         className={classNames(
-          styles.image,
-          hasBorder ? styles.imageRadius : null,
-          props.innerBorder ? styles.imageInnerSpacing : null,
+          "image",
+          hasBorder ? "imageRadius" : null,
+          props.innerBorder ? "imageInnerSpacing" : null,
           getFrameBorder(props.outerBorderColor)
         )}
         src={props.uri}
