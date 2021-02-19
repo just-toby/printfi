@@ -103,8 +103,9 @@ export default function Customize(props: CustomizePageProps) {
                   size="large"
                   onClick={() => {
                     addToCart({
+                      token_id: item.token_id,
                       name: item.name,
-                      basic_uri: item.image_url,
+                      collection_slug: item.collection.slug,
                       preview_uri: item.image_thumbnail_url,
                       original_uri: item.image_original_url,
                       config: itemConfiguration,

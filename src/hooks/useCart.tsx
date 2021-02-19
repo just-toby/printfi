@@ -15,11 +15,12 @@ export type ItemConfiguration = {
 };
 
 export type CartItem = {
+  token_id: string;
   name: string;
-  basic_uri: string;
   original_uri: string;
   preview_uri: string;
   config: ItemConfiguration;
+  collection_slug: string;
 };
 
 const useCart: () => CartConfig = () => {
