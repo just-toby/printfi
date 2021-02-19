@@ -11,8 +11,6 @@ import classNames from "classnames";
 import { CartContext } from "../context/CartContext";
 import { ItemConfiguration } from "../hooks/useCart";
 import { Button } from "@material-ui/core";
-import { getHighQualityImageUri } from "../utils/ImageUtils";
-import { useWeb3React } from "@web3-react/core";
 
 interface CustomizePageProps {}
 
@@ -20,8 +18,6 @@ export default function Customize(props: CustomizePageProps) {
   const router = useRouter();
   const { assets } = useContext(AssetsContext);
   const { addToCart } = useContext(CartContext);
-  const [loading, setLoading] = useState(false);
-  const { library } = useWeb3React();
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
     indicator: <Rings width="100" />,
@@ -73,7 +69,7 @@ export default function Customize(props: CustomizePageProps) {
     <div className={styles.container}>
       <Header subPage="print" />
       <main className={styles.main}>
-        {item == null || loading ? (
+        {item == null ? (
           <section {...containerProps}>{indicatorEl}</section>
         ) : (
           <div className={styles.customizeContainer}>
@@ -105,20 +101,13 @@ export default function Customize(props: CustomizePageProps) {
                   color="primary"
                   variant="outlined"
                   size="large"
-                  onClick={async () => {
-                    setLoading(true);
-                    const highQualityImage = await getHighQualityImageUri(
-                      item,
-                      library
-                    );
+                  onClick={() => {
                     addToCart({
-                      token_id: item.token_id,
                       name: item.name,
-                      collection_slug: item.collection.slug,
+                      basic_uri: item.image_url,
                       preview_uri: item.image_thumbnail_url,
                       original_uri: item.image_original_url,
                       config: itemConfiguration,
-                      high_quality_image: highQualityImage,
                     });
                     router.push("/review");
                   }}

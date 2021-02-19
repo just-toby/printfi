@@ -36,15 +36,19 @@ export default function CartDetailsTable(props: CartDetailsTableProps) {
             Image
           </td>
         </tr>
-        {props.cart.map((item, index) => {
+        {props.cart.map((item) => {
           return (
-            <tr key={index}>
+            <tr key={item.name}>
               {rowItem(item.config.size)}
               {rowItem(item.config.frame)}
               {rowItem(item.config.glass)}
               {rowItem(item.config.space)}
               {rowItem(
-                <TokenCard name={item.name} uri={item.preview_uri} width={70} />
+                <TokenCard
+                  name={item.name}
+                  uri={item.preview_uri}
+                  width={70}
+                />
               )}
             </tr>
           );
