@@ -11,6 +11,7 @@ import fs from "fs";
 import { getHighQualityImage } from "../../utils/ImageUtils";
 import { getDefaultProvider } from "@ethersproject/providers";
 import ImageDataUri from "image-data-uri";
+import Upscaler from "upscaler";
 
 const mailchimpTx = require("@mailchimp/mailchimp_transactional")(
   process.env.MAILCHIMP_API_KEY
@@ -145,17 +146,19 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               type: "image/svg+xml",
             });
           } else {
-            // TODO: upscale images for collections that need it
-            ImageDataUri.encodeFromURL(item.original_uri).then(
-              (res: string) => {
-                const decodedData = ImageDataUri.decode(res);
-                attachments.push({
-                  name: fileName,
-                  content: decodedData.dataBase64,
-                  type: decodedData.imageType,
-                });
-              }
-            );
+            const upscaler = new Upscaler();
+            upscaler.upscale(item.original_uri).then((upscaledImageUrl) => {
+              ImageDataUri.encodeFromURL(upscaledImageUrl).then(
+                (res: string) => {
+                  const decodedData = ImageDataUri.decode(res);
+                  attachments.push({
+                    name: fileName,
+                    content: decodedData.dataBase64,
+                    type: decodedData.imageType,
+                  });
+                }
+              );
+            });
           }
         })
       );
