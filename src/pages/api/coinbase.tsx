@@ -86,7 +86,7 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       const orderId = event.data["id"];
 
       // TODO: add a "fallback" confirmation message that doesn't rely on the CC data format.
-      const emailHtmlBody = renderToString(
+      const customerHtmlBody = renderToString(
         <ConfirmationEmail
           orderId={orderId}
           mailingAddress={mailingAddress}
@@ -94,17 +94,21 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         />
       );
 
-      const message = {
+      const printerHtmlBody = renderToString(
+        <ConfirmationEmail
+          orderId={orderId}
+          mailingAddress={mailingAddress}
+          cartItems={cartItems}
+        />
+      );
+
+      const customerMessage = {
         from_email: "team@nftprints.io",
         subject: "NiftyPrints Order Confirmation",
-        html: emailHtmlBody,
+        html: customerHtmlBody,
         to: [
           {
             email: "printfi@protonmail.com",
-            type: "bcc",
-          },
-          {
-            email: printerEmail,
             type: "bcc",
           },
           {
@@ -114,8 +118,25 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         ],
       };
 
-      const response = mailchimpTx.messages.send({ message });
-      return response;
+      const printerMessage = {
+        from_email: "team@nftprints.io",
+        subject: "New NiftyPrints Order",
+        html: printerHtmlBody,
+        to: [
+          {
+            email: "printfi@protonmail.com",
+            type: "bcc",
+          },
+          {
+            email: printerEmail,
+            type: "to",
+          },
+        ],
+      };
+
+      const customerResult = mailchimpTx.messages.send({ customerMessage });
+      const printerResult = mailchimpTx.messages.send({ printerMessage });
+      return customerResult;
     case "charge:created":
     case "charge:delayed":
     case "charge:failed":
