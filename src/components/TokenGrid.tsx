@@ -49,6 +49,7 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
 
   return (
     <div className={styles.main}>
+      {loading ? <section {...containerProps}>{indicatorEl}</section> : null}
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
         itemCount={itemCount}
@@ -103,7 +104,6 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
           </Grid>
         )}
       </InfiniteLoader>
-      {loading ? <section {...containerProps}>{indicatorEl}</section> : null}
     </div>
   );
 };
