@@ -5,6 +5,12 @@ import Cors from "cors";
 import { renderToString } from "react-dom/server";
 import { initMiddleware, MiddlewareNextFunction } from "../../utils/ApiUtils";
 import { ConfirmationEmail } from "../../components/Email/";
+import { CartItem } from "../../hooks/useCart";
+import temp from "temp";
+import fs from "fs";
+import { exec } from "child_process";
+import util from "util";
+import { v4 as uuid } from "uuid";
 
 const mailchimpTx = require("@mailchimp/mailchimp_transactional")(
   process.env.MAILCHIMP_API_KEY
@@ -35,10 +41,25 @@ const rawPayloadMiddleware = initMiddleware(
   }
 );
 
+const writeToFile = (data: string) => {
+  const fileName = uuid().toString() + ".svg";
+  temp.open(fileName, function (err, info) {
+    if (!err) {
+      fs.write(info.fd, data, (err) => {
+        console.log(err);
+      });
+      fs.close(info.fd, function (err) {});
+    }
+  });
+  return fileName;
+};
+
 const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res);
 
   const rawPayload = await rawPayloadMiddleware(req, res);
+
+  temp.track();
 
   // Should be a string per CC docs.
   const signature: string =
@@ -88,17 +109,35 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       // TODO: add a "fallback" confirmation message that doesn't rely on the CC data format.
       const customerHtmlBody = renderToString(
         <ConfirmationEmail
+          title="Thanks for shopping with us!"
           orderId={orderId}
           mailingAddress={mailingAddress}
           cartItems={cartItems}
+          highQualityImages={null}
         />
       );
 
+      const highQualityImages = {};
+      cartItems.array.forEach((item: CartItem) => {
+        if (item.collection_slug === "avastar") {
+          // for Avastar, we receive the raw SVG data in metadata.
+          // let's write it to a temporary file so we can render it
+          // in our email component.
+          highQualityImages[item.token_id] = writeToFile(
+            item.high_quality_image
+          );
+        } else {
+          highQualityImages[item.token_id] = item.original_uri;
+        }
+      });
+
       const printerHtmlBody = renderToString(
         <ConfirmationEmail
+          title="You have a new order from NiftyPrints"
           orderId={orderId}
           mailingAddress={mailingAddress}
           cartItems={cartItems}
+          highQualityImages={highQualityImages}
         />
       );
 

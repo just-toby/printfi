@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { CartItem } from "../../hooks/useCart";
 import { Address } from "../../hooks/useCoinbaseCommerceAPI";
 import Link from "next/link";
-import Order from "./Order";
+import Order, { HighQualityImages } from "./Order";
+import { isNullOrEmpty } from "../../utils/StringUtils";
 
 export interface ConfirmationEmailProps {
   orderId: string;
   mailingAddress: Address;
   cartItems: Array<CartItem>;
+  highQualityImages: HighQualityImages;
+  title: string;
 }
 
 const ConfirmationEmail: React.FC<ConfirmationEmailProps> = (
@@ -22,12 +25,19 @@ const ConfirmationEmail: React.FC<ConfirmationEmailProps> = (
     });
   }, []);
 
+  const secondAddressLine = isNullOrEmpty(props.mailingAddress["address2"])
+    ? " "
+    : " " + props.mailingAddress["address2"] + " ";
+
   const textFriendlyAddress =
     props.mailingAddress["address"] +
-    props.mailingAddress["addres2"] +
+    secondAddressLine +
+    ", " +
     props.mailingAddress["city"] +
-    ",";
-  props.mailingAddress["state"] + props.mailingAddress["zip"];
+    " " +
+    props.mailingAddress["state"] +
+    " " +
+    props.mailingAddress["zip"];
 
   return (
     <div className="emailDiv">
@@ -36,20 +46,25 @@ const ConfirmationEmail: React.FC<ConfirmationEmailProps> = (
           <a style={{ color: "black" }}>NiftyPrints</a>
         </Link>
       </div>
-      <div className="greetingMessage">Thanks for shopping with us!</div>
+      <div className="greetingMessage">{props.title}</div>
       <div className="orderDetails">
         <p>Order Number: {props.orderId} </p>
         <p>Shipping to: {props.mailingAddress["name"]}</p>
-        <p>Order Number: {textFriendlyAddress} </p>
+        <p>Address: {textFriendlyAddress} </p>
       </div>
 
-      <Order cart={props.cartItems} />
+      <Order
+        cart={props.cartItems}
+        highQualityImages={props.highQualityImages}
+      />
     </div>
   );
 };
 
 const MockConfirmationEmail = (
   <ConfirmationEmail
+    title="You're viewing a test version of the order confirmation email!"
+    highQualityImages={{ "123": "/test.svg" }}
     orderId={"1234"}
     mailingAddress={{
       name: "Just Toby",
@@ -64,9 +79,8 @@ const MockConfirmationEmail = (
       {
         name: "first NFT",
         token_id: "123",
-        collection_slug: "art-blocks",
-        high_quality_image:
-          "https://lh3.googleusercontent.com/OPktDZrm80U-Mcza8Kwiqrq8t7cEX7BFdKgOUN0SlMTZhQt1yBNkJyuF6n5l7oPAKH5wEjeyALWWnZi7MbHP4955mtiOO3BEvoAp",
+        collection_slug: "avastar",
+        high_quality_image: "/test.svg",
         original_uri:
           "https://lh3.googleusercontent.com/OPktDZrm80U-Mcza8Kwiqrq8t7cEX7BFdKgOUN0SlMTZhQt1yBNkJyuF6n5l7oPAKH5wEjeyALWWnZi7MbHP4955mtiOO3BEvoAp",
         preview_uri:
@@ -81,7 +95,7 @@ const MockConfirmationEmail = (
       {
         name: "second NFT",
         token_id: "123",
-        collection_slug: "art-blocks",
+        collection_slug: "avastar",
         high_quality_image:
           "https://lh3.googleusercontent.com/9JRYIfFOyY66aeL2QpVySKVjwgaoz33FCwhvko_IIXN35EDY4AD97pGgBNNbbLiffW2rl8QgW9vBJ-hfhNOuWE7FssUgYwL0bDlKWQ",
         original_uri:
