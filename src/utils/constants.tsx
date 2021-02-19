@@ -89,7 +89,7 @@ export const WHITELIST = [
 
 export function getContractBySlug(slug: string | null) {
   switch (slug) {
-    case "avastars":
+    case "avastar":
       return WHITELIST[0];
     case "cryptopunks":
       return WHITELIST[1];
@@ -103,3 +103,10 @@ export function getContractBySlug(slug: string | null) {
       return null;
   }
 }
+
+// only defines the functions we need.
+// you can read the whole contract here: https://etherscan.io/token/0xf3e778f839934fc819cfa1040aabacecba01e049
+export const avastarContractAbi = [
+  // Read-Only Functions
+  "function renderAvastar(uint256 _tokenId) view returns (string)",
+];

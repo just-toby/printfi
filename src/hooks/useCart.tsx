@@ -19,6 +19,7 @@ export type CartItem = {
   name: string;
   original_uri: string;
   preview_uri: string;
+  high_quality_image: string;
   config: ItemConfiguration;
   collection_slug: string;
 };
