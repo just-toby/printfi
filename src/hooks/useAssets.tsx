@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { WHITELIST } from "../utils/constants";
 import { isNullOrEmpty } from "../utils/StringUtils";
 
 export type AssetsConfig = {
@@ -24,12 +25,44 @@ export interface AssetOwner {
   discord_id: string;
 }
 
+export interface CollectionData {
+  banner_image_url: string;
+  chat_url: string;
+  created_date: string;
+  default_to_fiat: boolean;
+  description: string;
+  dev_buyer_fee_basis_points: string;
+  dev_seller_fee_basis_points: string;
+  discord_url: string;
+  display_data: any;
+  external_url: string;
+  featured: boolean;
+  featured_image_url: string;
+  hidden: boolean;
+  image_url: string;
+  is_subject_to_whitelist: boolean;
+  large_image_url: string;
+  medium_username: null;
+  name: string;
+  only_proxied_transfers: boolean;
+  opensea_buyer_fee_basis_points: string;
+  opensea_seller_fee_basis_points: string;
+  payout_address: string;
+  require_email: boolean;
+  safelist_request_status: string;
+  short_description: string;
+  slug: string;
+  telegram_url: string;
+  twitter_username: string;
+  wiki_url: string;
+}
+
 export type Asset = {
   animation_original_url: string;
   animation_url: string;
   asset_contract: AssetContract;
   background_color: string;
-  collection: any;
+  collection: CollectionData;
   creator: any;
   decimals: number;
   description: string;
@@ -61,15 +94,6 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
     }),
   };
 
-  // List of NFT contract addresses we support
-  const whitelist = [
-    `0xc2c747e0f7004f9e8817db2ca4997657a7746928`.toLowerCase(), // hash masks
-    `0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB`.toLowerCase(), // crypto punks
-    `0xF3E778F839934fC819cFA1040AabaCeCBA01e049`.toLowerCase(), // avastars
-    `0xF5b0A3eFB8e8E4c201e2A935F110eAaF3FFEcb8d`.toLowerCase(), // axies
-    `0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270`.toLowerCase(), // art blocks
-  ];
-
   const [assets, setAssets] = useState<Array<Asset>>([]);
   const [loading, setLoading] = useState<boolean>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
@@ -96,7 +120,7 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
           `&limit=${count}` +
           `&offset=${offset}`;
 
-        whitelist.forEach((address) => {
+        WHITELIST.forEach((address) => {
           url += `&asset_contract_addresses=${address}`;
         });
 
