@@ -1,4 +1,4 @@
-import { injected, portis, walletconnect, walletlink } from "../connectors";
+import { injected, portis, walletconnect, walletlink, fortmatic, torus, authereum} from "../connectors";
 import { AbstractConnector } from "@web3-react/abstract-connector";
 import { getAddress } from "@ethersproject/address";
 
@@ -68,4 +68,40 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     href: null,
     color: "#315CF5",
   },
+  FORTMATIC: {
+    connector: fortmatic,
+    name: 'Fortmatic',
+    iconName: 'fortmaticIcon.png',
+    description: 'Login using Fortmatic hosted wallet',
+    href: null,
+    color: '#6748FF',
+    mobile: true
+  },
+  TORUS: {
+    connector: torus,
+    name: 'Torus',
+    iconName: 'torus.jpg',
+    description: 'Login using Torus hosted wallet',
+    href: null,
+    color: '#6748FF',
+    mobile: true
+  }, 
+  AUTHEREUM: {
+    connector: authereum,
+    name: 'Authereum',
+    iconName: 'authereum.png',
+    description: 'Login using Authereum hosted wallet',
+    href: null,
+    color: '#6748FF',
+    mobile: true
+  }, 
+  // BITSKI: {
+  //   connector: bitski,
+  //   name: 'Bitski',
+  //   iconName: 'bitski.png',
+  //   description: 'Login using Bitski hosted wallet',
+  //   href: null,
+  //   color: '#6748FF',
+  //   mobile: true
+  // },
 };
