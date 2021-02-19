@@ -1,30 +1,19 @@
-import { useEffect, useState } from "react";
 import { CartItem } from "../../hooks/useCart";
 import { Address } from "../../hooks/useCoinbaseCommerceAPI";
 import Link from "next/link";
-import Order, { HighQualityImages } from "./Order";
+import Order from "./Order";
 import { isNullOrEmpty } from "../../utils/StringUtils";
 
 export interface ConfirmationEmailProps {
   orderId: string;
   mailingAddress: Address;
   cartItems: Array<CartItem>;
-  highQualityImages: HighQualityImages;
   title: string;
 }
 
 const ConfirmationEmail: React.FC<ConfirmationEmailProps> = (
   props: ConfirmationEmailProps
 ) => {
-  const [windowWidth, setWindowWidth] = useState(0);
-
-  useEffect(() => {
-    setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", (e) => {
-      setWindowWidth(window.innerWidth);
-    });
-  }, []);
-
   const secondAddressLine = isNullOrEmpty(props.mailingAddress["address2"])
     ? " "
     : " " + props.mailingAddress["address2"] + " ";
@@ -40,25 +29,51 @@ const ConfirmationEmail: React.FC<ConfirmationEmailProps> = (
     props.mailingAddress["zip"];
 
   return (
-    <div className="emailDiv">
-      <div className="emailHeader">
+    <div style={styles.emailDiv}>
+      <div style={styles.emailHeader}>
         <Link href="/">
           <a style={{ color: "black" }}>NiftyPrints</a>
         </Link>
       </div>
-      <div className="greetingMessage">{props.title}</div>
-      <div className="orderDetails">
+      <div style={styles.greetingMessage}>{props.title}</div>
+      <div style={styles.orderDetails}>
         <p>Order Number: {props.orderId} </p>
         <p>Shipping to: {props.mailingAddress["name"]}</p>
         <p>Address: {textFriendlyAddress} </p>
       </div>
 
-      <Order
-        cart={props.cartItems}
-        highQualityImages={props.highQualityImages}
-      />
+      <Order cart={props.cartItems} />
     </div>
   );
+};
+
+// need to use inline styles because this will be rendered as an email
+const styles = {
+  emailDiv: {
+    display: "flex",
+    flexDirection: "column" as "column",
+  },
+  emailHeader: {
+    alignItems: "left",
+    outline: "none",
+    cursor: "pointer",
+    textDecoration: "none",
+    color: "black",
+    fontSize: "3rem",
+    borderBottom: "1px solid #dedede",
+    width: "-webkit-fill-available",
+    padding: "20px",
+  },
+  greetingMessage: {
+    padding: "20px",
+    color: "black",
+    fontSize: "2rem",
+  },
+  orderDetails: {
+    padding: "20px",
+    color: "black",
+    fontSize: "1.5rem",
+  },
 };
 
 const MockConfirmationEmail = (

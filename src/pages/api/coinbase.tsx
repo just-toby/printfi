@@ -2,15 +2,15 @@ import { EventResource, Webhook } from "coinbase-commerce-node";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { isChargeResource } from "../../utils/CoinbaseUtils";
 import Cors from "cors";
-import { renderToString } from "react-dom/server";
+import { renderToStaticMarkup } from "react-dom/server";
 import { initMiddleware, MiddlewareNextFunction } from "../../utils/ApiUtils";
 import { ConfirmationEmail } from "../../components/Email/";
 import { CartItem } from "../../hooks/useCart";
 import temp from "temp";
 import fs from "fs";
-import { v4 as uuid } from "uuid";
-import { getHighQualityImageUri } from "../../utils/ImageUtils";
+import { getHighQualityImage } from "../../utils/ImageUtils";
 import { getDefaultProvider } from "@ethersproject/providers";
+import ImageDataUri from "image-data-uri";
 
 const mailchimpTx = require("@mailchimp/mailchimp_transactional")(
   process.env.MAILCHIMP_API_KEY
@@ -41,17 +41,27 @@ const rawPayloadMiddleware = initMiddleware(
   }
 );
 
-const writeToFile = (data: string) => {
-  const fileName = uuid().toString() + ".svg";
-  temp.open(fileName, function (err, info) {
-    if (!err) {
-      fs.write(info.fd, data, (err) => {
-        console.log(err);
-      });
-      fs.close(info.fd, function (err) {});
-    }
+const writeToFile = (data: string, name: string) => {
+  return new Promise((resolve, reject) => {
+    const fileName = name;
+    temp.open(fileName, function (err, info) {
+      if (!err) {
+        fs.write(info.fd, data, (err) => {
+          console.log(err);
+        });
+        fs.close(info.fd, function (err) {
+          reject(err);
+        });
+      }
+    });
+    resolve(fileName);
   });
-  return fileName;
+};
+
+type MandrillAttachment = {
+  content: string; // raw file contents
+  name: string; // filename to display as
+  type: string; // file type (likely svg)
 };
 
 const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -101,45 +111,61 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         return;
       }
       const chargeMetadata = event.data.metadata;
-      const cartItems = chargeMetadata["cart_items"];
-      const mailingAddress = chargeMetadata["mailing_address"];
+      const cartItems = JSON.parse(chargeMetadata["cart_items"]);
+      const mailingAddress = JSON.parse(chargeMetadata["mailing_address"]);
       const customerEmail = mailingAddress["email"];
-      const orderId = event.data["id"];
+      const orderId = event.data["code"];
 
       // TODO: add a "fallback" confirmation message that doesn't rely on the CC data format.
-      const emailHtmlBody = renderToString(
+      const emailHtmlBody = renderToStaticMarkup(
         <ConfirmationEmail
           title="Thanks for shopping with us!"
           orderId={orderId}
           mailingAddress={mailingAddress}
           cartItems={cartItems}
-          highQualityImages={null}
         />
       );
 
-      const highQualityImages = {};
-      cartItems.array.forEach(async (item: CartItem) => {
-        if (item.collection_slug === "avastar") {
-          const svgData = await getHighQualityImageUri(
-            item,
-            getDefaultProvider("1")
-          );
-          // for Avastar, we receive the raw SVG data in metadata.
-          // let's write it to a temporary file so we can render it
-          // in our email component.
-          highQualityImages[item.token_id] = writeToFile(svgData);
-        } else {
-          highQualityImages[item.token_id] = item.original_uri;
-        }
-      });
+      const attachments: Array<MandrillAttachment> = [];
+      await Promise.all(
+        cartItems.map(async (item: CartItem) => {
+          const fileName = item.name.replace(/[^a-z0-9]/gi, "");
+          if (item.collection_slug === "avastar") {
+            const svgData = await getHighQualityImage(
+              item,
+              getDefaultProvider("mainnet", {
+                infura: process.env.NEXT_PUBLIC_REACT_APP_INFURA_ID,
+                etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY,
+              })
+            );
+            // for Avastar, we use the raw svg data from the blockchain.
+            attachments.push({
+              content: Buffer.from(svgData).toString("base64"),
+              name: fileName + ".svg",
+              type: "image/svg+xml",
+            });
+          } else {
+            // TODO: upscale images for collections that need it
+            ImageDataUri.encodeFromURL(item.original_uri).then(
+              (res: string) => {
+                const decodedData = ImageDataUri.decode(res);
+                attachments.push({
+                  name: fileName,
+                  content: decodedData.dataBase64,
+                  type: decodedData.imageType,
+                });
+              }
+            );
+          }
+        })
+      );
 
-      const printerHtmlBody = renderToString(
+      const printerHtmlBody = renderToStaticMarkup(
         <ConfirmationEmail
           title="You have a new order from NiftyPrints"
           orderId={orderId}
           mailingAddress={mailingAddress}
           cartItems={cartItems}
-          highQualityImages={highQualityImages}
         />
       );
 
@@ -163,6 +189,7 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         from_email: "team@nftprints.io",
         subject: "NiftyPrint Order #" + orderId + " Details",
         html: printerHtmlBody,
+        attachments: attachments,
         to: [
           {
             email: "printfi@protonmail.com",
@@ -175,8 +202,12 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         ],
       };
 
-      const customerResult = mailchimpTx.messages.send({ customerMessage });
-      const printerResult = mailchimpTx.messages.send({ printerMessage });
+      const customerResult = await mailchimpTx.messages.send({
+        message: customerMessage,
+      });
+      const printerResult = await mailchimpTx.messages.send({
+        message: printerMessage,
+      });
       return customerResult;
     case "charge:created":
     case "charge:delayed":

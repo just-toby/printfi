@@ -3,7 +3,10 @@ import { Contract } from "@ethersproject/contracts";
 import { avastarContractAbi, getContractBySlug } from "./constants";
 import { CartItem } from "../hooks/useCart";
 
-export async function getHighQualityImageUri(
+/**
+ * Returns an image URI *or* raw SVG data depending on the collection type.
+ */
+export async function getHighQualityImage(
   item: CartItem,
   library: BaseProvider
 ): Promise<string> {
