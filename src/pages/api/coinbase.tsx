@@ -208,7 +208,7 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       const printerResult = await mailchimpTx.messages.send({
         message: printerMessage,
       });
-      return customerResult;
+      return res.status(200).send("Successfully handled Charge webhook");
     case "charge:created":
     case "charge:delayed":
     case "charge:failed":
