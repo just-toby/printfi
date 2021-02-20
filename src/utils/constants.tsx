@@ -94,14 +94,5 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     href: null,
     color: '#6748FF',
     mobile: true
-  }, 
-  // BITSKI: {
-  //   connector: bitski,
-  //   name: 'Bitski',
-  //   iconName: 'bitski.png',
-  //   description: 'Login using Bitski hosted wallet',
-  //   href: null,
-  //   color: '#6748FF',
-  //   mobile: true
-  // },
+  }
 };
