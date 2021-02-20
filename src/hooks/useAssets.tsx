@@ -99,9 +99,9 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
   const [didInitialFetch, setDidInitialFetch] = useState<boolean>(false);
 
-  // if (process.env.NEXT_PUBLIC_DEV_MODE === "wat") {
-  //   address = "0x6301add4fb128de9778b8651a2a9278b86761423";
-  // }
+  if (process.env.NEXT_PUBLIC_DEV_MODE === "wat") {
+    address = "0x6301add4fb128de9778b8651a2a9278b86761423";
+  }
 
   // TODO: we can optimize this with server side rendering if it becomes too slow.
   const fetchAssets = useCallback(
