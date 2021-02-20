@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import styles from "../styles/Home.module.css";
 import Header from "../components/Header/Header";
 import { useRouter } from "next/router";
 import { AssetsContext } from "../context/AssetsContext";
@@ -7,7 +6,6 @@ import { Asset } from "../hooks/useAssets";
 import { Rings, useLoading } from "@agney/react-loading";
 import { TokenCard } from "../components/TokenCard";
 import { OptionRow } from "../components/OptionRow";
-import classNames from "classnames";
 import { CartContext } from "../context/CartContext";
 import { ItemConfiguration } from "../hooks/useCart";
 import { Button } from "@material-ui/core";
@@ -69,16 +67,16 @@ export default function Customize(props: CustomizePageProps) {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={"container"}>
       <Header subPage="print" />
-      <main className={styles.main}>
+      <main className={"main"}>
         {item == null || loading ? (
           <section {...containerProps}>{indicatorEl}</section>
         ) : (
-          <div className={styles.customizeContainer}>
-            <div className={styles.customizeOptions}>
+          <div className="customizeContainer">
+            <div className="customizeOptions">
               <span
-                className={classNames(styles.largeFont, styles.customizeTitle)}
+                className="largeFont customizeTitle"
               >
                 <a className="siteTitleLink">{item.name}</a>
               </span>
@@ -121,7 +119,7 @@ export default function Customize(props: CustomizePageProps) {
                 </Button>
               </div>
             </div>
-            <div className={styles.customizeImageContainer}>
+            <div className="customizeImageContainer">
               <TokenCard
                 key={item.id}
                 name={item.name}

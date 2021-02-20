@@ -1,6 +1,3 @@
-import classNames from "classnames";
-import styles from "../styles/Home.module.css";
-
 export interface OptionButtonProps {
   title: string;
   selected: boolean;
@@ -14,11 +11,11 @@ const OptionButton: React.FC<OptionButtonProps> = (
     <div
       onClick={props.onClick}
       className={
-        props.selected ? styles.optionButtonSelected : styles.optionButton
+        props.selected ? "optionButtonSelected" : "optionButton"
       }
     >
       <span
-        className={classNames(styles.smallFont, styles.disableTextSelection)}
+        className={"smallFont disableTextSelection"}
       >
         {props.title}
       </span>

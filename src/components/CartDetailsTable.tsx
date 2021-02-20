@@ -1,6 +1,4 @@
-import classNames from "classnames";
 import { ReactNode } from "react";
-import styles from "../styles/Home.module.css";
 import { TokenCard } from "../components/TokenCard";
 import { CartItem } from "../hooks/useCart";
 
@@ -10,28 +8,25 @@ export interface CartDetailsTableProps {
 
 export default function CartDetailsTable(props: CartDetailsTableProps) {
   const rowItem = (content: ReactNode) => {
-    return <td className={classNames(styles.cartRowItem)}>{content}</td>;
+    return <td className="cartRowItem">{content}</td>;
   };
 
   return (
-    <table className={styles.cartTable}>
+    <table className="cartTable">
       <tbody>
         <tr>
           {["Size", "Frame", "Glass", "Space"].map((label) => {
             return (
               <td
                 key={label}
-                className={classNames(styles.largeFont, styles.cartTableHeader)}
+                className={"largeFont cartTableHeader"}
               >
                 {label}
               </td>
             );
           })}
           <td
-            className={classNames(
-              styles.largeFont,
-              styles.cartTableHeaderCentered
-            )}
+            className="largeFont cartTableHeaderCentered"
           >
             Image
           </td>
