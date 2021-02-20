@@ -10,7 +10,9 @@ import temp from "temp";
 import fs from "fs";
 import { getRawImageData } from "../../utils/ImageUtils";
 import { getDefaultProvider } from "@ethersproject/providers";
-import potrace from "potrace";
+import { changeDpiDataUrl } from "dpi-tools";
+import { loadImage, createCanvas } from "canvas";
+import ImageDataUri from "image-data-uri";
 
 const mailchimpTx = require("@mailchimp/mailchimp_transactional")(
   process.env.MAILCHIMP_API_KEY
@@ -155,25 +157,26 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             });
           } else {
             // For all other collections, we expect a URL that points to a PNG file
-            // We will turn this into SVG data ourselves.
+            // We will turn this into PNG data ourselves and increase the DPI.
             const rawImageData = await getRawImageData(item, web3Provider);
             const localFilePath: string = await writeToFile(
               rawImageData.dataBase64,
               fileName
             );
-            potrace.posterize(
-              localFilePath,
-              { threshold: 180, steps: 4 },
-              function (err: any, rawSvg: string) {
-                if (err) throw err;
-                const svgBuffer = Buffer.from(rawSvg);
-                attachments.push({
-                  content: svgBuffer.toString("base64"),
-                  name: fileName + ".svg",
-                  type: "image/svg+xml",
-                });
-              }
-            );
+
+            const canvas = createCanvas(1000, 1000);
+            const ctx = canvas.getContext("2d");
+            loadImage(localFilePath).then((image) => {
+              ctx.drawImage(image, 0, 0);
+            });
+            let dataUrl = canvas.toDataURL("image/jpeg", 0.92);
+            let dataUrl150dpi = changeDpiDataUrl(dataUrl, 150);
+            const result = ImageDataUri.decode(dataUrl150dpi);
+            attachments.push({
+              content: result.dataBase64,
+              name: fileName + ".png",
+              type: result.type,
+            });
           }
         })
       );
