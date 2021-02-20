@@ -1,7 +1,7 @@
 import { Rings, useLoading } from "@agney/react-loading";
 import classNames from "classnames";
 import React from "react";
-import styles from "../styles/Home.module.css";
+import { Button } from "@material-ui/core";
 
 export interface ConfirmButtonProps {
   title: string;
@@ -20,28 +20,28 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = (
   });
 
   return (
-    <button
+    <Button
       onClick={props.disabled === true ? null : props.onClick}
       type={props.type}
       className={classNames(
         props.disabled === true
-          ? styles.confirmButtonDisabled
-          : styles.confirmButton,
-        styles.marginTop
+          ? "confirmButtonDisabled"
+          : "confirmButton",
+        "marginTop"
       )}
     >
       {props.loading === true ? (
-        <div className={styles.container}>
+        <div className={"container"}>
           <section {...containerProps}>{indicatorEl}</section>
         </div>
       ) : (
         <span
-          className={classNames(styles.smallFont, styles.disableTextSelection)}
+          className="smallFont disableTextSelection"
         >
           {props.title}
         </span>
       )}
-    </button>
+    </Button>
   );
 };
 

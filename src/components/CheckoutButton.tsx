@@ -1,4 +1,3 @@
-import styles from "../styles/Home.module.css";
 import CoinbaseCommerceButton from "react-coinbase-commerce";
 import "react-coinbase-commerce/dist/coinbase-commerce-button.css";
 import classNames from "classnames";
@@ -70,9 +69,9 @@ const CheckoutButton: React.FC<CheckoutButtonProps> = (
   return (
     <CoinbaseCommerceButton
       className={classNames(
-        styles.confirmButton,
-        styles.smallFont,
-        styles.payWithCryptoButton
+        "confirmButton",
+        "smallFont",
+        "payWithCryptoButton"
       )}
       chargeId={coinbaseProps.chargeId}
       styled={coinbaseProps.styled}

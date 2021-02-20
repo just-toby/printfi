@@ -1,4 +1,3 @@
-import styles from "../styles/Home.module.css";
 import * as React from "react";
 import { TokenCard } from "./TokenCard";
 import { useContext, useEffect, useState } from "react";
@@ -48,7 +47,8 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
   }
 
   return (
-    <div className={styles.main}>
+    <div className={"main"}>
+      {loading ? <section {...containerProps}>{indicatorEl}</section> : null}
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
         itemCount={itemCount}
@@ -103,7 +103,6 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
           </Grid>
         )}
       </InfiniteLoader>
-      {loading ? <section {...containerProps}>{indicatorEl}</section> : null}
     </div>
   );
 };

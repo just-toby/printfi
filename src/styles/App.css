@@ -1,3 +1,342 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.mediumFont {
+  font-size: 1.6rem;
+}
+
+.largeFont {
+  font-size: 2rem;
+}
+
+.title {
+  margin: 0;
+  line-height: 1.15;
+  font-size: 2rem;
+  user-select: none;
+}
+
+.title,
+.description {
+  text-align: center;
+}
+
+
+
+
+.header {
+  width: 100%;
+  height: 75px;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  position: fixed;
+  top: 0;
+  background-color: #ffffff;
+  z-index: 2;
+}
+
+.smallFont {
+  font-size: 1.2rem;
+}
+
+.navBarButton {
+  color: #000000;
+}
+
+.subPageLink {
+  font-size: 1.2rem;
+  margin: 1.5rem;
+}
+
+.subPageLinkUnderline {
+  text-decoration: underline;
+}
+
+.footer {
+  width: 100%;
+  height: 100px;
+  border-top: 1px solid #eaeaea;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.footer a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.description {
+  line-height: 1.5;
+  font-size: 1.5rem;
+}
+
+.grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  max-width: 70%;
+}
+
+.card {
+  margin: 1rem;
+}
+
+.cardSpan {
+  margin: 1rem;
+}
+
+.image {
+  transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+
+.imageRadius {
+  border-radius: 10px !important;
+}
+
+.blackFrame {
+  border: 2rem solid black !important;
+}
+
+.whiteFrame {
+  border: 2rem solid #eaeaea !important;
+}
+
+.imageInnerSpacing {
+  padding-left: 3rem !important;
+  padding-right: 3rem !important;
+  padding-top: 4rem !important;
+  padding-bottom: 4rem !important;
+}
+
+.image:hover,
+.image:focus,
+.image:active {
+  opacity: 0.9;
+}
+
+.card p {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+.customizeContainer {
+  flex-direction: row;
+  display: flex;
+  background-color: "#FFFFFe";
+  border-radius: 20px;
+  box-shadow: 0 3.2px 8px 0 rgba(0, 0, 0, 0.132),
+    0 0.6px 8px 0 rgba(0, 0, 0, 0.108);
+}
+
+.customizeImageContainer {
+  padding-right: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.customizeTitle {
+  margin-bottom: 2rem;
+}
+
+.customizeOptions {
+  margin: 1.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  width: 500;
+  margin-right: 2rem;
+}
+
+.optionRow {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.marginRightLarge {
+  margin-right: 2.4rem;
+}
+
+.optionButton {
+  display: flex;
+  flex-direction: row;
+  margin-left: 1.5rem;
+  border: 1px solid #000000;
+  border-radius: 2rem;
+  height: 4rem;
+  width: 120px;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.optionButton:hover,
+.optionButton:focus,
+.optionButton:active {
+  border-color: #444444;
+  border: 1.5px solid #444444;
+  opacity: 0.7;
+}
+
+.confirmButton {
+  display: flex;
+  flex-direction: row;
+  margin-left: 1.5rem;
+  border: 1px solid #000000;
+  border-radius: 2rem;
+  height: 4rem;
+  width: 250px;
+  align-items: center;
+  align-self: flex-end;
+  justify-content: center;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+  background-color: #c7ffeb;
+}
+
+.payWithCryptoButton {
+  background-color: #1652f0;
+  color: #ffffff;
+}
+
+.confirmButtonDisabled {
+  display: flex;
+  flex-direction: row;
+  margin-left: 1.5rem;
+  border: 1px solid #000000;
+  border-radius: 2rem;
+  height: 4rem;
+  width: 250px;
+  align-items: center;
+  align-self: flex-end;
+  justify-content: center;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+  background-color: #444444;
+  opacity: 0.3;
+}
+
+.confirmButton:hover,
+.confirmButton:focus,
+.confirmButton:active {
+  border-color: #444444;
+  border: 1.5px solid #444444;
+  opacity: 0.7;
+}
+
+.marginTop {
+  margin-top: 2rem;
+}
+
+.optionButtonSelected span {
+  font-weight: bold;
+}
+
+.optionButtonSelected {
+  display: flex;
+  flex-direction: row;
+  margin-left: 1.5rem;
+  border: 2px solid #000000;
+  border-radius: 30px;
+  height: 4rem;
+  width: 120px;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.optionButtonSelected span {
+  font-weight: bold;
+}
+
+.disableTextSelection {
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+
+
+.cartTableHeader {
+  padding-right: 5rem;
+}
+
+.cartTableHeaderCentered {
+  padding-right: 5rem;
+  text-align: center;
+}
+
+.cartTable {
+  margin-top: 2rem;
+  width: 70%;
+}
+
+.cartRowItem {
+  padding-top: 2rem;
+}
+
+.cartRowItemCentered {
+  padding-top: 2rem;
+}
+
+#element::-webkit-scrollbar {
+  display: none;
+}
+
+.coinbaseButton {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+
+.cartConfirmButton {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.cartTitleContainer {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
 .navigationLinks {
   align-items: left;
   border-radius: 3rem;
@@ -57,7 +396,6 @@
 .orderCompletedDiv {
   padding: 10px;
   display: flex;
-
 }
 
 .orderConfiguration {
@@ -89,5 +427,5 @@
 .cartDiv {
   padding-top: 150px;
   padding-right: 1rem;
-  align-self: flex-end;
+  align-self: center;
 }

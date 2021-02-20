@@ -16,9 +16,10 @@ export type ItemConfiguration = {
 
 export type CartItem = {
   name: string;
-  basic_uri: string;
+  token_id: string;
   original_uri: string;
   preview_uri: string;
+  collection_slug: string;
   config: ItemConfiguration;
 };
 

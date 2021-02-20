@@ -1,5 +1,3 @@
-import styles from "../styles/Home.module.css";
-import classNames from "classnames";
 import { Button } from "@material-ui/core";
 
 export interface OptionRowProps {
@@ -11,11 +9,11 @@ export interface OptionRowProps {
 
 const OptionRow = (props: OptionRowProps) => {
   return (
-    <div className={styles.optionRow}>
-      <span className={classNames(styles.largeFont, styles.marginRightLarge)}>
+    <div className="optionRow">
+      <span className="largeFont marginRightLarge">
         <a className="navigationLinks siteTitleLink">{props.title}</a>
       </span>
-      <div className={styles.row}>
+      <div className="row">
         {props.options.map((option) => {
           return (
             <Button
