@@ -10,7 +10,7 @@ import temp from "temp";
 import fs from "fs";
 import { getRawImageData } from "../../utils/ImageUtils";
 import { getDefaultProvider } from "@ethersproject/providers";
-import ImageDataUri from "image-data-uri";
+import potrace from "potrace";
 
 const mailchimpTx = require("@mailchimp/mailchimp_transactional")(
   process.env.MAILCHIMP_API_KEY
@@ -41,20 +41,30 @@ const rawPayloadMiddleware = initMiddleware(
   }
 );
 
-const writeToFile = (data: string, name: string) => {
+// Returns the local absolute filepath
+const writeToFile: (data64: string, name: string) => Promise<string> = (
+  data64: string,
+  name: string
+) => {
   return new Promise((resolve, reject) => {
     const fileName = name;
+    let tempFilePath;
     temp.open(fileName, function (err, info) {
       if (!err) {
-        fs.write(info.fd, data, (err) => {
-          console.log(err);
+        tempFilePath = info.path;
+        fs.write(info.fd, data64, 0, "base64", (err, written, str) => {
+          if (err) {
+            console.log(err);
+          }
         });
         fs.close(info.fd, function (err) {
-          reject(err);
+          if (err) {
+            reject(err);
+          }
         });
+        resolve(tempFilePath);
       }
     });
-    resolve(fileName);
   });
 };
 
@@ -145,19 +155,22 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             });
           } else {
             // For all other collections, we expect a URL that points to a PNG file
+            // We will turn this into SVG data ourselves.
             const rawImageData = await getRawImageData(item, web3Provider);
-            const localFilePath = await writeToFile(
+            const localFilePath: string = await writeToFile(
               rawImageData.dataBase64,
               fileName
             );
-            // TODO: upscale images for collections that need it
-            ImageDataUri.encodeFromURL(item.original_uri).then(
-              (res: string) => {
-                const decodedData = ImageDataUri.decode(res);
+            potrace.posterize(
+              localFilePath,
+              { threshold: 180, steps: 4 },
+              function (err: any, rawSvg: string) {
+                if (err) throw err;
+                const svgBuffer = Buffer.from(rawSvg);
                 attachments.push({
-                  name: fileName,
-                  content: decodedData.dataBase64,
-                  type: decodedData.imageType,
+                  content: svgBuffer.toString("base64"),
+                  name: fileName + ".svg",
+                  type: "image/svg+xml",
                 });
               }
             );
