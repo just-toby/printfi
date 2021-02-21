@@ -10,10 +10,10 @@ import temp from "temp";
 import fs from "fs";
 import { getRawImageData } from "../../utils/ImageUtils";
 import { getDefaultProvider } from "@ethersproject/providers";
-import { changeDpiDataUrl } from "dpi-tools";
-import { loadImage, createCanvas } from "canvas";
-import ImageDataUri from "image-data-uri";
+import Jimp from "jimp";
+import { writePngDpi } from "png-dpi-reader-writer";
 
+const deepai = require("deepai");
 const mailchimpTx = require("@mailchimp/mailchimp_transactional")(
   process.env.MAILCHIMP_API_KEY
 );
@@ -82,6 +82,8 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const rawPayload = await rawPayloadMiddleware(req, res);
 
   temp.track();
+
+  deepai.setApiKey(process.env.DEEPAI_API_KEY);
 
   // Should be a string per CC docs.
   const signature: string =
@@ -153,29 +155,18 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             attachments.push({
               content: svgData.dataBase64,
               name: fileName + ".svg",
-              type: svgData.type,
+              type: svgData.imageType,
             });
           } else {
             // For all other collections, we expect a URL that points to a PNG file
             // We will turn this into PNG data ourselves and increase the DPI.
             const rawImageData = await getRawImageData(item, web3Provider);
-            const localFilePath: string = await writeToFile(
-              rawImageData.dataBase64,
-              fileName
-            );
+            const imageBuffer = writePngDpi(rawImageData.dataBuffer, 350);
 
-            const canvas = createCanvas(1000, 1000);
-            const ctx = canvas.getContext("2d");
-            loadImage(localFilePath).then((image) => {
-              ctx.drawImage(image, 0, 0);
-            });
-            let dataUrl = canvas.toDataURL("image/jpeg", 0.92);
-            let dataUrl150dpi = changeDpiDataUrl(dataUrl, 150);
-            const result = ImageDataUri.decode(dataUrl150dpi);
             attachments.push({
-              content: result.dataBase64,
+              content: Buffer.from(imageBuffer).toString("base64"),
               name: fileName + ".png",
-              type: result.type,
+              type: rawImageData.imageType,
             });
           }
         })
@@ -223,12 +214,14 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         ],
       };
 
-      const customerResult = await mailchimpTx.messages.send({
-        message: customerMessage,
-      });
-      const printerResult = await mailchimpTx.messages.send({
-        message: printerMessage,
-      });
+      await Promise.all([
+        // mailchimpTx.messages.send({
+        //   message: customerMessage,
+        // }),
+        mailchimpTx.messages.send({
+          message: printerMessage,
+        }),
+      ]);
       return res.status(200).send("Signed Webhook Received: " + event.id);
     case "charge:created":
     case "charge:delayed":

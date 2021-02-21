@@ -6,7 +6,7 @@ import ImageDataUri from "image-data-uri";
 
 export type ImageData = {
   dataBase64: string;
-  type: string;
+  imageType: string;
   dataBuffer: Buffer;
 };
 
@@ -42,7 +42,7 @@ export async function getRawImageData(
       const svgBuffer = Buffer.from(rawSvg);
       return {
         dataBase64: svgBuffer.toString("base64"),
-        type: "image/svg+xml",
+        imageType: "image/svg+xml",
         dataBuffer: svgBuffer,
       };
     case "cryptopunks":
