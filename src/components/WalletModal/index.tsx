@@ -8,7 +8,8 @@ import { ExternalLink } from "../theme";
 import Modal from "../Modal";
 import { AbstractConnector } from "@web3-react/abstract-connector";
 import { InjectedConnector } from "@web3-react/injected-connector";
-import { injected, portis } from "../../connectors";
+import { injected, portis, fortmatic } from "../../connectors";
+import { OVERLAY_READY } from '../../connectors/Fortmatic'
 import { isMobile } from "react-device-detect";
 import usePrevious from "../../hooks/usePrevious";
 
@@ -126,6 +127,13 @@ export default function WalletModal(props) {
       toggleWalletDropdown();
     }
   }, [account, previousAccount, toggleWalletDropdown, walletDropdown]);
+
+  // close wallet modal if fortmatic modal is active
+    useEffect(() => {
+      fortmatic.on(OVERLAY_READY, () => {
+        toggleWalletDropdown()
+      })
+    }, [toggleWalletDropdown])
 
   const tryActivation = async (connector: AbstractConnector | undefined) => {
     let name = "";

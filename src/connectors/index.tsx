@@ -2,11 +2,13 @@ import { InjectedConnector } from "@web3-react/injected-connector";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 import { WalletLinkConnector } from "@web3-react/walletlink-connector";
 import { PortisConnector } from "@web3-react/portis-connector";
+import { FortmaticConnector } from './Fortmatic'
+import { TorusConnector } from '@web3-react/torus-connector';
+import { AuthereumConnector } from '@web3-react/authereum-connector';
 
 const RPC_URL_PREFIX = "https://mainnet.infura.io/v3/";
 const INFURA_ID = process.env.NEXT_PUBLIC_REACT_APP_INFURA_ID;
 const PORTIS_ID = process.env.NEXT_PUBLIC_REACT_APP_PORTIS_ID;
-// TODO: enable fortmatic support
 const FORMATIC_KEY = process.env.NEXT_PUBLIC_REACT_APP_FORTMATIC_KEY;
 
 export const NETWORK_CHAIN_ID: number = parseInt(
@@ -22,6 +24,20 @@ if (INFURA_ID == null) {
 export const injected = new InjectedConnector({
   supportedChainIds: [1], // we only support mainnet
 });
+export const authereum = new AuthereumConnector({
+  chainId: 1
+})
+
+// mainnet only
+export const torus = new TorusConnector({
+  chainId: 1
+})
+
+// mainnet only
+export const fortmatic = new FortmaticConnector({
+  apiKey: FORMATIC_KEY ?? '',
+  chainId: 1
+})
 
 // mainnet only
 export const walletconnect = new WalletConnectConnector({
