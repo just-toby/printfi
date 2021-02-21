@@ -34,9 +34,6 @@
   text-align: center;
 }
 
-
-
-
 .header {
   width: 100%;
   height: 75px;
@@ -101,6 +98,12 @@
 
 .card {
   margin: 1rem;
+}
+
+.loadingCard {
+  margin-top: 5rem;
+  margin-left: 8rem;
+  border-radius: 10px !important;
 }
 
 .cardSpan {
@@ -288,7 +291,6 @@
   user-select: none;
 }
 
-
 .cartTableHeader {
   padding-right: 5rem;
 }
@@ -321,7 +323,6 @@
   flex-direction: row;
   justify-content: flex-end;
 }
-
 
 .cartConfirmButton {
   margin-top: 4rem;
@@ -377,11 +378,11 @@
   width: fit-content;
   border-bottom: 1px solid #dedede;
   width: -webkit-fill-available;
-  padding: 20px
+  padding: 20px;
 }
 .emailDiv {
   display: flex;
-  flex-direction: column;  
+  flex-direction: column;
 }
 
 .headerDiv {
