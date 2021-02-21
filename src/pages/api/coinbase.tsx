@@ -10,10 +10,8 @@ import temp from "temp";
 import fs from "fs";
 import { getRawImageData } from "../../utils/ImageUtils";
 import { getDefaultProvider } from "@ethersproject/providers";
-import Jimp from "jimp";
 import { writePngDpi } from "png-dpi-reader-writer";
 
-const deepai = require("deepai");
 const mailchimpTx = require("@mailchimp/mailchimp_transactional")(
   process.env.MAILCHIMP_API_KEY
 );
@@ -82,8 +80,6 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const rawPayload = await rawPayloadMiddleware(req, res);
 
   temp.track();
-
-  deepai.setApiKey(process.env.DEEPAI_API_KEY);
 
   // Should be a string per CC docs.
   const signature: string =
@@ -215,9 +211,9 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       };
 
       await Promise.all([
-        // mailchimpTx.messages.send({
-        //   message: customerMessage,
-        // }),
+        mailchimpTx.messages.send({
+          message: customerMessage,
+        }),
         mailchimpTx.messages.send({
           message: printerMessage,
         }),
