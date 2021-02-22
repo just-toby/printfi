@@ -84,7 +84,10 @@ export type Asset = {
   top_bid: any;
 };
 
-const useAssets: (address: string) => AssetsConfig = (address: string) => {
+const useAssets: (address: string, active: boolean) => AssetsConfig = (
+  address: string,
+  active: boolean
+) => {
   const initialPageSize = 20;
 
   const options = {
@@ -153,7 +156,7 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
   );
 
   useEffect(() => {
-    if (isNullOrEmpty(address)) {
+    if (isNullOrEmpty(address) || !active) {
       setAssets([]);
       setDidInitialFetch(false);
       return;
@@ -167,7 +170,7 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
       );
       setDidInitialFetch(true);
     }
-  }, [address]);
+  }, [address, active]);
 
   const loadMore = useCallback(
     async (startIndex: number, endIndex: number) => {
