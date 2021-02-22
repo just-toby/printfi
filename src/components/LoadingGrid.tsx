@@ -1,5 +1,5 @@
 import { FixedSizeGrid as Grid } from "react-window";
-import { Shimmer } from "react-shimmer";
+import { Skeleton } from '@material-ui/lab';
 
 interface LoadingGridProps {
   windowWidth: number;
@@ -18,14 +18,10 @@ export function LoadingGrid(props: LoadingGridProps) {
       height={props.windowHeight - 75}
       width={props.windowWidth}
     >
-      {({ columnIndex, rowIndex, style }) => {
+      {({ style }) => {
         return (
           <div style={style}>
-            <Shimmer
-              width={tileWidth}
-              height={tileHeight}
-              className="loadingCard"
-            />
+            <Skeleton width={tileWidth} height={tileHeight} variant="rect" className="loadingCard"/>
           </div>
         );
       }}
