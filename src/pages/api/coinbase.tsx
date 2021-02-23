@@ -10,7 +10,6 @@ import temp from "temp";
 import fs from "fs";
 import { getImageDataFromFile, getRawImageData } from "../../utils/ImageUtils";
 import { getDefaultProvider } from "@ethersproject/providers";
-import { writePngDpi } from "png-dpi-reader-writer";
 
 const exiftool = require("node-exiftool");
 const exiftoolBin = require("dist-exiftool");
@@ -175,45 +174,32 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             // For all other collections, we expect a URL that points to a PNG file
             // We will turn this into PNG data ourselves and increase the DPI.
             const rawImageData = await getRawImageData(item, web3Provider);
-            if (rawImageData.imageType === "image/png") {
-              console.log("trying to increase DPI of png");
-              const finalImageBuffer = writePngDpi(
-                rawImageData.dataBuffer,
-                600
-              );
-              addAttachment(
-                Buffer.from(finalImageBuffer).toString("base64"),
-                fileName,
-                rawImageData.imageType
-              );
-            } else {
-              await ep.open();
-              const localFilePath = await writeToFile(
-                rawImageData.dataBase64,
-                fileName
-              );
-              await ep.writeMetadata(
-                localFilePath,
-                {
-                  ResolutionUnit: "inches",
-                  XResolution: 600,
-                  YResolution: 600,
-                  "jfif:XResolution": 600,
-                  "jfif:YResolution": 600,
-                },
-                ["overwrite_original_in_place", "preserve"]
-              );
-              await ep.close();
-              const resultingImageData = await getImageDataFromFile(
-                localFilePath,
-                rawImageData.imageType
-              );
-              addAttachment(
-                resultingImageData.dataBase64,
-                fileName + "." + mime.extensions[resultingImageData.imageType],
-                resultingImageData.imageType
-              );
-            }
+            await ep.open();
+            const localFilePath = await writeToFile(
+              rawImageData.dataBase64,
+              fileName
+            );
+            await ep.writeMetadata(
+              localFilePath,
+              {
+                ResolutionUnit: "inches",
+                XResolution: 600,
+                YResolution: 600,
+                "jfif:XResolution": 600,
+                "jfif:YResolution": 600,
+              },
+              ["overwrite_original_in_place", "preserve"]
+            );
+            await ep.close();
+            const resultingImageData = await getImageDataFromFile(
+              localFilePath,
+              rawImageData.imageType
+            );
+            addAttachment(
+              resultingImageData.dataBase64,
+              fileName + "." + mime.extensions[resultingImageData.imageType],
+              resultingImageData.imageType
+            );
           }
         })
       );
