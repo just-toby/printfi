@@ -8,9 +8,18 @@ import { ConfirmationEmail } from "../../components/Email/";
 import { CartItem } from "../../hooks/useCart";
 import temp from "temp";
 import fs from "fs";
-import { getImageDataFromFile, getRawImageData } from "../../utils/ImageUtils";
+import {
+  getImageDataFromFile,
+  getRawImageData,
+  ImageData,
+} from "../../utils/ImageUtils";
 import { getDefaultProvider } from "@ethersproject/providers";
+import Jimp from "jimp";
+import { Dropbox } from "dropbox";
+import RequestedLinkAccessLevelViewer from "dropbox/types";
+import RequestedVisibilityPublic from "dropbox/types";
 
+const dbx = new Dropbox({ accessToken: process.env.DROPBOX_SECRET });
 const exiftool = require("node-exiftool");
 const exiftoolBin = require("dist-exiftool");
 const ep = new exiftool.ExiftoolProcess(exiftoolBin);
@@ -137,6 +146,7 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           orderId={orderId}
           mailingAddress={mailingAddress}
           cartItems={cartItems}
+          shareLink={null}
         />
       );
 
@@ -145,17 +155,31 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         etherscan: process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY,
       });
 
-      const attachments: Array<MandrillAttachment> = [];
+      const writeDPI = async (filePath: string) => {
+        await ep.writeMetadata(
+          filePath,
+          {
+            ResolutionUnit: "inches",
+            XResolution: 600,
+            YResolution: 600,
+            "jfif:XResolution": 600,
+            "jfif:YResolution": 600,
+          },
+          ["overwrite_original_in_place", "preserve"]
+        );
+      };
 
-      const addAttachment = (
-        attachmentData: string,
-        attachmentName: string,
-        attachmentType: string
-      ) => {
-        attachments.push({
-          content: attachmentData,
-          name: attachmentName,
-          type: attachmentType,
+      const uploadImage = async (item: ImageData, fileName: string) => {
+        const path =
+          "/" +
+          orderId +
+          "/" +
+          fileName +
+          "." +
+          mime.extensions[item.imageType];
+        await dbx.filesUpload({
+          path: path,
+          contents: item.dataBuffer,
         });
       };
 
@@ -165,11 +189,7 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           if (item.collection_slug === "avastar") {
             const svgData = await getRawImageData(item, web3Provider);
             // for Avastar, we use the raw svg data from the blockchain.
-            addAttachment(
-              svgData.dataBase64,
-              fileName + ".svg",
-              svgData.imageType
-            );
+            await uploadImage(svgData, fileName);
           } else {
             // For all other collections, we expect a URL that points to a PNG file
             // We will turn this into PNG data ourselves and increase the DPI.
@@ -179,30 +199,35 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
               rawImageData.dataBase64,
               fileName
             );
-            await ep.writeMetadata(
-              localFilePath,
-              {
-                ResolutionUnit: "inches",
-                XResolution: 600,
-                YResolution: 600,
-                "jfif:XResolution": 600,
-                "jfif:YResolution": 600,
-              },
-              ["overwrite_original_in_place", "preserve"]
-            );
+
+            await writeDPI(localFilePath);
+
+            const jimpImage = await Jimp.read(localFilePath);
+            jimpImage
+              .scale(2) // resize
+              .quality(100) // set quality
+              .write(localFilePath); // save
+
+            await writeDPI(localFilePath);
+
             await ep.close();
             const resultingImageData = await getImageDataFromFile(
               localFilePath,
               rawImageData.imageType
             );
-            addAttachment(
-              resultingImageData.dataBase64,
-              fileName + "." + mime.extensions[resultingImageData.imageType],
-              resultingImageData.imageType
-            );
+            await uploadImage(resultingImageData, fileName);
           }
         })
       );
+
+      const shareLinkResult = await dbx.sharingCreateSharedLinkWithSettings({
+        path: "/" + orderId,
+        settings: {
+          requested_visibility: { ".tag": "public" },
+          access: { ".tag": "viewer" },
+        },
+      });
+      const shareLink = shareLinkResult.result.url;
 
       const printerHtmlBody = renderToStaticMarkup(
         <ConfirmationEmail
@@ -210,6 +235,7 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           orderId={orderId}
           mailingAddress={mailingAddress}
           cartItems={cartItems}
+          shareLink={shareLink}
         />
       );
 
@@ -233,7 +259,6 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         from_email: "team@nftprints.io",
         subject: "NiftyPrint Order #" + orderId + " Details",
         html: printerHtmlBody,
-        attachments: attachments,
         to: [
           {
             email: "printfi@protonmail.com",
