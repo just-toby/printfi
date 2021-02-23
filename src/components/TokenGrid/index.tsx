@@ -6,7 +6,6 @@ import { FixedSizeGrid as Grid, GridOnItemsRenderedProps } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
 import { toPositiveInteger } from "../../utils/NumberUtils";
 import TokenGridNullState from "./NullState";
-import { LoadingGrid } from "./Loading";
 
 interface TokenGridProps {}
 

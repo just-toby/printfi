@@ -9,6 +9,7 @@ export interface ConfirmationEmailProps {
   mailingAddress: Address;
   cartItems: Array<CartItem>;
   title: string;
+  shareLink: string | null;
 }
 
 const ConfirmationEmail: React.FC<ConfirmationEmailProps> = (
@@ -41,6 +42,14 @@ const ConfirmationEmail: React.FC<ConfirmationEmailProps> = (
         <p>Shipping to: {props.mailingAddress["name"]}</p>
         <p>Address: {textFriendlyAddress} </p>
       </div>
+
+      {isNullOrEmpty(props.shareLink) ? null : (
+        <div>
+          <a href={props.shareLink}>
+            <p>Click here to view the image files.</p>
+          </a>
+        </div>
+      )}
 
       <Order cart={props.cartItems} />
     </div>
@@ -80,6 +89,7 @@ const MockConfirmationEmail = (
   <ConfirmationEmail
     title="You're viewing a test version of the order confirmation email!"
     orderId={"1234"}
+    shareLink={null}
     mailingAddress={{
       name: "Just Toby",
       email: "test@test.com",

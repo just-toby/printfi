@@ -84,7 +84,10 @@ export type Asset = {
   top_bid: any;
 };
 
-const useAssets: (address: string) => AssetsConfig = (address: string) => {
+const useAssets: (address: string, active: boolean) => AssetsConfig = (
+  address: string,
+  active: boolean
+) => {
   const initialPageSize = 20;
 
   const options = {
@@ -100,7 +103,7 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
   const [didInitialFetch, setDidInitialFetch] = useState<boolean>(false);
 
   if (process.env.NEXT_PUBLIC_DEV_MODE === "wat") {
-    address = "0x6301add4fb128de9778b8651a2a9278b86761423";
+    address = "0x3c6137504c38215fea30605b3e364a23c1d3e14f";
   }
 
   // TODO: we can optimize this with server side rendering if it becomes too slow.
@@ -153,7 +156,7 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
   );
 
   useEffect(() => {
-    if (isNullOrEmpty(address)) {
+    if (isNullOrEmpty(address) || !active) {
       setAssets([]);
       setDidInitialFetch(false);
       return;
@@ -167,7 +170,7 @@ const useAssets: (address: string) => AssetsConfig = (address: string) => {
       );
       setDidInitialFetch(true);
     }
-  }, [address]);
+  }, [address, active]);
 
   const loadMore = useCallback(
     async (startIndex: number, endIndex: number) => {

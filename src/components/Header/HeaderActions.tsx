@@ -16,7 +16,7 @@ interface HeaderActionsProps {
 function HeaderActions(props: HeaderActionsProps) {
   const { subPage, toggleWalletDropdown } = props;
   const { cart } = useContext(CartContext);
-  const { account } = useWeb3React();
+  const { account, active } = useWeb3React();
 
   const formatAddress: (address: string) => string = (address) => {
     return address.slice(0, 6) + "..." + address.slice(address.length - 4);
@@ -52,7 +52,7 @@ function HeaderActions(props: HeaderActionsProps) {
       <div className="flexStretch" />
 
       <div className="navPadding">
-        {account ? (
+        {account && active ? (
           <Button
             onClick={toggleWalletDropdown}
             color="primary"
