@@ -3,12 +3,28 @@ import { Contract } from "@ethersproject/contracts";
 import { avastarContractAbi, getContractBySlug } from "./constants";
 import { CartItem } from "../hooks/useCart";
 import ImageDataUri from "image-data-uri";
+import fs from "fs";
 
 export type ImageData = {
   dataBase64: string;
   imageType: string;
   dataBuffer: Buffer;
 };
+
+export async function getImageDataFromFile(
+  filePath: string,
+  fileType: string
+): Promise<ImageData> {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, (err: any, data: Buffer) => {
+      resolve({
+        dataBase64: data.toString("base64"),
+        dataBuffer: data,
+        imageType: fileType,
+      });
+    });
+  });
+}
 
 /**
  * Returns raw image data, the format of which depends on the collection type.
