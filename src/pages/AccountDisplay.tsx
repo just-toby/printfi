@@ -1,7 +1,7 @@
 import { TokenGrid } from "../components/TokenGrid"
 import { useContext, useState, useEffect } from "react";
 import { AssetsContext } from "../context/AssetsContext";
-import { LoadingGrid } from "../components/LoadingGrid";
+import { LoadingGrid } from "../components/TokenGrid/Loading";
 
 function AccountDisplay () {
     const { assets, loadMore, loading, hasNextPage } = useContext(AssetsContext);

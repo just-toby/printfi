@@ -1,5 +1,5 @@
 import { useWeb3React } from "@web3-react/core";
-import AccountDisplay from "./AccountDisplay"
+import AccountDisplay from "./accountDisplay"
 function Body () {
     const { active } = useWeb3React();
 

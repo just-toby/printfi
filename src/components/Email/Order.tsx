@@ -1,4 +1,4 @@
-import { TokenCard } from "../TokenCard";
+import { TokenCard } from "../TokenGrid/Token";
 import { CartItem } from "../../hooks/useCart";
 
 export interface CartDetailsTableProps {
