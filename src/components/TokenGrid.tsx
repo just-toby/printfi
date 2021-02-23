@@ -7,6 +7,7 @@ import InfiniteLoader from "react-window-infinite-loader";
 import { toPositiveInteger } from "../utils/NumberUtils";
 import TokenGridNullState from "./TokenGridNullState";
 import { Rings, useLoading } from "@agney/react-loading";
+import { LoadingGrid } from "./LoadingGrid";
 
 interface TokenGridProps {}
 
@@ -49,9 +50,7 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
   return (
     <div className={"main"}>
       {loading && assets.length === 0 ? (
-        <div style={{ marginTop: "5rem" }}>
-          <section {...containerProps}>{indicatorEl}</section>
-        </div>
+        <LoadingGrid windowHeight={windowHeight} windowWidth={windowWidth} />
       ) : null}
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
