@@ -9,6 +9,7 @@ export interface ConfirmationEmailProps {
   mailingAddress: Address;
   cartItems: Array<CartItem>;
   title: string;
+  shareLink: string;
 }
 
 const ConfirmationEmail: React.FC<ConfirmationEmailProps> = (
@@ -40,6 +41,12 @@ const ConfirmationEmail: React.FC<ConfirmationEmailProps> = (
         <p>Order Number: {props.orderId} </p>
         <p>Shipping to: {props.mailingAddress["name"]}</p>
         <p>Address: {textFriendlyAddress} </p>
+      </div>
+
+      <div>
+        <a href={props.shareLink}>
+          <p>Click here to view the image files.</p>
+        </a>
       </div>
 
       <Order cart={props.cartItems} />
