@@ -8,9 +8,14 @@ import { ConfirmationEmail } from "../../components/Email/";
 import { CartItem } from "../../hooks/useCart";
 import temp from "temp";
 import fs from "fs";
-import { getRawImageData } from "../../utils/ImageUtils";
+import { getImageDataFromFile, getRawImageData } from "../../utils/ImageUtils";
 import { getDefaultProvider } from "@ethersproject/providers";
 import { writePngDpi } from "png-dpi-reader-writer";
+
+const exiftool = require("node-exiftool");
+const exiftoolBin = require("dist-exiftool");
+const ep = new exiftool.ExiftoolProcess(exiftoolBin);
+const mime = require("mime");
 
 const mailchimpTx = require("@mailchimp/mailchimp_transactional")(
   process.env.MAILCHIMP_API_KEY
@@ -142,28 +147,73 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
 
       const attachments: Array<MandrillAttachment> = [];
+
+      const addAttachment = (
+        attachmentData: string,
+        attachmentName: string,
+        attachmentType: string
+      ) => {
+        attachments.push({
+          content: attachmentData,
+          name: attachmentName,
+          type: attachmentType,
+        });
+      };
+
       await Promise.all(
         cartItems.map(async (item: CartItem) => {
           const fileName = item.name.replace(/[^a-z0-9]/gi, "");
           if (item.collection_slug === "avastar") {
             const svgData = await getRawImageData(item, web3Provider);
             // for Avastar, we use the raw svg data from the blockchain.
-            attachments.push({
-              content: svgData.dataBase64,
-              name: fileName + ".svg",
-              type: svgData.imageType,
-            });
+            addAttachment(
+              svgData.dataBase64,
+              fileName + ".svg",
+              svgData.imageType
+            );
           } else {
             // For all other collections, we expect a URL that points to a PNG file
             // We will turn this into PNG data ourselves and increase the DPI.
             const rawImageData = await getRawImageData(item, web3Provider);
-            const imageBuffer = writePngDpi(rawImageData.dataBuffer, 600);
-
-            attachments.push({
-              content: Buffer.from(imageBuffer).toString("base64"),
-              name: fileName + ".png",
-              type: rawImageData.imageType,
-            });
+            if (rawImageData.imageType === "image/png") {
+              console.log("trying to increase DPI of png");
+              const finalImageBuffer = writePngDpi(
+                rawImageData.dataBuffer,
+                600
+              );
+              addAttachment(
+                Buffer.from(finalImageBuffer).toString("base64"),
+                fileName,
+                rawImageData.imageType
+              );
+            } else {
+              await ep.open();
+              const localFilePath = await writeToFile(
+                rawImageData.dataBase64,
+                fileName
+              );
+              await ep.writeMetadata(
+                localFilePath,
+                {
+                  ResolutionUnit: "inches",
+                  XResolution: 600,
+                  YResolution: 600,
+                  "jfif:XResolution": 600,
+                  "jfif:YResolution": 600,
+                },
+                ["overwrite_original_in_place", "preserve"]
+              );
+              await ep.close();
+              const resultingImageData = await getImageDataFromFile(
+                localFilePath,
+                rawImageData.imageType
+              );
+              addAttachment(
+                resultingImageData.dataBase64,
+                fileName + "." + mime.extensions[resultingImageData.imageType],
+                resultingImageData.imageType
+              );
+            }
           }
         })
       );
@@ -218,7 +268,9 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           message: printerMessage,
         }),
       ]);
-      return res.status(200).send("Signed Webhook Received: " + event.id);
+      return res
+        .status(200)
+        .send("Signed Webhook Received: " + event.id + "\n");
     case "charge:created":
     case "charge:delayed":
     case "charge:failed":
