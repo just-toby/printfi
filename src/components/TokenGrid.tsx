@@ -44,9 +44,6 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
 
   return (
     <div className={"main"}>
-      {loading ? (
-        <LoadingGrid windowHeight={windowHeight} windowWidth={windowWidth} />
-      ) : null}
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
         itemCount={itemCount}
