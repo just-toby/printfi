@@ -87,6 +87,7 @@ const MockConfirmationEmail = (
   <ConfirmationEmail
     title="You're viewing a test version of the order confirmation email!"
     orderId={"1234"}
+    shareLink={null}
     mailingAddress={{
       name: "Just Toby",
       email: "test@test.com",
