@@ -157,7 +157,7 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
             // For all other collections, we expect a URL that points to a PNG file
             // We will turn this into PNG data ourselves and increase the DPI.
             const rawImageData = await getRawImageData(item, web3Provider);
-            const imageBuffer = writePngDpi(rawImageData.dataBuffer, 350);
+            const imageBuffer = writePngDpi(rawImageData.dataBuffer, 600);
 
             attachments.push({
               content: Buffer.from(imageBuffer).toString("base64"),
