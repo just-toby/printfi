@@ -47,7 +47,7 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
     return <TokenGridNullState />;
   }
 
-  if(loading)
+  if(loading && assets.length === 0)
   {
     return <LoadingGrid windowHeight={windowHeight} windowWidth={windowWidth} />
   }
