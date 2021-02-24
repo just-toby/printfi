@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FrameColor } from "../components/TokenCard";
+import { FrameColor } from "../components/TokenView/Token";
 
 export type CartConfig = {
   cart: Array<CartItem>;

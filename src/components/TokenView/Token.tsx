@@ -2,7 +2,7 @@ import * as React from "react";
 import Link from "next/link";
 import { UrlObject } from "url";
 import classNames from "classnames";
-import { isNullOrEmpty } from "../utils/StringUtils";
+import { isNullOrEmpty } from "../../utils/StringUtils";
 
 export type FrameColor = "Black" | "White" | null;
 

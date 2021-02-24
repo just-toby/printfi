@@ -1,5 +1,5 @@
 import React from "react";
-import { TokenGrid } from "../components/TokenGrid";
+import { TokenView } from "../components/TokenView";
 import Header from "../components/Header/Header";
 import { useWeb3React } from "@web3-react/core";
 import { MockConfirmationEmail } from "../components/Email/";
@@ -17,7 +17,7 @@ export default function Home() {
 
       <main className={"main"}>
         {active ? (
-          <TokenGrid />
+          <TokenView />
         ) : (
           <p className={"title"}>digital art you can feel</p>
         )}

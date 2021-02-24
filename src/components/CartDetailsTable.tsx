@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { TokenCard } from "../components/TokenCard";
+import { TokenCard } from "./TokenView/Token";
 import { CartItem } from "../hooks/useCart";
 
 export interface CartDetailsTableProps {

@@ -1,17 +1,17 @@
 import * as React from "react";
-import { TokenCard } from "./TokenCard";
+import { TokenCard } from "./Token";
 import { useContext, useEffect, useState } from "react";
-import { AssetsContext } from "../context/AssetsContext";
+import { AssetsContext } from "../../context/AssetsContext";
 import { FixedSizeGrid as Grid, GridOnItemsRenderedProps } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
-import { toPositiveInteger } from "../utils/NumberUtils";
-import TokenGridNullState from "./TokenGridNullState";
+import { toPositiveInteger } from "../../utils/NumberUtils";
+import TokenGridNullState from "./NullState";
 import { Rings, useLoading } from "@agney/react-loading";
-import { LoadingGrid } from "./LoadingGrid";
+import { LoadingGrid } from "./LoadingState";
 
 interface TokenGridProps {}
 
-const TokenGrid: React.FC<TokenGridProps> = () => {
+const TokenView: React.FC<TokenGridProps> = () => {
   const { assets, loadMore, loading, hasNextPage } = useContext(AssetsContext);
   const [windowWidth, setWindowWidth] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
@@ -47,11 +47,15 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
     return <TokenGridNullState />;
   }
 
+  if(loading)
+  { 
+    return (
+      <LoadingGrid windowHeight={windowHeight} windowWidth={windowWidth} />
+    )
+  }
+
   return (
     <div className={"main"}>
-      {loading && assets.length === 0 ? (
-        <LoadingGrid windowHeight={windowHeight} windowWidth={windowWidth} />
-      ) : null}
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
         itemCount={itemCount}
@@ -106,13 +110,8 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
           </Grid>
         )}
       </InfiniteLoader>
-      {loading && assets.length > 0 ? (
-        <div style={{ marginTop: "5rem" }}>
-          <section {...containerProps}>{indicatorEl}</section>
-        </div>
-      ) : null}
     </div>
   );
 };
 
-export { TokenGrid };
+export { TokenView };
