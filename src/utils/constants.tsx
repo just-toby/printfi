@@ -1,4 +1,12 @@
-import { injected, portis, walletconnect, walletlink, fortmatic, torus, authereum} from "../connectors";
+import {
+  injected,
+  portis,
+  walletconnect,
+  walletlink,
+  fortmatic,
+  torus,
+  authereum,
+} from "../connectors";
 import { AbstractConnector } from "@web3-react/abstract-connector";
 import { getAddress } from "@ethersproject/address";
 
@@ -70,31 +78,31 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
   },
   FORTMATIC: {
     connector: fortmatic,
-    name: 'Fortmatic',
-    iconName: 'fortmaticIcon.png',
-    description: 'Login using Fortmatic hosted wallet',
+    name: "Fortmatic",
+    iconName: "fortmaticIcon.png",
+    description: "Login using Fortmatic hosted wallet",
     href: null,
-    color: '#6748FF',
-    mobile: true
+    color: "#6748FF",
+    mobile: true,
   },
   TORUS: {
     connector: torus,
-    name: 'Torus',
-    iconName: 'torus.jpg',
-    description: 'Login using Torus hosted wallet',
+    name: "Torus",
+    iconName: "torus.jpg",
+    description: "Login using Torus hosted wallet",
     href: null,
-    color: '#6748FF',
-    mobile: true
-  }, 
+    color: "#6748FF",
+    mobile: true,
+  },
   AUTHEREUM: {
     connector: authereum,
-    name: 'Authereum',
-    iconName: 'authereum.png',
-    description: 'Login using Authereum hosted wallet',
+    name: "Authereum",
+    iconName: "authereum.png",
+    description: "Login using Authereum hosted wallet",
     href: null,
-    color: '#6748FF',
-    mobile: true
-  }
+    color: "#6748FF",
+    mobile: true,
+  },
 };
 
 export type SupportedCollectionSlugs =
@@ -103,6 +111,7 @@ export type SupportedCollectionSlugs =
   | "art-blocks"
   | "hashmasks"
   | "axie"
+  | "autoglyphs"
   | "unknown";
 
 // List of NFT contract addresses we support
@@ -112,6 +121,7 @@ export const WHITELIST = [
   `0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270`.toLowerCase(), // art blocks
   `0xc2c747e0f7004f9e8817db2ca4997657a7746928`.toLowerCase(), // hash masks
   `0xF5b0A3eFB8e8E4c201e2A935F110eAaF3FFEcb8d`.toLowerCase(), // axies
+  `0xd4e4078ca3495DE5B1d4dB434BEbc5a986197782`.toLowerCase(), // autoglyphs
 ];
 
 export function getContractBySlug(slug: string | null) {

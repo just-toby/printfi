@@ -186,9 +186,12 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       await Promise.all(
         cartItems.map(async (item: CartItem) => {
           const fileName = item.name.replace(/[^a-z0-9]/gi, "");
-          if (item.collection_slug === "avastar") {
+          if (
+            item.collection_slug === "avastar" ||
+            item.collection_slug === "autoglyphs"
+          ) {
+            // for these collections, we get SVG data which doesn't need upscaling.
             const svgData = await getRawImageData(item, web3Provider);
-            // for Avastar, we use the raw svg data from the blockchain.
             await uploadImage(svgData, fileName);
           } else {
             // For all other collections, we expect a URL that points to a PNG file
