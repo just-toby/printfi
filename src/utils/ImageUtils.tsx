@@ -48,6 +48,7 @@ export async function getRawImageData(
   };
 
   switch (itemCollectionSlug) {
+    // For avastars we need to get the SVG data from the blockchain.
     case "avastar":
       const avastarContract = new Contract(
         collectionContractAddress,
@@ -61,14 +62,8 @@ export async function getRawImageData(
         imageType: "image/svg+xml",
         dataBuffer: svgBuffer,
       };
-    case "cryptopunks":
-      return await getRawData(item.original_uri);
-    case "art-blocks":
-      return await getRawData(item.original_uri);
-    case "hashmasks":
-      return await getRawData(item.original_uri);
-    case "axies":
-      return await getRawData(item.original_uri);
+    // Everything else we can use the "original_uri" directly
+    // For autoglyphs, the URI points to an SVG file.
     default:
       return await getRawData(item.original_uri);
   }
