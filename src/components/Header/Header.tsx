@@ -18,7 +18,7 @@ function Header(props: HeaderProps) {
     <>
       <Head>
         <title>NiftyPrints</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
       <HeaderActions
         toggleWalletDropdown={toggleWalletDropdown}
