@@ -56,7 +56,9 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
     <div className={"main"}>
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
-        itemCount={itemCount}
+        itemCount={
+          1000 /* arbitrary large number for infinite loading, doesn't affect perf */
+        }
         loadMoreItems={loadMoreItems}
       >
         {({ onItemsRendered, ref }) => (
@@ -65,29 +67,29 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
               // InfiniteLoader's onItemsRendered expects list props,
               // so we need to give the indices of the first/last items
               // in the corresponding rows.
-              if (
-                hasNextPage &&
-                Math.abs(props.overscanRowStopIndex - itemCount / 3) < 2
-              ) {
-                loadMore(assets.length, 10);
-              }
               onItemsRendered({
                 overscanStartIndex: props.overscanRowStartIndex * 3,
-                overscanStopIndex: props.overscanRowStopIndex * 3,
+                overscanStopIndex: props.overscanRowStopIndex * 3 + 2,
                 visibleStartIndex: props.visibleRowStartIndex * 3,
-                visibleStopIndex: props.visibleRowStopIndex * 3,
+                visibleStopIndex: Math.min(
+                  props.visibleRowStopIndex * 3 + 2,
+                  assets.length - 1
+                ),
               });
             }}
             ref={ref}
             columnCount={3}
             columnWidth={windowWidth * 0.33}
-            rowCount={assets.length / 3}
+            rowCount={Math.ceil(itemCount / 3)}
             rowHeight={(windowWidth * 0.2) / 0.65}
             height={windowHeight - 75}
             width={windowWidth}
           >
             {({ columnIndex, rowIndex, style }) => {
               const index = rowIndex * 3 + columnIndex;
+              if (index >= assets.length) {
+                return null;
+              }
               const item = assets[index];
               return (
                 <div
