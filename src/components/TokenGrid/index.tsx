@@ -1,10 +1,9 @@
 import * as React from "react";
-import { TokenCard } from "./Token";
+import { TokenCard } from "./TokenCard";
 import { useContext, useEffect, useState } from "react";
 import { AssetsContext } from "../../context/AssetsContext";
 import { FixedSizeGrid as Grid, GridOnItemsRenderedProps } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
-import { toPositiveInteger } from "../../utils/NumberUtils";
 import TokenGridNullState from "./NullState";
 import { Rings, useLoading } from "@agney/react-loading";
 import { LoadingGrid } from "./Loading";
@@ -47,9 +46,10 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
     return <TokenGridNullState />;
   }
 
-  if(loading && assets.length === 0)
-  {
-    return <LoadingGrid windowHeight={windowHeight} windowWidth={windowWidth} />
+  if (loading && assets.length === 0) {
+    return (
+      <LoadingGrid windowHeight={windowHeight} windowWidth={windowWidth} />
+    );
   }
 
   return (
@@ -65,19 +65,17 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
               // InfiniteLoader's onItemsRendered expects list props,
               // so we need to give the indices of the first/last items
               // in the corresponding rows.
+              if (
+                hasNextPage &&
+                Math.abs(props.overscanRowStopIndex - itemCount / 3) < 2
+              ) {
+                loadMore(assets.length, 10);
+              }
               onItemsRendered({
-                overscanStartIndex: toPositiveInteger(
-                  props.overscanRowStartIndex * 3
-                ),
-                overscanStopIndex: toPositiveInteger(
-                  props.overscanRowStopIndex * 3 + 2
-                ),
-                visibleStartIndex: toPositiveInteger(
-                  props.visibleRowStartIndex * 3
-                ),
-                visibleStopIndex: toPositiveInteger(
-                  props.visibleRowStopIndex * 3 + 2
-                ),
+                overscanStartIndex: props.overscanRowStartIndex * 3,
+                overscanStopIndex: props.overscanRowStopIndex * 3,
+                visibleStartIndex: props.visibleRowStartIndex * 3,
+                visibleStopIndex: props.visibleRowStopIndex * 3,
               });
             }}
             ref={ref}
@@ -92,7 +90,13 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
               const index = rowIndex * 3 + columnIndex;
               const item = assets[index];
               return (
-                <div style={{ ...style, marginTop: 100, paddingLeft: 100 }}>
+                <div
+                  style={{
+                    ...style,
+                    marginTop: 100,
+                    paddingLeft: 100,
+                  }}
+                >
                   <TokenCard
                     name={item?.name ?? ""}
                     uri={item?.image_url ?? ""}

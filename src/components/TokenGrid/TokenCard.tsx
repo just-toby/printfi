@@ -19,10 +19,10 @@ export interface TokenCardProps {
 const TokenCard: React.FC<TokenCardProps> = (props: TokenCardProps) => {
   const getFrameBorder = (color: FrameColor) => {
     if (color === "Black") {
-      return "blackFrame"
+      return "blackFrame";
     }
     if (color === "White") {
-      return "whiteFrame"
+      return "whiteFrame";
     }
     return null;
   };
