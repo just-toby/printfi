@@ -171,7 +171,7 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       const uploadImage = async (item: ImageData, fileName: string) => {
         const path =
-          "/" +
+          "/orders/" +
           orderId +
           "/" +
           fileName +
@@ -221,7 +221,7 @@ const coinbaseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
 
       const shareLinkResult = await dbx.sharingCreateSharedLinkWithSettings({
-        path: "/" + orderId,
+        path: "/orders/" + orderId,
         settings: {
           requested_visibility: { ".tag": "public" },
           access: { ".tag": "viewer" },

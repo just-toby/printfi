@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { TokenCard } from "../components/TokenCard";
+import { TokenCard } from "./TokenGrid/TokenCard";
 import { CartItem } from "../hooks/useCart";
 
 export interface CartDetailsTableProps {
@@ -17,19 +17,12 @@ export default function CartDetailsTable(props: CartDetailsTableProps) {
         <tr>
           {["Size", "Frame", "Glass", "Space"].map((label) => {
             return (
-              <td
-                key={label}
-                className={"largeFont cartTableHeader"}
-              >
+              <td key={label} className={"largeFont cartTableHeader"}>
                 {label}
               </td>
             );
           })}
-          <td
-            className="largeFont cartTableHeaderCentered"
-          >
-            Image
-          </td>
+          <td className="largeFont cartTableHeaderCentered">Image</td>
         </tr>
         {props.cart.map((item, index) => {
           return (

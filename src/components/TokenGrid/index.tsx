@@ -1,13 +1,12 @@
 import * as React from "react";
 import { TokenCard } from "./TokenCard";
 import { useContext, useEffect, useState } from "react";
-import { AssetsContext } from "../context/AssetsContext";
+import { AssetsContext } from "../../context/AssetsContext";
 import { FixedSizeGrid as Grid, GridOnItemsRenderedProps } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
-import { toPositiveInteger } from "../utils/NumberUtils";
-import TokenGridNullState from "./TokenGridNullState";
+import TokenGridNullState from "./NullState";
 import { Rings, useLoading } from "@agney/react-loading";
-import { LoadingGrid } from "./LoadingGrid";
+import { LoadingGrid } from "./Loading";
 
 interface TokenGridProps {}
 
@@ -47,14 +46,19 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
     return <TokenGridNullState />;
   }
 
+  if (loading && assets.length === 0) {
+    return (
+      <LoadingGrid windowHeight={windowHeight} windowWidth={windowWidth} />
+    );
+  }
+
   return (
     <div className={"main"}>
-      {loading && assets.length === 0 ? (
-        <LoadingGrid windowHeight={windowHeight} windowWidth={windowWidth} />
-      ) : null}
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
-        itemCount={itemCount}
+        itemCount={
+          1000 /* arbitrary large number for infinite loading, doesn't affect perf */
+        }
         loadMoreItems={loadMoreItems}
       >
         {({ onItemsRendered, ref }) => (
@@ -64,33 +68,37 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
               // so we need to give the indices of the first/last items
               // in the corresponding rows.
               onItemsRendered({
-                overscanStartIndex: toPositiveInteger(
-                  props.overscanRowStartIndex * 3
-                ),
-                overscanStopIndex: toPositiveInteger(
-                  props.overscanRowStopIndex * 3 + 2
-                ),
-                visibleStartIndex: toPositiveInteger(
-                  props.visibleRowStartIndex * 3
-                ),
-                visibleStopIndex: toPositiveInteger(
-                  props.visibleRowStopIndex * 3 + 2
+                overscanStartIndex: props.overscanRowStartIndex * 3,
+                overscanStopIndex: props.overscanRowStopIndex * 3 + 2,
+                visibleStartIndex: props.visibleRowStartIndex * 3,
+                visibleStopIndex: Math.min(
+                  props.visibleRowStopIndex * 3 + 2,
+                  assets.length - 1
                 ),
               });
             }}
             ref={ref}
             columnCount={3}
             columnWidth={windowWidth * 0.33}
-            rowCount={assets.length / 3}
+            rowCount={Math.ceil(itemCount / 3)}
             rowHeight={(windowWidth * 0.2) / 0.65}
             height={windowHeight - 75}
             width={windowWidth}
           >
             {({ columnIndex, rowIndex, style }) => {
               const index = rowIndex * 3 + columnIndex;
+              if (index >= assets.length) {
+                return null;
+              }
               const item = assets[index];
               return (
-                <div style={{ ...style, marginTop: 100, paddingLeft: 100 }}>
+                <div
+                  style={{
+                    ...style,
+                    marginTop: 100,
+                    paddingLeft: 100,
+                  }}
+                >
                   <TokenCard
                     name={item?.name ?? ""}
                     uri={item?.image_url ?? ""}

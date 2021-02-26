@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { AssetsContext } from "../context/AssetsContext";
 import { Asset } from "../hooks/useAssets";
 import { Rings, useLoading } from "@agney/react-loading";
-import { TokenCard } from "../components/TokenCard";
+import { TokenCard } from "../components/TokenGrid/TokenCard";
 import { OptionRow } from "../components/OptionRow";
 import { CartContext } from "../context/CartContext";
 import { ItemConfiguration } from "../hooks/useCart";
@@ -75,9 +75,7 @@ export default function Customize(props: CustomizePageProps) {
         ) : (
           <div className="customizeContainer">
             <div className="customizeOptions">
-              <span
-                className="largeFont customizeTitle"
-              >
+              <span className="largeFont customizeTitle">
                 <a className="siteTitleLink">{item.name}</a>
               </span>
               {Object.keys(options).map((optionType) => {
