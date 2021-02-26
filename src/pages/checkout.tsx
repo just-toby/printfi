@@ -16,7 +16,6 @@ import { Button } from "@material-ui/core";
 import {getCountries} from 'country-state-picker'
 import { getCountryFromAlpha3 } from 'iso-country-utils';
 
-
 interface CheckoutPageProps {}
 
 export default function Checkout(props: CheckoutPageProps) {
@@ -46,7 +45,6 @@ export default function Checkout(props: CheckoutPageProps) {
       }
       else 
       {
-        console.log("googleAdress: ", googleAddress);
         if(googleAddress.value.terms[0] && googleAddress.value.terms[1])
           address.setAddress(googleAddress.value.terms[0].value + " " + googleAddress.value.terms[1].value)
         if(googleAddress.value.terms[2])
@@ -55,8 +53,8 @@ export default function Checkout(props: CheckoutPageProps) {
           address.setState(googleAddress.value.terms[3].value)
         if(googleAddress.value.terms[4])
         {
-          let alpha2 = getCountryFromAlpha3(googleAddress.value.terms[4].value).alpha2;
-          address.setCountry(alpha2);
+          let country = getCountryFromAlpha3(googleAddress.value.terms[4].value);
+          address.setCountry(country.name);
         }
       }
     }

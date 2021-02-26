@@ -3,6 +3,7 @@ import { Form } from "react-bootstrap";
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import Select from 'react-select';
 import {getCountries, getStates} from 'country-state-picker'
+import { getCountryFromName } from 'iso-country-utils';
 
 const AddressFormFields = (props) => {
   const {googleAddress, setGoogleAddress, address} = props;
@@ -12,7 +13,9 @@ const AddressFormFields = (props) => {
   useEffect(() => {
     if(Object.keys(address).length !== 0 && address.country !== "")
     {
-      let newStates = getStates(address.country.toLowerCase()).map(state => { 
+      let alpha2 = getCountryFromName(address.country).alpha2.toLowerCase();
+
+      let newStates = getStates(alpha2).map(state => { 
         return {value: state, label: state}
       })
       setStates(newStates);
@@ -116,7 +119,7 @@ const AddressFormFields = (props) => {
           placeholder={"Country"}
           noOptionsMessage= {() => null}
           value={address.country === "" ? null: {value: address.country, label: address.country}}
-          onChange={e => address.setCountry(e.value)}
+          onChange={e => address.setCountry(e.label)}
           className="thirdInputBox"
         />
 
