@@ -1,8 +1,20 @@
-import { injected, portis, walletconnect, walletlink, fortmatic, torus, authereum} from "../connectors";
+import {
+  injected,
+  portis,
+  walletconnect,
+  walletlink,
+  fortmatic,
+  torus,
+  authereum,
+} from "../connectors";
 import { AbstractConnector } from "@web3-react/abstract-connector";
 import { getAddress } from "@ethersproject/address";
 
 export const NetworkContextName = "NETWORK";
+
+export type FrameSize = "Small" | "Large" | null;
+export type FrameColor = "Black" | "White" | "None";
+export type BorderOption = "Borderless" | "With Border" | null;
 
 export interface WalletInfo {
   connector?: AbstractConnector;
@@ -70,31 +82,31 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
   },
   FORTMATIC: {
     connector: fortmatic,
-    name: 'Fortmatic',
-    iconName: 'fortmaticIcon.png',
-    description: 'Login using Fortmatic hosted wallet',
+    name: "Fortmatic",
+    iconName: "fortmaticIcon.png",
+    description: "Login using Fortmatic hosted wallet",
     href: null,
-    color: '#6748FF',
-    mobile: true
+    color: "#6748FF",
+    mobile: true,
   },
   TORUS: {
     connector: torus,
-    name: 'Torus',
-    iconName: 'torus.jpg',
-    description: 'Login using Torus hosted wallet',
+    name: "Torus",
+    iconName: "torus.jpg",
+    description: "Login using Torus hosted wallet",
     href: null,
-    color: '#6748FF',
-    mobile: true
-  }, 
+    color: "#6748FF",
+    mobile: true,
+  },
   AUTHEREUM: {
     connector: authereum,
-    name: 'Authereum',
-    iconName: 'authereum.png',
-    description: 'Login using Authereum hosted wallet',
+    name: "Authereum",
+    iconName: "authereum.png",
+    description: "Login using Authereum hosted wallet",
     href: null,
-    color: '#6748FF',
-    mobile: true
-  }
+    color: "#6748FF",
+    mobile: true,
+  },
 };
 
 export type SupportedCollectionSlugs =

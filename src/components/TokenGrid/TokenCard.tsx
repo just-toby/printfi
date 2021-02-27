@@ -3,8 +3,7 @@ import Link from "next/link";
 import { UrlObject } from "url";
 import classNames from "classnames";
 import { isNullOrEmpty } from "../../utils/StringUtils";
-
-export type FrameColor = "Black" | "White" | null;
+import { FrameColor } from "../../utils/constants";
 
 export interface TokenCardProps {
   name: string;

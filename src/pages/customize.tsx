@@ -27,42 +27,38 @@ export default function Customize(props: CustomizePageProps) {
   const { index } = router.query;
   const item: Asset = assets[Number(index)];
 
-  // TODO: once these options are finalized/confirmed, pull them out into enums.
-  const options = {
-    size: {
-      title: "Size",
-      options: ['20"x30"', '30"x45"'],
-    },
-    frame: {
-      title: "Frame",
-      options: ["Black", "White"],
-    },
-    glass: {
-      title: "Glass",
-      options: ["Glossy", "Matte"],
-    },
-    space: {
-      title: "Space",
-      options: ['0"', '3"'],
-    },
-  };
-
   const [itemConfiguration, setItemConfiguration] = useState<ItemConfiguration>(
     {
       size: null,
-      frame: null,
-      glass: null,
-      space: null,
+      color: null,
+      border: null,
     }
   );
+
+  const options = {
+    size: {
+      title: "Size",
+      options: ["Small", "Large"],
+    },
+    color: {
+      title: "Frame Color",
+      options: ["Black", "White", "None"],
+    },
+    border:
+      itemConfiguration.color !== "None" && itemConfiguration.color != null
+        ? {
+            title: "Frame Style",
+            options: ["Borderless", "With Border"],
+          }
+        : null,
+  };
 
   const hasValidConfiguration = (itemConfiguration: ItemConfiguration) => {
     // TODO: make sure these are valid selections, once the options are typified.
     return (
-      itemConfiguration.frame != null &&
-      itemConfiguration.glass != null &&
+      itemConfiguration.color != null &&
       itemConfiguration.size != null &&
-      itemConfiguration.space != null
+      itemConfiguration.border != null
     );
   };
 
@@ -79,6 +75,9 @@ export default function Customize(props: CustomizePageProps) {
                 <a className="siteTitleLink">{item.name}</a>
               </span>
               {Object.keys(options).map((optionType) => {
+                if (options[optionType] == null) {
+                  return null;
+                }
                 return (
                   <OptionRow
                     key={options[optionType].title}
@@ -123,8 +122,8 @@ export default function Customize(props: CustomizePageProps) {
                 name={item.name}
                 uri={item.image_url}
                 width={500}
-                innerBorder={itemConfiguration.space === '3"'}
-                outerBorderColor={itemConfiguration.frame}
+                innerBorder={itemConfiguration.border === "With Border"}
+                outerBorderColor={itemConfiguration.color}
               />
             </div>
           </div>

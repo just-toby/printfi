@@ -18,7 +18,7 @@ const OptionRow = (props: OptionRowProps) => {
           return (
             <Button
               key={option}
-              style={{ marginRight: "1rem", minWidth: "8rem" }}
+              style={{ marginRight: "1rem", minWidth: "10rem" }}
               color="primary"
               disabled={props.selection === option}
               onClick={() => {

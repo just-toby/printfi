@@ -1,32 +1,43 @@
 import { CartItem, ItemConfiguration } from "../hooks/useCart";
 
-// TODO: replace these with real prices.
+const basePrices = {};
+
+// Base price for the print (without frame), depending on size.
 const sizePrices = {
-  '20"x30"': 10,
-  '30"x45"': 20,
+  Small: 63,
+  Large: 70,
 };
 
-const framePrices = {
-  Black: 10,
-  White: 20,
+// These don't affect the price
+const colorPrices = {
+  Black: 0,
+  White: 0,
 };
 
-const glassPrices = {
-  Glossy: 10,
-  Matte: 20,
+const squareLargeFramePrices = {
+  Borderless: 442,
+  "With Border": 5,
 };
 
-const spacePrices = {
-  '0"': 0,
-  '3"': 5,
+const squareSmallFramePrices = {
+  Borderless: 357,
+  "With Border": 5,
+};
+
+const portraitSmallFramePrices = {
+  Borderless: 0,
+  "With Border": 594,
+};
+
+const portraitLargeFramePrices = {
+  Borderless: 0,
+  "With Border": 689,
 };
 
 export function calculateSingleItemPrice(item: ItemConfiguration): number {
+  // TODO: add logic for checking if NFT is square vs portrait, use correct frame pricemap.
   return (
-    sizePrices[item.size] +
-    framePrices[item.frame] +
-    glassPrices[item.glass] +
-    spacePrices[item.space]
+    sizePrices[item.size] + colorPrices[item.color] // + borderPrices[item.border]
   );
 }
 

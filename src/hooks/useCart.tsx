@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FrameColor } from "../components/TokenGrid/TokenCard";
+import { BorderOption, FrameColor, FrameSize } from "../utils/constants";
 
 export type CartConfig = {
   cart: Array<CartItem>;
@@ -8,10 +8,9 @@ export type CartConfig = {
 };
 
 export type ItemConfiguration = {
-  size: string;
-  frame: FrameColor;
-  glass: string;
-  space: string;
+  size: FrameSize;
+  color: FrameColor;
+  border: BorderOption;
 };
 
 export type CartItem = {
