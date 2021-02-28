@@ -81,7 +81,7 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
             columnCount={3}
             columnWidth={windowWidth * 0.33}
             rowCount={Math.ceil(itemCount / 3)}
-            rowHeight={(windowWidth * 0.2) / 0.65}
+            rowHeight={windowWidth * 0.33 * 1.1}
             height={windowHeight - 75}
             width={windowWidth}
           >
@@ -92,22 +92,29 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
               }
               const item = assets[index];
               return (
-                <div
-                  style={{
-                    ...style,
-                    marginTop: 100,
-                    paddingLeft: 100,
-                  }}
-                >
-                  <TokenCard
-                    name={item?.name ?? ""}
-                    uri={item?.image_url ?? ""}
-                    link={{
-                      pathname: "/customize",
-                      query: { index: String(index) },
+                <div style={style}>
+                  <div
+                    style={{
+                      display: "flex",
+                      marginTop: "4rem",
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      marginLeft:
+                        columnIndex % 3 === 0 ? windowWidth * 0.06 : 0,
+                      marginRight:
+                        columnIndex % 3 === 2 ? windowWidth * 0.06 : 0,
                     }}
-                    width={windowWidth * 0.2}
-                  />
+                  >
+                    <TokenCard
+                      name={item?.name ?? ""}
+                      uri={item?.image_url ?? ""}
+                      link={{
+                        pathname: "/customize",
+                        query: { index: String(index) },
+                      }}
+                      width={windowWidth * 0.2}
+                    />
+                  </div>
                 </div>
               );
             }}

@@ -3,6 +3,7 @@ import { TokenGrid } from "../components/TokenGrid";
 import Header from "../components/Header/Header";
 import { useWeb3React } from "@web3-react/core";
 import { MockConfirmationEmail } from "../components/Email/";
+import Image from "next/image";
 
 export default function Home() {
   const { active } = useWeb3React();
@@ -19,7 +20,15 @@ export default function Home() {
         {active ? (
           <TokenGrid />
         ) : (
-          <p className={"title"}>digital art you can feel</p>
+          <div>
+            <Image
+              src="/Untitled-Artwork-off-white.jpg"
+              width={800}
+              height={640}
+            />
+
+            <p className={"title"}>digital art you can feel</p>
+          </div>
         )}
       </main>
     </div>
