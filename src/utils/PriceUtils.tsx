@@ -15,22 +15,22 @@ const colorPrices = {
 };
 
 const squareLargeFramePrices = {
-  Borderless: 442,
-  "With Border": 5,
+  Borderless: 0,
+  "With Border": 0,
 };
 
 const squareSmallFramePrices = {
   Borderless: 357,
-  "With Border": 5,
+  "With Border": 594,
 };
 
 const portraitSmallFramePrices = {
   Borderless: 0,
-  "With Border": 594,
+  "With Border": 0,
 };
 
 const portraitLargeFramePrices = {
-  Borderless: 0,
+  Borderless: 442,
   "With Border": 689,
 };
 
