@@ -13,7 +13,6 @@ import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import useAddressState, { AddressStateConfig } from "../hooks/useAddressState";
 import { Button } from "@material-ui/core";
-import {getCountries} from 'country-state-picker'
 import { getCountryFromAlpha3 } from 'iso-country-utils';
 
 interface CheckoutPageProps {}
@@ -65,7 +64,7 @@ export default function Checkout(props: CheckoutPageProps) {
     event.preventDefault();
     event.stopPropagation();
     const addressJson = {
-      name: address.firstName + address.lastName,
+      name: address.firstName + " " + address.lastName,
       email: address.email,
       address: address.address,
       address2: address.address2,
@@ -138,16 +137,7 @@ export default function Checkout(props: CheckoutPageProps) {
           <div>
             <Form onSubmit={onSubmit}>
               <AddressFormFields
-                setFirstname={address.setFirstName}
-                setEmail={address.setEmail}
-                setAddress={address.setAddress}
-                setAddress2={address.setAddress2}
-                setCity={address.setCity}
-                setState={address.setState}
-
                 setGoogleAddress={setGoogleAddress}
-                googleAddress={googleAddress}
-                setZip={address.setZip}
                 loading={loading}
                 address={address}
               />

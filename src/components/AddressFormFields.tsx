@@ -1,14 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC, Dispatch} from "react";
 import { Form } from "react-bootstrap";
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import Select from 'react-select';
 import {getCountries, getStates} from 'country-state-picker'
 import { getCountryFromName } from 'iso-country-utils';
+import { AddressStateConfig } from "../hooks/useAddressState";
 
-const AddressFormFields = (props) => {
-  const {googleAddress, setGoogleAddress, address} = props;
+interface AddressFormFieldsProps {  
+  loading: boolean;
+  setGoogleAddress: Dispatch<any>;
+  address: AddressStateConfig;
+}
+
+const AddressFormFields: FC<AddressFormFieldsProps> = (props: AddressFormFieldsProps) => {
+  const {setGoogleAddress, address} = props;
   const [countries, setCountries] = useState([]);
-  const [states, setStates] = useState([]);
+  const [states, setStates] = useState([{}]);
 
   useEffect(() => {
     if(Object.keys(address).length !== 0 && address.country !== "")
@@ -30,6 +37,7 @@ const AddressFormFields = (props) => {
 
       return {value: country.code, label: country.name}
     })
+
 
 
     setCountries(newCountries);
@@ -78,7 +86,7 @@ const AddressFormFields = (props) => {
       </div>
 
       <GooglePlacesAutocomplete
-        apiKey="AIzaSyB587mOW5-3gNFOSPJeGuJhqf0FUj910uM"
+        apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY}
         selectProps={{
           onInputChange: (key) => addressChange(key),
           onChange: (value, action) => handleGoogleAddressChange(value, action),
