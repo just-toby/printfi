@@ -98,7 +98,10 @@ export default function Checkout(props: CheckoutPageProps) {
       address.state,
       address.zip,
     ];
-    if(!address.email.includes("@") || !address.email.includes(".")) return false;
+    if(!address.email.includes("@") || !address.email.includes("."))
+    {
+      return false;
+    }
     return vals.filter((value) => isNullOrEmpty(value)).length === 0;
   };
 
