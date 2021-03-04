@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { Rings, useLoading } from "@agney/react-loading";
-import { ConfirmButton } from "../components/ConfirmButton";
 import { NextRouter, useRouter } from "next/router";
 import Header from "../components/Header/Header";
 import CartDetailsTable from "../components/CartDetailsTable";
+import { Button } from "@material-ui/core";
 
 interface ReviewPageProps {}
 
@@ -35,13 +35,17 @@ export default function Review(props: ReviewPageProps) {
             <CartDetailsTable cart={cart} />
             {cart.length === 0 ? null : (
               <div className={"cartConfirmButton"}>
-                <ConfirmButton
-                  title="Next"
+                <Button
+                  className="bigButton"
                   disabled={false}
+                  color="primary"
+                  variant="outlined"
                   onClick={() => {
                     router.push("/checkout");
                   }}
-                />
+                >
+                  Next
+                </Button>
               </div>
             )}
           </div>
