@@ -1,12 +1,13 @@
+// import styles from "../styles/Home.module.css";
 import * as React from "react";
 import { TokenCard } from "./TokenCard";
 import { useContext, useEffect, useState } from "react";
 import { AssetsContext } from "../../context/AssetsContext";
 import { FixedSizeGrid as Grid, GridOnItemsRenderedProps } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
+import { toPositiveInteger } from "../../utils/NumberUtils";
 import TokenGridNullState from "./NullState";
 import { Rings, useLoading } from "@agney/react-loading";
-import { LoadingGrid } from "./Loading";
 
 interface TokenGridProps {}
 
@@ -46,19 +47,11 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
     return <TokenGridNullState />;
   }
 
-  if (loading && assets.length === 0) {
-    return (
-      <LoadingGrid windowHeight={windowHeight} windowWidth={windowWidth} />
-    );
-  }
-
   return (
     <div className={"main"}>
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
-        itemCount={
-          1000 /* arbitrary large number for infinite loading, doesn't affect perf */
-        }
+        itemCount={itemCount}
         loadMoreItems={loadMoreItems}
       >
         {({ onItemsRendered, ref }) => (
@@ -68,64 +61,49 @@ const TokenGrid: React.FC<TokenGridProps> = () => {
               // so we need to give the indices of the first/last items
               // in the corresponding rows.
               onItemsRendered({
-                overscanStartIndex: props.overscanRowStartIndex * 3,
-                overscanStopIndex: props.overscanRowStopIndex * 3 + 2,
-                visibleStartIndex: props.visibleRowStartIndex * 3,
-                visibleStopIndex: Math.min(
-                  props.visibleRowStopIndex * 3 + 2,
-                  assets.length - 1
+                overscanStartIndex: toPositiveInteger(
+                  props.overscanRowStartIndex * 3
+                ),
+                overscanStopIndex: toPositiveInteger(
+                  props.overscanRowStopIndex * 3 + 2
+                ),
+                visibleStartIndex: toPositiveInteger(
+                  props.visibleRowStartIndex * 3
+                ),
+                visibleStopIndex: toPositiveInteger(
+                  props.visibleRowStopIndex * 3 + 2
                 ),
               });
             }}
             ref={ref}
             columnCount={3}
             columnWidth={windowWidth * 0.33}
-            rowCount={Math.ceil(itemCount / 3)}
-            rowHeight={windowWidth * 0.33 * 1.1}
+            rowCount={assets.length / 3}
+            rowHeight={(windowWidth * 0.2) / 0.65}
             height={windowHeight - 75}
             width={windowWidth}
           >
             {({ columnIndex, rowIndex, style }) => {
               const index = rowIndex * 3 + columnIndex;
-              if (index >= assets.length) {
-                return null;
-              }
               const item = assets[index];
               return (
-                <div style={style}>
-                  <div
-                    style={{
-                      display: "flex",
-                      marginTop: "4rem",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      marginLeft:
-                        columnIndex % 3 === 0 ? windowWidth * 0.06 : 0,
-                      marginRight:
-                        columnIndex % 3 === 2 ? windowWidth * 0.06 : 0,
+                <div style={{ ...style, marginTop: 100, paddingLeft: 100 }}>
+                  <TokenCard
+                    name={item?.name ?? ""}
+                    uri={item?.image_url ?? ""}
+                    link={{
+                      pathname: "/customize",
+                      query: { index: String(index) },
                     }}
-                  >
-                    <TokenCard
-                      name={item?.name ?? ""}
-                      uri={item?.image_url ?? ""}
-                      link={{
-                        pathname: "/customize",
-                        query: { index: String(index) },
-                      }}
-                      width={windowWidth * 0.2}
-                    />
-                  </div>
+                    width={windowWidth * 0.2}
+                  />
                 </div>
               );
             }}
           </Grid>
         )}
       </InfiniteLoader>
-      {loading && assets.length > 0 ? (
-        <div style={{ marginTop: "5rem" }}>
-          <section {...containerProps}>{indicatorEl}</section>
-        </div>
-      ) : null}
+      {loading ? <section {...containerProps}>{indicatorEl}</section> : null}
     </div>
   );
 };
