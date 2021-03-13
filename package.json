@@ -39,7 +39,6 @@
     "dist-exiftool": "^10.53.0",
     "dpi-tools": "^1.0.7",
     "dropbox": "^9.2.0",
-    "ethereumjs-abi": "*",
     "ethers": "^5.0.30",
     "fortmatic": "^2.2.1",
     "image-data-uri": "^2.0.1",
