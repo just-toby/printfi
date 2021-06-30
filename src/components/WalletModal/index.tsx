@@ -9,7 +9,7 @@ import Modal from "../Modal";
 import { AbstractConnector } from "@web3-react/abstract-connector";
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { injected, portis, fortmatic } from "../../connectors";
-import { OVERLAY_READY } from "../../connectors/Fortmatic";
+import { OVERLAY_READY } from '../../connectors/Fortmatic'
 import { isMobile } from "react-device-detect";
 import usePrevious from "../../hooks/usePrevious";
 
@@ -40,37 +40,35 @@ const Wrapper = styled.div`
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
   padding: 1rem 1rem;
+  font-weight: 500;
   color: ${(props) =>
     props.color === "blue" ? ({ theme }) => theme.primary1 : "inherit"};
   ${({ theme }) => theme.mediaWidth.upToMedium`
     padding: 1rem;
   `};
-  font-size: 1rem;
-  font-weight: 500;
 `;
 const ContentWrapper = styled.div`
   background-color: ${({ theme }) => theme.bg2};
   padding: 2rem;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-
   ${({ theme }) => theme.mediaWidth.upToMedium`padding: 1rem`};
 `;
 
 const UpperSection = styled.div`
   position: relative;
-
   h5 {
     margin: 0;
     margin-bottom: 0.5rem;
+    font-size: 1rem;
+    font-weight: 400;
   }
-
   h5:last-child {
     margin-bottom: 0px;
   }
-
   h4 {
     margin-top: 0;
+    font-weight: 500;
   }
 `;
 
@@ -82,6 +80,7 @@ const Blurb = styled.div`
   margin-top: 2rem;
   ${({ theme }) => theme.mediaWidth.upToMedium`
     margin: 1rem;
+    font-size: 12px;
   `};
 `;
 
@@ -104,6 +103,8 @@ const HeaderText = styled.div`
     props.color === "blue"
       ? ({ theme }) => theme.primary1
       : ({ theme }) => theme.text1};
+  font-size: 1rem;
+  font-weight: 500;
 `;
 
 export const injectedConnector = new InjectedConnector({
@@ -124,11 +125,11 @@ export default function WalletModal(props) {
   }, [account, previousAccount, toggleWalletDropdown, walletDropdown]);
 
   // close wallet modal if fortmatic modal is active
-  useEffect(() => {
-    fortmatic.on(OVERLAY_READY, () => {
-      toggleWalletDropdown();
-    });
-  }, [toggleWalletDropdown]);
+    useEffect(() => {
+      fortmatic.on(OVERLAY_READY, () => {
+        toggleWalletDropdown()
+      })
+    }, [toggleWalletDropdown])
 
   const tryActivation = async (connector: AbstractConnector | undefined) => {
     let name = "";
@@ -246,15 +247,13 @@ export default function WalletModal(props) {
 
   function getModalContent() {
     return (
-      <>
-        <UpperSection>
-          <CloseIcon onClick={toggleWalletDropdown}>
-            <img src={"./x.svg"} />
-          </CloseIcon>
-          <HeaderRow>
-            <HoverText>Connect to a wallet</HoverText>
-          </HeaderRow>
-        </UpperSection>
+      <UpperSection>
+        <CloseIcon onClick={toggleWalletDropdown}>
+          <img src={"./x.svg"} />
+        </CloseIcon>
+        <HeaderRow>
+          <HoverText>Connect to a wallet</HoverText>
+        </HeaderRow>
         <ContentWrapper>
           <OptionGrid>{getOptions()}</OptionGrid>
           <Blurb>
@@ -264,7 +263,7 @@ export default function WalletModal(props) {
             </ExternalLink>
           </Blurb>
         </ContentWrapper>
-      </>
+      </UpperSection>
     );
   }
   if (walletDropdown) {
